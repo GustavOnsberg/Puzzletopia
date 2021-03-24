@@ -1,5 +1,8 @@
 package main;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 public class PuzzleInfo {
     public int getN() {
         return n;
@@ -9,44 +12,30 @@ public class PuzzleInfo {
         return m;
     }
 
-    public int[] getPointCross() {
+    public ArrayList<Point> getPointCross() {
         return pointCross;
     }
 
-    public int[] getPointHorizontal() {
+    public ArrayList<Point> getPointHorizontal() {
         return pointHorizontal;
     }
 
-    public int[] getPointVertical() {
+    public ArrayList<Point> getPointVertical() {
         return pointVertical;
-    }
-
-
-
-    public void setPointCross(int[] pointCross) {
-        this.pointCross = pointCross;
-    }
-
-    public void setPointHorizontal(int[] pointHorizontal) {
-        this.pointHorizontal = pointHorizontal;
-    }
-
-    public void setPointVertical(int[] pointVertical) {
-        this.pointVertical = pointVertical;
     }
 
     int n;
     int m;
-    int[] pointCross;
-    int[] pointHorizontal;
-    int[] pointVertical;
+    ArrayList<Point> pointCross;
+    ArrayList<Point> pointHorizontal;
+    ArrayList<Point> pointVertical;
 
     public PuzzleInfo(int n, int m){
         this.n = n;
         this.m = m;
 
-        pointCross = new int[(n-1)*(m-1)];
-        pointHorizontal = new int[(m-1)*n*2];
-        pointVertical = new int[(n-1)*m*2];
+        pointCross = new ArrayList<Point>();
+        pointHorizontal = new ArrayList<Point>();
+        pointVertical = new ArrayList<Point>();
     }
 }
