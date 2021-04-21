@@ -1,45 +1,41 @@
 package ui;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import org.w3c.dom.css.Rect;
-import javafx.scene.shape.Polygon;
+
+import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.*;
+import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PuzzleScreenController {
     public AnchorPane puzzleCanvas;
-    BufferedImage canvas =  new BufferedImage(500, 500, BufferedImage.TYPE_3BYTE_BGR);
+    public int puzzleBoardWidth = 1000;
+    public int puzzleBoardHeight = 1000;
+    public Image puzzlePicture = new Image("ui/test.png");
     ArrayList<Point> pointCross = new ArrayList<Point>() {
         {
             add(new Point(50,30));
             add(new Point(120,45));
-            add(new Point(40,145));
             add(new Point(130,120));
+            add(new Point(40,145));
         }
     };
     ArrayList<Point> pointHorizontal = new ArrayList<Point>() {
         {
-            add(new Point(70,35));
-            add(new Point(100,40));
-            add(new Point(70,135));
-            add(new Point(100,125));
+            add(new Point(200,35));
+            add(new Point(260,40));
+            add(new Point(230,135));
+            add(new Point(215,125));
         }
 
     };
@@ -51,47 +47,65 @@ public class PuzzleScreenController {
             add(new Point(128,125));
         }
     };
+    ArrayList<Color> testColors = new ArrayList<Color>() {
+        {
+            add(Color.BLACK);
+            add(Color.OLIVE);
+            add(Color.BLUE);
+            add(Color.YELLOW);
+            add(Color.VIOLET);
+
+        }
+    };
 
     public PuzzleScreenController() {
-
     }
 
     @FXML
     public void initialize() throws IOException {
-        canvas = ImageIO.read(new File("../PuzzleTopia/src/ui/test.png"));
-//        for (int i = 0; i < canvas.getWidth(); i++) {
-//            for (int j = 0; j < canvas.getHeight(); j++) {
-//                canvas.setRGB(i, j, Color.BLACK.getRGB());
-//            }
-//        }
+        Random random = new Random();
+        for (int i = 0; i < 20; i++) {
+            pointCross.add(new Point(random.nextInt(1000),random.nextInt(1000)));
+            pointCross.add(new Point(random.nextInt(1000),random.nextInt(1000)));
+            pointCross.add(new Point(random.nextInt(1000),random.nextInt(1000)));
+            pointCross.add(new Point(random.nextInt(1000),random.nextInt(1000)));
+        }
+        int firstPoint = 0;
+        int secondPoint = 1;
+        int thirdPoint = 2;
+        int fourthPoint = 3;
+        for (int i = 0; i < 10; i++) {
+            makePuzzlePiece(pointCross,puzzlePicture, firstPoint, secondPoint, thirdPoint, fourthPoint);
+            i++;
+            firstPoint++;
+            secondPoint++;
+            thirdPoint++;
+            fourthPoint++;
+        }
+    }
 
-        Polygon polygon = new Polygon();
-        polygon.getPoints().add(pointCross.get(0).getX());
-        polygon.getPoints().add(pointCross.get(0).getY());
-        polygon.getPoints().add(pointCross.get(1).getX());
-        polygon.getPoints().add(pointCross.get(1).getY());
-        polygon.getPoints().add(pointCross.get(3).getX());
-        polygon.getPoints().add(pointCross.get(3).getY());
-        polygon.getPoints().add(pointCross.get(2).getX());
-        polygon.getPoints().add(pointCross.get(2).getY());
-        Image img = new Image("ui/test.png");
-        polygon.setFill(new ImagePattern(img));
-        puzzleCanvas.getChildren().add(polygon);
-
-
-
-//        WritableImage wr = new WritableImage(canvas.getWidth(), canvas.getHeight());
-//        PixelWriter pw = wr.getPixelWriter();
-//        for (int i = 0; i < canvas.getWidth(); i++) {
-//            for (int j = 0; j < canvas.getHeight(); j++) {
-//                pw.setArgb(i,j,canvas.getRGB(i,j));
-//            }
-//        }
-//        ImageView imageView = new ImageView(wr);
-//        imageView.setFitHeight(1000);
-//        imageView.setFitWidth(1000);
-//        puzzleCanvas.getChildren().add(imageView);
-
+    private void makePuzzlePiece(ArrayList<Point> points, Image puzzlePicture, int firstPoint, int secondPoint, int thirdPoint, int fourthPoint) {
+        Rectangle newPuzzlePiece = new Rectangle(puzzleBoardWidth, puzzleBoardHeight);
+        ImagePattern picturePattern = new ImagePattern(puzzlePicture);
+        newPuzzlePiece.setFill(picturePattern);
+        Path puzzleShape = new Path(
+                new MoveTo(points.get(firstPoint).getX(), points.get(firstPoint).getY()),
+                new LineTo(points.get(secondPoint).getX(), points.get(secondPoint).getY()),
+                new LineTo(points.get(thirdPoint).getX(), points.get(thirdPoint).getY()),
+                new LineTo(points.get(fourthPoint).getX(), points.get(fourthPoint).getY()),
+                new LineTo(points.get(firstPoint).getX(), points.get(firstPoint).getY()),
+                new ClosePath()
+        );
+        puzzleShape.setFill(Color.BLACK);
+        newPuzzlePiece.setClip(puzzleShape);
+        newPuzzlePiece.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                newPuzzlePiece.setClip(null);
+            }
+        });
+        newPuzzlePiece.setStroke(Color.BLACK);
+        puzzleCanvas.getChildren().add(new Group(newPuzzlePiece));
     }
 
 }
