@@ -118,8 +118,8 @@ public class PuzzleScreenController {
             piece.setY(piece.getY() + offsetY);
             originalX = event.getSceneX();
             originalY = event.getSceneY();
-            puzzleShape.setTranslateX(offsetX);
-            puzzleShape.setTranslateY(offsetY);
+            puzzleShape.setTranslateX(piece.getX() + offsetX);
+            puzzleShape.setTranslateY(piece.getY() + offsetY);
         });
 
         newPuzzlePiece.setStroke(Color.BLACK);
