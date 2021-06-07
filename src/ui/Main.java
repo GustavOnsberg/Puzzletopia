@@ -13,7 +13,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("PuzzleScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
         primaryStage.setTitle("Puzzle Topia");
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
@@ -31,9 +31,5 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public static Stage getpStage() {
-        return pStage;
     }
 }
