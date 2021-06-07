@@ -19,6 +19,8 @@ public class MainMenuController {
 
     public Button btnStartGame;
     public Button btnUploadGameFile;
+    public Puzzle puzzle;
+    public static MainMenuController mainMenuController;
 
 
     public void handleStartGameBtn(ActionEvent actionEvent) throws IOException {
@@ -28,10 +30,10 @@ public class MainMenuController {
 
     public void handleUploadGameFileBtn(ActionEvent actionEvent) throws IOException, ParseException {
         FileChooser fc = new FileChooser();
-        fc.setTitle("Choose JSON File");
+        fc.setTitle("Choose a JSON File");
         File gameFile = fc.showOpenDialog(Main.pStage);
         if (gameFile != null && (gameFile.getName().endsWith(".json") || gameFile.getName().endsWith(".JSON"))) {
-            Puzzle puzzle = new Puzzle();
+            puzzle = new Puzzle();
             puzzle.loadPuzzle(gameFile.getPath());
         } else {
            Alert fileErorr = new Alert(Alert.AlertType.ERROR);
@@ -41,5 +43,9 @@ public class MainMenuController {
         }
 
 
+    }
+
+    public Puzzle getPuzzle() {
+        return puzzle;
     }
 }
