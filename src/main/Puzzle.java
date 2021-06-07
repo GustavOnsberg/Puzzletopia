@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Puzzle {
+    public ArrayList<Piece> getPieces() {
+        return pieces;
+    }
+
     ArrayList<Piece> pieces = new ArrayList<>();
 
     public static void main(String [] args) throws IOException, ParseException {
@@ -36,6 +40,7 @@ public class Puzzle {
                 float y = Float.parseFloat(coord.get("y").toString());
 
                 pieces.get(pieces.size()-1).corners.add(new Corner(x,y));
+
             }
         }
 
