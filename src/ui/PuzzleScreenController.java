@@ -46,17 +46,7 @@ public class PuzzleScreenController {
             add(new Point(128,125));
         }
     };
-    ArrayList<Color> testColors = new ArrayList<Color>() {
-        {
-            add(Color.BLACK);
-            add(Color.OLIVE);
-            add(Color.BLUE);
-            add(Color.YELLOW);
-            add(Color.VIOLET);
-
-        }
-    };
-
+    ArrayList<Color> testColors = new ArrayList<>();
     public PuzzleScreenController() {
     }
 
@@ -69,24 +59,29 @@ public class PuzzleScreenController {
             pointCross.add(new Point(random.nextInt(1000),random.nextInt(1000)));
             pointCross.add(new Point(random.nextInt(1000),random.nextInt(1000)));
         }
+        for (int i = 0; i < 100; i++) {
+            testColors.add(new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1));
+        }
+        int color = 1;
         int firstPoint = 0;
         int secondPoint = 1;
         int thirdPoint = 2;
         int fourthPoint = 3;
         for (int i = 0; i < 10; i++) {
-            makePuzzlePiece(pointCross,puzzlePicture, firstPoint, secondPoint, thirdPoint, fourthPoint);
+            makePuzzlePiece(pointCross,puzzlePicture, firstPoint, secondPoint, thirdPoint, fourthPoint, color);
             i++;
             firstPoint++;
             secondPoint++;
             thirdPoint++;
             fourthPoint++;
+            color++;
         }
     }
 
-    private void makePuzzlePiece(ArrayList<Point> points, Image puzzlePicture, int firstPoint, int secondPoint, int thirdPoint, int fourthPoint) {
+    private void makePuzzlePiece(ArrayList<Point> points, Image puzzlePicture, int firstPoint, int secondPoint, int thirdPoint, int fourthPoint, int color) {
         Rectangle newPuzzlePiece = new Rectangle(puzzleBoardWidth, puzzleBoardHeight);
-        ImagePattern picturePattern = new ImagePattern(puzzlePicture);
-        newPuzzlePiece.setFill(picturePattern);
+        // ImagePattern picturePattern = new ImagePattern(puzzlePicture);
+        newPuzzlePiece.setFill(testColors.get(color));
         Path puzzleShape = new Path(
                 new MoveTo(points.get(firstPoint).getX(), points.get(firstPoint).getY()),
                 new LineTo(points.get(secondPoint).getX(), points.get(secondPoint).getY()),
@@ -97,15 +92,17 @@ public class PuzzleScreenController {
         );
         puzzleShape.setFill(Color.BLACK);
         newPuzzlePiece.setClip(puzzleShape);
-        newPuzzlePiece.setFocusTraversable(true);
 
         newPuzzlePiece.setCursor(Cursor.HAND);
         newPuzzlePiece.setOnMousePressed(event -> {
             originalX = event.getSceneX();
             originalY = event.getSceneY();
-            Rectangle piece = (Rectangle) (event.getSource());
-            piece.toFront();
+            ((Rectangle) (event.getSource())).toFront();
+            newPuzzlePiece.toFront();
+            puzzleShape.toFront();
         });
+
+
         newPuzzlePiece.setOnMouseDragged(event -> {
             double offsetX = event.getSceneX() - originalX;
             double offsetY = event.getSceneY() - originalY;
@@ -116,6 +113,10 @@ public class PuzzleScreenController {
             originalY = event.getSceneY();
             puzzleShape.setTranslateX(piece.getX() + offsetX);
             puzzleShape.setTranslateY(piece.getY() + offsetY);
+
+             // Debug piece position
+             // System.out.println("Piece X: " + piece.getX());
+             // System.out.println("Piece Y: " + piece.getY());
         });
 
         newPuzzlePiece.setStroke(Color.BLACK);
