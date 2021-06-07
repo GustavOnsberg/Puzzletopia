@@ -21,7 +21,6 @@ public class PuzzleScreenController {
     public int puzzleBoardHeight = 1000;
     public Image puzzlePicture = new Image("ui/test.png");
     private float puzzleScale = 100;
-    private final MainMenuController mainMenuController = MainMenuController.mainMenuController;
     ArrayList<Point> pointCorners = new ArrayList<>();
 //    ArrayList<Point> pointHorizontal = new ArrayList<Point>() {
 //        {
@@ -46,10 +45,10 @@ public class PuzzleScreenController {
 
     @FXML
     public void initialize() {
-        for (int i = 0; i < mainMenuController.getPuzzle().getPieces().size() - 1; i++) {
-            for (int j = 0; j < mainMenuController.getPuzzle().getPieces().get(i).getCorners().size() - 1; j++) {
-                int pointX = (int) Math.floor(mainMenuController.getPuzzle().getPieces().get(i).getCorners().get(j).getX() * puzzleScale);
-                int pointY = (int) Math.floor(mainMenuController.getPuzzle().getPieces().get(i).getCorners().get(j).getY() * puzzleScale);
+        for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().getPieces().size() - 1; i++) {
+            for (int j = 0; j < MainMenuController.mainMenuController.getPuzzle().getPieces().get(i).getCorners().size() - 1; j++) {
+                int pointX = (int) Math.floor(MainMenuController.mainMenuController.getPuzzle().getPieces().get(i).getCorners().get(j).getX() * puzzleScale);
+                int pointY = (int) Math.floor(MainMenuController.mainMenuController.getPuzzle().getPieces().get(i).getCorners().get(j).getY() * puzzleScale);
                 pointCorners.add(new Point(pointX, pointY));
             }
         }
@@ -69,7 +68,7 @@ public class PuzzleScreenController {
         int secondPoint = 1;
         int thirdPoint = 2;
         int fourthPoint = 3;
-        for (int i = 0; i < mainMenuController.getPuzzle().getPieces().size() - 1; i++) {
+        for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().getPieces().size() - 1; i++) {
             makePuzzlePiece(1, pointCorners, firstPoint, secondPoint, thirdPoint, fourthPoint, color);
             i++;
             firstPoint += 4;
@@ -80,16 +79,20 @@ public class PuzzleScreenController {
         }
     }
 
-    private void makePuzzlePiece(int i, ArrayList<Point> points, int firstPoint, int secondPoint, int thirdPoint, int fourthPoint, int color) {
+    private void makePuzzlePiece(int pieceNumber, ArrayList<Point> points, int firstPoint, int secondPoint, int thirdPoint, int fourthPoint, int color) {
         Rectangle newPuzzlePiece = new Rectangle(puzzleBoardWidth, puzzleBoardHeight);
         // ImagePattern picturePattern = new ImagePattern(puzzlePicture);
         newPuzzlePiece.setFill(testColors.get(color));
-        Path puzzleShape = new Path(
-                new MoveTo(mainMenuController.getPuzzle().getPieces().get(i).getCorners().get(0).getX(),
-                        mainMenuController.getPuzzle().getPieces().get(i).getCorners().get(1).getY()),
-                numberOfLines(i),
-                new ClosePath()
-        );
+        Path puzzleShape = new Path();
+
+        for (int j = 0; j < MainMenuController.mainMenuController.getPuzzle().getPieces().size() - 1; j++) {
+            puzzleShape.getElements().add(new MoveTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(0).getCorners().get(0).getX() * 100 + 100,
+                    MainMenuController.mainMenuController.getPuzzle().getPieces().get(0).getCorners().get(0).getY() * 100 + 100));
+            for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().getPieces().get(j).getCorners().size() - 1; i++) {
+                puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(j).getCorners().get(i).getX() * 100 + 100,
+                        MainMenuController.mainMenuController.getPuzzle().getPieces().get(j).getCorners().get(i).getY() * 100 + 100));
+            }
+        }
 //        Path puzzleShape = new Path(
 //                new MoveTo(points.get(firstPoint).getX(), points.get(firstPoint).getY()),
 //                new LineTo(points.get(secondPoint).getX(), points.get(secondPoint).getY()),
@@ -126,15 +129,6 @@ public class PuzzleScreenController {
 
         newPuzzlePiece.setStroke(Color.BLACK);
         puzzleCanvas.getChildren().add(new Group(newPuzzlePiece));
-    }
-
-    private LineTo numberOfLines(int pieceNumber) {
-        ArrayList<LineTo> lineTos = new ArrayList<>();
-        for (int i = 0; i < mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().size() - 2; i++) {
-            lineTos.add(new LineTo(mainMenuController.getPuzzle().getPieces().get(i).getCorners().get(i).getX(),
-                    mainMenuController.getPuzzle().getPieces().get(i).getCorners().get(i).getY()));
-        }
-        return lineTos.get(1);
     }
 
 }

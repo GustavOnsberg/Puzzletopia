@@ -19,6 +19,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
         pStage = primaryStage;
+        main = this;
         primaryStage.show();
     }
 
@@ -26,6 +27,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlName));
         Scene oldScene = primaryStage.getScene();
         primaryStage.setScene(new Scene(root,oldScene.getWidth(),oldScene.getHeight()));
+        main = this;
         primaryStage.show();
     }
 

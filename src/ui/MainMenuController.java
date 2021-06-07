@@ -24,8 +24,8 @@ public class MainMenuController {
 
 
     public void handleStartGameBtn(ActionEvent actionEvent) throws IOException {
-        Main main = new Main();
-        main.setStage("/ui/PuzzleScreen.fxml", Main.pStage);
+        mainMenuController = this;
+        Main.main.setStage("/ui/PuzzleScreen.fxml", Main.pStage);
     }
 
     public void handleUploadGameFileBtn(ActionEvent actionEvent) throws IOException, ParseException {
@@ -35,6 +35,8 @@ public class MainMenuController {
         if (gameFile != null && (gameFile.getName().endsWith(".json") || gameFile.getName().endsWith(".JSON"))) {
             puzzle = new Puzzle();
             puzzle.loadPuzzle(gameFile.getPath());
+            mainMenuController = this;
+            Main.main.setStage("/ui/PuzzleScreen.fxml", Main.pStage);
         } else {
            Alert fileErorr = new Alert(Alert.AlertType.ERROR);
            fileErorr.setTitle("File Extension Error");
