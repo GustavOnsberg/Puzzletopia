@@ -1,7 +1,5 @@
 package main;
 
-import java.awt.*;
-
 public class Generator {
 
     int nums[][] = {
@@ -20,18 +18,7 @@ public class Generator {
 
 
     public void generate(PuzzleInfo target){
-        target.pointCross.clear();
-        target.pointHorizontal.clear();
-        target.pointVertical.clear();
 
-        for (int i = 0; i < (target.n-1)*(target.m-1); i++)
-            target.getPointCross().add(new Point(getRandomNum(),getRandomNum()));
-
-        for (int i = 0; i < (target.m-1)*target.n*2; i++)
-            target.getPointHorizontal().add(new Point(getRandomNum(),getRandomNum()));
-
-        for (int i = 0; i < (target.n-1)*target.m*2; i++)
-            target.getPointVertical().add(new Point(getRandomNum(),getRandomNum()));
     }
 
     private int getRandomNum(){

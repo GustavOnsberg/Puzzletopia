@@ -1,20 +1,16 @@
 package ui;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 
 import java.awt.*;
-import java.awt.Shape;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
