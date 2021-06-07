@@ -1,19 +1,19 @@
 package main;
 
-public class Corner {
+public class FPoint {
     public float getX() {
         return x;
     }
 
-    float x;
+    public float x;
 
     public float getY() {
         return y;
     }
 
-    float y;
+    public float y;
 
-    public Corner(float x, float y) {
+    public FPoint(float x, float y) {
         this.x = x;
         this.y = y;
     }

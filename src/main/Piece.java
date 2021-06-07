@@ -3,9 +3,10 @@ package main;
 import java.util.ArrayList;
 
 public class Piece {
-    public ArrayList<Corner> getCorners() {
+    public ArrayList<FPoint> getCorners() {
         return corners;
     }
 
-    ArrayList<Corner> corners = new ArrayList<>();
+
+    ArrayList<FPoint> corners = new ArrayList<>();
 }
