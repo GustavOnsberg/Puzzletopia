@@ -3,9 +3,10 @@ package ui;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -13,12 +14,14 @@ import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
+import java.awt.Shape;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class PuzzleScreenController {
     public AnchorPane puzzleCanvas;
+    public double originalX, originalY;
     public int puzzleBoardWidth = 1000;
     public int puzzleBoardHeight = 1000;
     public Image puzzlePicture = new Image("ui/test.png");
@@ -98,12 +101,27 @@ public class PuzzleScreenController {
         );
         puzzleShape.setFill(Color.BLACK);
         newPuzzlePiece.setClip(puzzleShape);
-        newPuzzlePiece.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                newPuzzlePiece.setClip(null);
-            }
+        newPuzzlePiece.setFocusTraversable(true);
+
+        newPuzzlePiece.setCursor(Cursor.HAND);
+        newPuzzlePiece.setOnMousePressed(event -> {
+            originalX = event.getSceneX();
+            originalY = event.getSceneY();
+            Rectangle piece = (Rectangle) (event.getSource());
+            piece.toFront();
         });
+        newPuzzlePiece.setOnMouseDragged(event -> {
+            double offsetX = event.getSceneX() - originalX;
+            double offsetY = event.getSceneY() - originalY;
+            Rectangle piece = (Rectangle) (event.getSource());
+            piece.setX(piece.getX() + offsetX);
+            piece.setY(piece.getY() + offsetY);
+            originalX = event.getSceneX();
+            originalY = event.getSceneY();
+            puzzleShape.setTranslateX(offsetX);
+            puzzleShape.setTranslateY(offsetY);
+        });
+
         newPuzzlePiece.setStroke(Color.BLACK);
         puzzleCanvas.getChildren().add(new Group(newPuzzlePiece));
     }
