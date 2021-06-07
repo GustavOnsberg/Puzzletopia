@@ -27,7 +27,16 @@ public class Puzzle {
 
         Iterator<JSONObject> iterator = piecesJsonArray.iterator();
         while (iterator.hasNext()){
-            System.out.println(iterator.next());
+            JSONArray cornersJsonArray = (JSONArray) iterator.next().get("corners");
+            Iterator<JSONObject> iterator1 = cornersJsonArray.iterator();
+            pieces.add(new Piece());
+            while (iterator1.hasNext()){
+                JSONObject coord = (JSONObject) iterator1.next().get("coord");
+                float x = Float.parseFloat(coord.get("x").toString());
+                float y = Float.parseFloat(coord.get("y").toString());
+
+                pieces.get(pieces.size()-1).corners.add(new Corner(x,y));
+            }
         }
 
     }

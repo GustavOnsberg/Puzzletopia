@@ -1,8 +1,7 @@
 package main;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Piece {
-    ArrayList<Point> coords = new ArrayList<>();
+    ArrayList<Corner> corners = new ArrayList<>();
 }
