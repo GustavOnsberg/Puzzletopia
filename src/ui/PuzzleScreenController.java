@@ -82,14 +82,22 @@ public class PuzzleScreenController {
         AnchorPane.setBottomAnchor(newPuzzlePiece, 99.0);
 
         // Debug corner
-        Line debug = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
+        Line debug1 = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
                 MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
                 MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100);
-        debug.setStrokeWidth(10);
-        debug.setTranslateX(newPuzzlePiece.getX());
-        debug.setTranslateY(newPuzzlePiece.getY());
-        debug.setStroke(Color.RED);
-        puzzleCanvas.getChildren().add(debug);
+        debug1.setStrokeWidth(10);
+        debug1.setTranslateX(newPuzzlePiece.getX());
+        debug1.setTranslateY(newPuzzlePiece.getY());
+        debug1.setStroke(Color.BLUE);
+        Line debug2 = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100);
+        debug2.setStrokeWidth(10);
+        debug2.setTranslateX(newPuzzlePiece.getX());
+        debug2.setTranslateY(newPuzzlePiece.getY());
+        debug2.setStroke(Color.GREEN);
+        puzzleCanvas.getChildren().add(debug1);
+        puzzleCanvas.getChildren().add(debug2);
 
         puzzleShape.setFill(Color.BLACK);
         newPuzzlePiece.setClip(puzzleShape);
