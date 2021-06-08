@@ -10,6 +10,7 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 
 import java.awt.*;
@@ -21,9 +22,17 @@ public class PuzzleScreenController {
     public double originalPieceX, originalPieceY, originalMouseX, originalMouseY, mouseX, mouseY;
     public int puzzleBoardWidth = 1000;
     public int puzzleBoardHeight = 1000;
+    float angleChange = 0;
     public Image puzzlePicture = new Image("ui/test.png");
     private float puzzleScale = 100;
     ArrayList<Color> testColors = new ArrayList<>();
+
+    double deltaX = 0;
+    double deltaY = 0;
+    double prevDeltaX = 0;
+    double prevDeltaY = 0;
+
+
     public PuzzleScreenController() {
     }
 
@@ -86,19 +95,35 @@ public class PuzzleScreenController {
 
             } else if (event.isSecondaryButtonDown()) {
                 if (((Math.pow(MouseInfo.getPointerInfo().getLocation().x - originalMouseX,2) + Math.pow((MouseInfo.getPointerInfo().getLocation().y - originalMouseY),2)) > 2500)) {
-                    double a = Math.sqrt(Math.pow(MouseInfo.getPointerInfo().getLocation().x - originalMouseX,2) + Math.pow((MouseInfo.getPointerInfo().getLocation().y - originalMouseY),2));
+                    double a = Math.sqrt(Math.pow(MouseInfo.getPointerInfo().getLocation().x - originalMouseX,2) + Math.pow(MouseInfo.getPointerInfo().getLocation().y - originalMouseY,2));
                     double b = Math.sqrt(Math.pow(mouseX - originalMouseX,2) + Math.pow(mouseY - originalMouseY, 2));
                     double c = Math.sqrt(Math.pow(MouseInfo.getPointerInfo().getLocation().x - mouseX,2) + Math.pow(MouseInfo.getPointerInfo().getLocation().y - mouseY, 2));
                     double ramma = Math.acos((Math.pow(a,2) + Math.pow(b,2) - Math.pow(c,2))/(2 * a * b));
 
-                    rotate.setPivotX(originalMouseX);
-                    rotate.setPivotY(originalMouseY);
-                    rotate.setAngle(ramma);
-                    System.out.println(a);
-                    System.out.println(b);
-                    System.out.println(c);
-                    System.out.println(ramma);
-                    newPuzzlePiece.getTransforms().addAll(rotate);
+
+
+                    double relativeX = MouseInfo.getPointerInfo().getLocation().x - originalMouseX;
+                    double relativeY = MouseInfo.getPointerInfo().getLocation().y - originalMouseY;
+                    double deltaLength = Math.sqrt(Math.pow(relativeX, 2) + Math.pow(relativeY, 2));
+                    relativeX/=deltaLength;
+                    relativeY/=deltaLength;
+
+                    deltaX = MouseInfo.getPointerInfo().getLocation().x - originalMouseX;
+                    deltaY = relativeY = MouseInfo.getPointerInfo().getLocation().y - originalMouseY;
+                    deltaLength = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+                    deltaX/=deltaLength;
+                    deltaY/=deltaLength;
+
+                    if ((deltaX > 0 && deltaY > prevDeltaY) || (deltaX < 0 && deltaY < prevDeltaY)){
+                        puzzleShape.getTransforms().add(Affine.rotate(ramma * 180 / 3.14,100,100));
+                    }
+                    else{
+                        puzzleShape.getTransforms().add(Affine.rotate(-ramma * 180 / 3.14,100,100));
+                    }
+
+
+                    prevDeltaX = deltaX;
+                    prevDeltaY = deltaY;
 
                 }
                 mouseX = MouseInfo.getPointerInfo().getLocation().x;
