@@ -67,9 +67,6 @@ public class PuzzleScreenController {
         Path puzzleShape = new Path();
         puzzleShape.getElements().add(new MoveTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
                 MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100));
-
-
-
         for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().size(); i++) {
             puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getX() * 100 + 100,
                     MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getY() * 100 + 100));
@@ -79,28 +76,21 @@ public class PuzzleScreenController {
         newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 270) - (-30) + 1) + (-30));
         puzzleShape.setTranslateX(newPuzzlePiece.getX());
         puzzleShape.setTranslateY(newPuzzlePiece.getY());
-        AnchorPane.setBottomAnchor(newPuzzlePiece, 99.0);
 
-        // Debug corner
-        Line debug1 = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
-                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
-                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100);
-        debug1.setStrokeWidth(10);
-        debug1.setTranslateX(newPuzzlePiece.getX());
-        debug1.setTranslateY(newPuzzlePiece.getY());
-        debug1.setStroke(Color.BLUE);
-        Line debug2 = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
-                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
-                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100);
-        debug2.setStrokeWidth(10);
-        debug2.setTranslateX(newPuzzlePiece.getX());
-        debug2.setTranslateY(newPuzzlePiece.getY());
-        debug2.setStroke(Color.GREEN);
-        puzzleCanvas.getChildren().add(debug1);
-        puzzleCanvas.getChildren().add(debug2);
+
+//        debugCorners(pieceNumber, newPuzzlePiece);
 
         puzzleShape.setFill(Color.BLACK);
         newPuzzlePiece.setClip(puzzleShape);
+
+        movementOfPieces(newPuzzlePiece, puzzleShape);
+        rescalePieces(puzzleShape, newPuzzlePiece);
+
+        newPuzzlePiece.setStroke(Color.BLACK);
+        puzzleCanvas.getChildren().add(new Group(newPuzzlePiece));
+    }
+
+    private void movementOfPieces(Rectangle newPuzzlePiece, Path puzzleShape) {
 
         newPuzzlePiece.setCursor(Cursor.HAND);
         newPuzzlePiece.setOnMousePressed(event -> {
@@ -179,10 +169,41 @@ public class PuzzleScreenController {
                 mouseY = MouseInfo.getPointerInfo().getLocation().y;
             }
         });
+    }
 
+    private void rescalePieces(Path puzzleShape, Rectangle newPuzzlePiece) {
+        Main.pStage.widthProperty().addListener(((observable, oldValue, newValue) -> {
+            if (puzzleShape.getTranslateX() > newValue.intValue() - 180) {
+                newPuzzlePiece.setX(newValue.intValue() - 180);
+                puzzleShape.setTranslateX(newPuzzlePiece.getX());
+            }
+        }));
+        Main.pStage.heightProperty().addListener((observable, oldValue, newValue) -> {
+            if (puzzleShape.getTranslateY() > newValue.intValue() - 310) {
+                newPuzzlePiece.setY(newValue.intValue() - 310);
+                puzzleShape.setTranslateY(newPuzzlePiece.getY());
+            }
+        });
+    }
 
-        newPuzzlePiece.setStroke(Color.BLACK);
-        puzzleCanvas.getChildren().add(new Group(newPuzzlePiece));
+    private void debugCorners(int pieceNumber, Rectangle newPuzzlePiece) {
+        // First corner
+        Line debug1 = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100);
+        debug1.setStrokeWidth(10);
+        debug1.setTranslateX(newPuzzlePiece.getX());
+        debug1.setTranslateY(newPuzzlePiece.getY());
+        debug1.setStroke(Color.BLUE);
+        // Second corner
+        Line debug2 = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100);
+        debug2.setStrokeWidth(10);
+        debug2.setTranslateX(newPuzzlePiece.getX());
+        debug2.setTranslateY(newPuzzlePiece.getY());
+        debug2.setStroke(Color.GREEN);
+        puzzleCanvas.getChildren().addAll(debug1, debug2);
     }
 
 }
