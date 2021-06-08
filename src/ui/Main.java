@@ -22,6 +22,8 @@ public class Main extends Application {
         main = this;
         pStage.setMinHeight(1000);
         pStage.setMinWidth(1000);
+        pStage.setMaxWidth(2560);
+        pStage.maxHeightProperty().bind(pStage.maxWidthProperty());
         primaryStage.show();
     }
 

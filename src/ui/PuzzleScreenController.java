@@ -21,8 +21,7 @@ import java.util.Random;
 public class PuzzleScreenController {
     public AnchorPane puzzleCanvas;
     public double originalPieceX, originalPieceY, originalMouseX, originalMouseY, mouseX, mouseY;
-    public int puzzleBoardWidth = 2000;
-    public int puzzleBoardHeight = 2000;
+    public AnchorPane windowPane;
     float angleChange = 0;
     public Image puzzlePicture = new Image("ui/test.png");
     private float puzzleScale = 100;
@@ -62,7 +61,7 @@ public class PuzzleScreenController {
     }
 
     private void makePuzzlePiece(int pieceNumber, int color) {
-        Rectangle newPuzzlePiece = new Rectangle(puzzleBoardWidth, puzzleBoardHeight);
+        Rectangle newPuzzlePiece = new Rectangle(1000, 1000);
         // ImagePattern picturePattern = new ImagePattern(puzzlePicture);
         newPuzzlePiece.setFill(testColors.get(color));
         Path puzzleShape = new Path();
@@ -81,6 +80,11 @@ public class PuzzleScreenController {
             puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getX() * 100 + 100,
                     MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getY() * 100 + 100));
         }
+        Random random = new Random();
+        newPuzzlePiece.setX(random.nextInt((int) (Main.pStage.getWidth() - 165) - (-35) + 1) + (-35));
+        newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 270) - (-30) + 1) + (-30));
+        puzzleShape.setTranslateX(newPuzzlePiece.getX());
+        puzzleShape.setTranslateY(newPuzzlePiece.getY());
 
         puzzleShape.setFill(Color.BLACK);
         newPuzzlePiece.setClip(puzzleShape);
@@ -95,7 +99,6 @@ public class PuzzleScreenController {
                 originalMouseY = MouseInfo.getPointerInfo().getLocation().y;
             }
         });
-        Rotate rotate = new Rotate();
 
         newPuzzlePiece.setOnMouseDragged(event -> {
             if (event.isPrimaryButtonDown()) {
@@ -106,6 +109,19 @@ public class PuzzleScreenController {
                 piece.setY(piece.getY() + offsetY);
                 originalPieceX = event.getSceneX();
                 originalPieceY = event.getSceneY();
+                if (piece.getX() + offsetX < -35) {
+                    piece.setX(-35);
+                    puzzleShape.setTranslateX(-35);
+                } else if (piece.getX() + offsetX + 165 > windowPane.getWidth()) {
+                    piece.setX(windowPane.getWidth() - 165);
+                    puzzleShape.setTranslateX(windowPane.getWidth() - 165);
+                } else if (piece.getY() + offsetY + 270 > windowPane.getHeight()) {
+                    piece.setY(windowPane.getHeight() - 270);
+                    puzzleShape.setTranslateX(windowPane.getHeight() - 270);
+                } else if (piece.getY() + offsetY < -30) {
+                    piece.setY(-30);
+                    puzzleShape.setTranslateX(-30);
+                }
                 puzzleShape.setTranslateX(piece.getX() + offsetX);
                 puzzleShape.setTranslateY(piece.getY() + offsetY);
 
