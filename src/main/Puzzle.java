@@ -133,13 +133,15 @@ public class Puzzle {
 
         for (int i = 0; i < pieces.size(); i++) {
             int cornerCount = pieces.get(i).corners.size();
-            if ((lowCornerCount == 4 && lowCornerCountCount == cornerCount) || lowCornerCount == -1){
+            if ((lowCornerCountCount == 4 && lowCornerCount == cornerCount) || lowCornerCount == -1){
                 pieces.get(i).isCornerPiece = true;
                 pieces.get(i).updateCornerArrayRotation();
+                System.out.println("test 1");
             }
             else if(cornerCount == midCornerCount || midCornerCount == -1){
                 pieces.get(i).isSidePiece = true;
                 pieces.get(i).updateCornerArrayRotation();
+                System.out.println("test 2");
             }
         }
     }
