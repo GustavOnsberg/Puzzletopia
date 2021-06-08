@@ -79,11 +79,12 @@ public class PuzzleScreenController {
         newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 270) - (-30) + 1) + (-30));
         puzzleShape.setTranslateX(newPuzzlePiece.getX());
         puzzleShape.setTranslateY(newPuzzlePiece.getY());
+        AnchorPane.setBottomAnchor(newPuzzlePiece, 99.0);
 
         // Debug corner
         Line debug = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
-                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
-                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100);
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100);
         debug.setStrokeWidth(10);
         debug.setTranslateX(newPuzzlePiece.getX());
         debug.setTranslateY(newPuzzlePiece.getY());
