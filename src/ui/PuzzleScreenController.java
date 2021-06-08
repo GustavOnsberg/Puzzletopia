@@ -68,13 +68,7 @@ public class PuzzleScreenController {
         puzzleShape.getElements().add(new MoveTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
                 MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100));
 
-        // Debug corner
-//        Line debug = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
-//                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
-//                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100);
-//        debug.setStrokeWidth(10);
-//        debug.setStroke(Color.RED);
-//        puzzleCanvas.getChildren().add(debug);
+
 
         for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().size(); i++) {
             puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getX() * 100 + 100,
@@ -85,6 +79,16 @@ public class PuzzleScreenController {
         newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 270) - (-30) + 1) + (-30));
         puzzleShape.setTranslateX(newPuzzlePiece.getX());
         puzzleShape.setTranslateY(newPuzzlePiece.getY());
+
+        // Debug corner
+        Line debug = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100);
+        debug.setStrokeWidth(10);
+        debug.setTranslateX(newPuzzlePiece.getX());
+        debug.setTranslateY(newPuzzlePiece.getY());
+        debug.setStroke(Color.RED);
+        puzzleCanvas.getChildren().add(debug);
 
         puzzleShape.setFill(Color.BLACK);
         newPuzzlePiece.setClip(puzzleShape);
