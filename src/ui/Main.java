@@ -20,6 +20,8 @@ public class Main extends Application {
         primaryStage.setMaximized(true);
         pStage = primaryStage;
         main = this;
+        pStage.setMinHeight(1000);
+        pStage.setMinWidth(1000);
         primaryStage.show();
     }
 

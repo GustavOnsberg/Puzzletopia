@@ -2,9 +2,8 @@
 
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PuzzleScreenController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PuzzleScreenController">
    <children>
-      <AnchorPane prefHeight="400.0" prefWidth="600.0" fx:id="puzzleCanvas"/>
+      <AnchorPane fx:id="puzzleCanvas" prefHeight="301.0" prefWidth="600.0" AnchorPane.bottomAnchor="99.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

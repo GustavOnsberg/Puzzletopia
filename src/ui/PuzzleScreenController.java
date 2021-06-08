@@ -1,14 +1,15 @@
 package ui;
 
+import com.sun.javafx.css.Stylesheet;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
@@ -20,8 +21,8 @@ import java.util.Random;
 public class PuzzleScreenController {
     public AnchorPane puzzleCanvas;
     public double originalPieceX, originalPieceY, originalMouseX, originalMouseY, mouseX, mouseY;
-    public int puzzleBoardWidth = 1000;
-    public int puzzleBoardHeight = 1000;
+    public int puzzleBoardWidth = 2000;
+    public int puzzleBoardHeight = 2000;
     float angleChange = 0;
     public Image puzzlePicture = new Image("ui/test.png");
     private float puzzleScale = 100;
@@ -32,12 +33,15 @@ public class PuzzleScreenController {
     double prevDeltaX = 0;
     double prevDeltaY = 0;
 
+    private final Stylesheet main_stylesheet = new Stylesheet("/ui/main_stylesheet.css");
+
 
     public PuzzleScreenController() {
     }
 
     @FXML
     public void initialize() {
+        setupPuzzleCanvas();
 
         Random random = new Random();
         for (int i = 0; i < 100; i++) {
@@ -50,6 +54,13 @@ public class PuzzleScreenController {
         }
     }
 
+    private void setupPuzzleCanvas() {
+        puzzleCanvas.setPrefWidth(Main.pStage.getWidth());
+        puzzleCanvas.setPrefHeight(Main.pStage.getHeight() - 300);
+        puzzleCanvas.getStylesheets().add(main_stylesheet.getUrl());
+        puzzleCanvas.setId("puzzle_canvas");
+    }
+
     private void makePuzzlePiece(int pieceNumber, int color) {
         Rectangle newPuzzlePiece = new Rectangle(puzzleBoardWidth, puzzleBoardHeight);
         // ImagePattern picturePattern = new ImagePattern(puzzlePicture);
@@ -57,6 +68,15 @@ public class PuzzleScreenController {
         Path puzzleShape = new Path();
         puzzleShape.getElements().add(new MoveTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
                 MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100));
+
+        // Debug corner
+//        Line debug = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
+//                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
+//                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100);
+//        debug.setStrokeWidth(10);
+//        debug.setStroke(Color.RED);
+//        puzzleCanvas.getChildren().add(debug);
+
         for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().size(); i++) {
             puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getX() * 100 + 100,
                     MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getY() * 100 + 100));
