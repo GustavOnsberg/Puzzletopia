@@ -57,9 +57,9 @@ public class Piece {
 
                 float a = (float) Math.sqrt(Math.pow(corners.get(newIndexZero).x - corners.get((newIndexZero + 1) % corners.size()).x, 2) + Math.pow(corners.get(newIndexZero).y - corners.get((newIndexZero + 1) % corners.size()).y, 2));
                 float b = (float) Math.sqrt(Math.pow(corners.get((newIndexZero + 1) % corners.size()).x - corners.get((newIndexZero + 2) % corners.size()).x, 2) + Math.pow(corners.get((newIndexZero + 1) % corners.size()).y - corners.get((newIndexZero + 2) % corners.size()).y, 2));
-                float c = (float) Math.sqrt(Math.pow(corners.get((newIndexZero + 2) % corners.size()).x - corners.get((newIndexZero + 3) % corners.size()).x, 2) + Math.pow(corners.get((newIndexZero + 2) % corners.size()).y - corners.get((newIndexZero + 3) % corners.size()).y, 2));
-                cornerNotFound = false;
-                if(Math.pow(a,2)+Math.pow(b,2)==Math.pow(c,2)){
+                float c = (float) Math.sqrt(Math.pow(corners.get(newIndexZero).x - corners.get((newIndexZero + 2) % corners.size()).x, 2) + Math.pow(corners.get(newIndexZero).y - corners.get((newIndexZero + 2) % corners.size()).y, 2));
+                System.out.println("Hi world");
+                if(Math.abs(Float.compare((float)(Math.pow(a,2)+Math.pow(b,2)),(float)Math.pow(c,2))) < 0.01){
                     cornerNotFound = false;
                 }
             }
