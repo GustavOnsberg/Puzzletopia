@@ -22,7 +22,7 @@ public class PuzzleScreenController {
     public AnchorPane windowPane;
     float angleChange = 0;
     public Image puzzlePicture = new Image("ui/test.png");
-    private float puzzleScale = 300;
+    private final float puzzleScale = 300;
     Random random = new Random();
     ArrayList<Rectangle> puzzlePieces = new ArrayList<>();
     ArrayList<Color> testColors = new ArrayList<>();
@@ -121,20 +121,6 @@ public class PuzzleScreenController {
                 piece.setY(piece.getY() + offsetY);
                 originalPieceX = event.getSceneX();
                 originalPieceY = event.getSceneY();
-//                if (piece.getX() + offsetX < -35) {
-//                    piece.setX(-35);
-//                    puzzleShape.setTranslateX(-35);
-//                } else if (piece.getX() + offsetX + 165 > windowPane.getWidth()) {
-//                    piece.setX(windowPane.getWidth() - 165);
-//                    puzzleShape.setTranslateX(windowPane.getWidth() - 165);
-//                } else if (piece.getY() + offsetY + 270 > windowPane.getHeight()) {
-//                    piece.setY(windowPane.getHeight() - 270);
-//                    puzzleShape.setTranslateX(windowPane.getHeight() - 270);
-//                } else if (piece.getY() + offsetY < -30) {
-//                    piece.setY(-30);
-//                    puzzleShape.setTranslateX(-30);
-//                }
-
                 if (piece.getX() + offsetX < -300 + puzzleShape.getScaleX() * 60) {
                     piece.setX(-300 + puzzleShape.getScaleX() * 60);
                     puzzleShape.setTranslateX(piece.getX());
@@ -144,9 +130,9 @@ public class PuzzleScreenController {
                 } else if (piece.getY() + offsetY > puzzleCanvas.getHeight() - 300 - puzzleShape.getScaleY() * 60) {
                     piece.setY(puzzleCanvas.getHeight() - 300 - puzzleShape.getScaleY() * 60);
                     puzzleShape.setTranslateY(piece.getY());
-                } else if (piece.getY() + offsetY < -30) {
-                    piece.setY(-30);
-                    puzzleShape.setTranslateY(-30);
+                } else if (piece.getY() + offsetY < -300 + puzzleShape.getScaleY() * 60) {
+                    piece.setY(-300 + puzzleShape.getScaleY() * 60);
+                    puzzleShape.setTranslateY(piece.getY());
                 }
 
                 puzzleShape.setTranslateX(piece.getX() + offsetX);
