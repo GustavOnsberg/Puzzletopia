@@ -1,18 +1,16 @@
 package ui;
 
 import com.sun.javafx.css.Stylesheet;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Affine;
-import javafx.scene.transform.Rotate;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -24,7 +22,9 @@ public class PuzzleScreenController {
     public AnchorPane windowPane;
     float angleChange = 0;
     public Image puzzlePicture = new Image("ui/test.png");
-    private float puzzleScale = 100;
+    private float puzzleScale = 300;
+    Random random = new Random();
+    ArrayList<Rectangle> puzzlePieces = new ArrayList<>();
     ArrayList<Color> testColors = new ArrayList<>();
 
     double deltaX = 0;
@@ -41,16 +41,15 @@ public class PuzzleScreenController {
     @FXML
     public void initialize() {
         setupPuzzleCanvas();
-
-        Random random = new Random();
         for (int i = 0; i < 100; i++) {
             testColors.add(new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1));
         }
-        int color = 1;
+        int color = 0;
         for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().getPieces().size(); i++) {
             makePuzzlePiece(i, color);
             color++;
         }
+        puzzleCanvas.getChildren().addAll(puzzlePieces);
     }
 
     private void setupPuzzleCanvas() {
@@ -58,25 +57,35 @@ public class PuzzleScreenController {
         puzzleCanvas.setPrefHeight(Main.pStage.getHeight() - 300);
         puzzleCanvas.getStylesheets().add(main_stylesheet.getUrl());
         puzzleCanvas.setId("puzzle_canvas");
+        HBox bottemBtns = new HBox();
+        bottemBtns.setPrefHeight(99);
+        bottemBtns.setPrefWidth(Main.pStage.getWidth());
+        bottemBtns.setStyle("-fx-background-color: #ff9900;");
+        bottemBtns.toFront();
+        AnchorPane.setBottomAnchor(bottemBtns, 0.0);
+        windowPane.getChildren().add(bottemBtns);
+
     }
 
     private void makePuzzlePiece(int pieceNumber, int color) {
-        Rectangle newPuzzlePiece = new Rectangle(1000, 1000);
-        // ImagePattern picturePattern = new ImagePattern(puzzlePicture);
+        Rectangle newPuzzlePiece = new Rectangle(10000, 10000);
+//        ImagePattern picturePattern = new ImagePattern(puzzlePicture);
+//        newPuzzlePiece.setFill(picturePattern);
         newPuzzlePiece.setFill(testColors.get(color));
         Path puzzleShape = new Path();
-        puzzleShape.getElements().add(new MoveTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
-                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100));
+        puzzleShape.getElements().add(new MoveTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + puzzleScale,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + puzzleScale));
         for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().size(); i++) {
-            puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getX() * 100 + 100,
-                    MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getY() * 100 + 100));
+            puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getX() * 100 + puzzleScale,
+                    MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getY() * 100 + puzzleScale));
         }
+        puzzleShape.setScaleX(1 + (3 - 1) * random.nextDouble());
+        puzzleShape.setScaleY(puzzleShape.getScaleX());
         Random random = new Random();
         newPuzzlePiece.setX(random.nextInt((int) (Main.pStage.getWidth() - 165) - (-35) + 1) + (-35));
-        newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 270) - (-30) + 1) + (-30));
+        newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 270) - (-20) + 1) + (-20));
         puzzleShape.setTranslateX(newPuzzlePiece.getX());
         puzzleShape.setTranslateY(newPuzzlePiece.getY());
-
 
 //        debugCorners(pieceNumber, newPuzzlePiece);
 
@@ -87,13 +96,13 @@ public class PuzzleScreenController {
         rescalePieces(puzzleShape, newPuzzlePiece);
 
         newPuzzlePiece.setStroke(Color.BLACK);
-        puzzleCanvas.getChildren().add(new Group(newPuzzlePiece));
+        puzzlePieces.add(newPuzzlePiece);
     }
 
     private void movementOfPieces(Rectangle newPuzzlePiece, Path puzzleShape) {
-
         newPuzzlePiece.setCursor(Cursor.HAND);
         newPuzzlePiece.setOnMousePressed(event -> {
+            newPuzzlePiece.toFront();
             if (event.isPrimaryButtonDown()) {
                 originalPieceX = event.getSceneX();
                 originalPieceY = event.getSceneY();
@@ -112,19 +121,34 @@ public class PuzzleScreenController {
                 piece.setY(piece.getY() + offsetY);
                 originalPieceX = event.getSceneX();
                 originalPieceY = event.getSceneY();
-                if (piece.getX() + offsetX < -35) {
-                    piece.setX(-35);
-                    puzzleShape.setTranslateX(-35);
-                } else if (piece.getX() + offsetX + 165 > windowPane.getWidth()) {
-                    piece.setX(windowPane.getWidth() - 165);
-                    puzzleShape.setTranslateX(windowPane.getWidth() - 165);
-                } else if (piece.getY() + offsetY + 270 > windowPane.getHeight()) {
-                    piece.setY(windowPane.getHeight() - 270);
-                    puzzleShape.setTranslateX(windowPane.getHeight() - 270);
+//                if (piece.getX() + offsetX < -35) {
+//                    piece.setX(-35);
+//                    puzzleShape.setTranslateX(-35);
+//                } else if (piece.getX() + offsetX + 165 > windowPane.getWidth()) {
+//                    piece.setX(windowPane.getWidth() - 165);
+//                    puzzleShape.setTranslateX(windowPane.getWidth() - 165);
+//                } else if (piece.getY() + offsetY + 270 > windowPane.getHeight()) {
+//                    piece.setY(windowPane.getHeight() - 270);
+//                    puzzleShape.setTranslateX(windowPane.getHeight() - 270);
+//                } else if (piece.getY() + offsetY < -30) {
+//                    piece.setY(-30);
+//                    puzzleShape.setTranslateX(-30);
+//                }
+
+                if (piece.getX() + offsetX < -300 + puzzleShape.getScaleX() * 60) {
+                    piece.setX(-300 + puzzleShape.getScaleX() * 60);
+                    puzzleShape.setTranslateX(piece.getX());
+                } else if (piece.getX() + offsetX > windowPane.getWidth() - 300 - puzzleShape.getScaleX() * 60) {
+                    piece.setX(windowPane.getWidth() - 300 - puzzleShape.getScaleX() * 60);
+                    puzzleShape.setTranslateX(piece.getX());
+                } else if (piece.getY() + offsetY > puzzleCanvas.getHeight() - 300 - puzzleShape.getScaleY() * 60) {
+                    piece.setY(puzzleCanvas.getHeight() - 300 - puzzleShape.getScaleY() * 60);
+                    puzzleShape.setTranslateY(piece.getY());
                 } else if (piece.getY() + offsetY < -30) {
                     piece.setY(-30);
-                    puzzleShape.setTranslateX(-30);
+                    puzzleShape.setTranslateY(-30);
                 }
+
                 puzzleShape.setTranslateX(piece.getX() + offsetX);
                 puzzleShape.setTranslateY(piece.getY() + offsetY);
 
@@ -154,10 +178,10 @@ public class PuzzleScreenController {
                     deltaY/=deltaLength;
 
                     if ((deltaX > 0 && deltaY > prevDeltaY) || (deltaX < 0 && deltaY < prevDeltaY)){
-                        puzzleShape.getTransforms().add(Affine.rotate(ramma * 180 / 3.14,100,100));
+                        puzzleShape.getTransforms().add(Affine.rotate(ramma * 180 / 3.14,puzzleScale,puzzleScale));
                     }
                     else{
-                        puzzleShape.getTransforms().add(Affine.rotate(-ramma * 180 / 3.14,100,100));
+                        puzzleShape.getTransforms().add(Affine.rotate(-ramma * 180 / 3.14,puzzleScale,puzzleScale));
                     }
 
 
