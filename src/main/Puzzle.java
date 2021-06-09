@@ -23,11 +23,14 @@ public class Puzzle {
     int midCornerCount = -1;
     int lowCornerCount = -1;
 
+    int n = 0;
+    int m = 0;
+
     ArrayList<Piece> pieces = new ArrayList<>();
 
     public static void main(String [] args) throws IOException, ParseException {
         Puzzle puzzle = new Puzzle();
-        puzzle.loadPuzzle("C:/Users/gusta/Desktop/Puzzles_set_1/Puzzle-8r-10c-4267-rot.json");
+        puzzle.loadPuzzle("C:/Users/gusta/Desktop/Puzzles_set_1/Puzzle-15r-20c-8696-sol.json");
     }
 
 
@@ -128,21 +131,29 @@ public class Puzzle {
         }
 
 
-        System.out.println("Number of corners - high: "+highCornerCount+"   mid: "+midCornerCount+"   low: "+lowCornerCount);
-        System.out.println("Number of pieces  - high: "+highCornerCountCount+"   mid: "+midCornerCountCount+"   low: "+lowCornerCountCount);
+        System.out.println("Number of corners - center: "+highCornerCount+"   side: "+midCornerCount+"   corner: "+lowCornerCount);
+        System.out.println("Number of pieces  - center: "+highCornerCountCount+"   side: "+midCornerCountCount+"   corner: "+lowCornerCountCount);
 
         for (int i = 0; i < pieces.size(); i++) {
             int cornerCount = pieces.get(i).corners.size();
             if ((lowCornerCountCount == 4 && lowCornerCount == cornerCount) || lowCornerCount == -1){
                 pieces.get(i).isCornerPiece = true;
                 pieces.get(i).updateCornerArrayRotation();
-                System.out.println("test 1");
             }
             else if(cornerCount == midCornerCount || midCornerCount == -1){
                 pieces.get(i).isSidePiece = true;
                 pieces.get(i).updateCornerArrayRotation();
-                System.out.println("test 2");
             }
         }
+
+
+        for (int i = 3; i <= midCornerCountCount / 4 + 2; i++) {
+            if ((highCornerCountCount/(i-2)+i==midCornerCountCount/2+2)){
+                m = i;
+                n = highCornerCountCount/(i-2)+2;
+            }
+        }
+
+        System.out.println("Puzzle size: "+n+" x "+m);
     }
 }
