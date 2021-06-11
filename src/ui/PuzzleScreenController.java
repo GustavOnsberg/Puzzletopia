@@ -26,6 +26,7 @@ public class PuzzleScreenController {
     Random random = new Random();
     ArrayList<Rectangle> puzzlePieces = new ArrayList<>();
     ArrayList<Color> testColors = new ArrayList<>();
+    HBox bottemBtns = new HBox();
 
     double deltaX = 0;
     double deltaY = 0;
@@ -57,7 +58,6 @@ public class PuzzleScreenController {
         puzzleCanvas.setPrefHeight(Main.pStage.getHeight() - 300);
         puzzleCanvas.getStylesheets().add(main_stylesheet.getUrl());
         puzzleCanvas.setId("puzzle_canvas");
-        HBox bottemBtns = new HBox();
         bottemBtns.setPrefHeight(99);
         bottemBtns.setPrefWidth(Main.pStage.getWidth());
         bottemBtns.setStyle("-fx-background-color: #ff9900;");
@@ -79,9 +79,8 @@ public class PuzzleScreenController {
             puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getX() * 100 + puzzleScale,
                     MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getY() * 100 + puzzleScale));
         }
-        puzzleShape.setScaleX(1 + (3 - 1) * random.nextDouble());
+        puzzleShape.setScaleX((Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().getPieces().size()) / 100);
         puzzleShape.setScaleY(puzzleShape.getScaleX());
-        Random random = new Random();
         newPuzzlePiece.setX(random.nextInt((int) (Main.pStage.getWidth() - 165) - (-35) + 1) + (-35));
         newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 270) - (-20) + 1) + (-20));
         puzzleShape.setTranslateX(newPuzzlePiece.getX());
@@ -183,14 +182,22 @@ public class PuzzleScreenController {
 
     private void rescalePieces(Path puzzleShape, Rectangle newPuzzlePiece) {
         Main.pStage.widthProperty().addListener(((observable, oldValue, newValue) -> {
-            if (puzzleShape.getTranslateX() > newValue.intValue() - 180) {
-                newPuzzlePiece.setX(newValue.intValue() - 180);
+            puzzleShape.setScaleX((Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().getPieces().size()) / 100);
+            puzzleShape.setScaleY(puzzleShape.getScaleX());
+            bottemBtns.setPrefWidth(Main.pStage.getWidth());
+            if (puzzleShape.getTranslateX() > newValue.intValue() - puzzleShape.getScaleX() * 60 - 300) {
+                newPuzzlePiece.setX(windowPane.getWidth() - 300 - puzzleShape.getScaleX() * 60);
                 puzzleShape.setTranslateX(newPuzzlePiece.getX());
+                System.out.println(newPuzzlePiece.getX());
             }
         }));
         Main.pStage.heightProperty().addListener((observable, oldValue, newValue) -> {
-            if (puzzleShape.getTranslateY() > newValue.intValue() - 310) {
-                newPuzzlePiece.setY(newValue.intValue() - 310);
+            puzzleShape.setScaleX((Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().getPieces().size()) / 100);
+            puzzleShape.setScaleY(puzzleShape.getScaleX());
+            if (puzzleShape.getTranslateY() > newValue.intValue() - (windowPane.getHeight() - puzzleCanvas.getHeight()) - puzzleShape.getScaleX() * 60 - 330) {
+                System.out.println(puzzleShape.getTranslateY());
+                System.out.println(newValue.intValue() - (windowPane.getHeight() - puzzleCanvas.getHeight()) - puzzleShape.getScaleX() * 60 - 330);
+                newPuzzlePiece.setY(puzzleCanvas.getHeight() - 300 - puzzleShape.getScaleY() * 60);
                 puzzleShape.setTranslateY(newPuzzlePiece.getY());
             }
         });
