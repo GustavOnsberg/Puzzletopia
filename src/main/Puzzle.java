@@ -156,4 +156,23 @@ public class Puzzle {
 
         System.out.println("Puzzle size: "+n+" x "+m);
     }
+
+    public boolean matchEdge(int piece1, int piece2, int edge1, int edge2){
+        if (pieces.get(piece1).edgeData.get(edge1).lengths != pieces.get(piece2).edgeData.get(edge2).lengths) {
+            return false;
+        }
+        for (int i = 0; i < pieces.get(piece1).edgeData.get(edge1).lengths.size(); i++) {
+            int oppi = pieces.get(piece1).edgeData.get(edge1).lengths.size() - 1 - i;
+            if (Math.abs(pieces.get(piece1).edgeData.get(edge1).lengths.get(i) - pieces.get(piece2).edgeData.get(edge2).lengths.get(oppi)) > 0.001){
+                return false;
+            }
+            else if (i > 0) {
+                if (Math.abs((pieces.get(piece1).edgeData.get(edge1).angles.get(i - 1) + pieces.get(piece2).edgeData.get(edge2).angles.get(oppi - 1)) - 360) > 0.001){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

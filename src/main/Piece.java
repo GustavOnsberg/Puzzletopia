@@ -72,44 +72,74 @@ public class Piece {
             corners.remove(0);
         }
     }
+
+
+
     public void generateEdgeData(){
         if (!isSidePiece && !isCornerPiece){
             for (int i = 0; i < 4; i++) {
-                edgeData.add(new EdgeData());
-                for (int j = 0; j < corners.size() / 4; j++) {
-                    edgeData.get(i).lengths.add((float)Math.sqrt(Math.pow(corners.get((corners.size() / 4) * i + j).x - corners.get(((corners.size() / 4) * i + j + 1) % corners.size()).x, 2) + Math.pow(corners.get((corners.size() / 4) * i + j).y - corners.get(((corners.size() / 4) * i + j + 1) % corners.size()).y, 2)));
-                    if (j > 0){
-                        float x1 = corners.get((corners.size() / 4) * i + j - 1).x;
-                        float x2 = corners.get((corners.size() / 4) * i + j).x;
-                        float x3 = corners.get(((corners.size() / 4) * i + j + 1) % corners.size()).x;
-                        float y1 = corners.get((corners.size() / 4) * i + j - 1).y;
-                        float y2 = corners.get((corners.size() / 4) * i + j).y;
-                        float y3 = corners.get(((corners.size() / 4) * i + j + 1) % corners.size()).y;
-
-                        if(y1 != y2 && y2 != y3) {
-                            float dx1 = x2 - x1;
-                            float dy1 = y2 - y1;
-                            float dx2 = x3 - x2;
-                            float dy2 = y3 - y2;
-
-                            if (dx1 / dy1 > dx2 / dy2){
-                                //Grater than 180 degree
-                            }
-                            else{
-                                //Less than 180 degree
-                            }
-                        }
-                        else if((x1 < x2 && ((y1 == y2 && y1 > y3) || (y2 == y3 && y1 < y3))) || x1 > x2 && ((y1 == y2 && y1 < y3) || (y2 == y3 && y1 > y3))){
-                            //Less than 180 degree
-                        }
-                        else{
-                            //Grater than 180 degree
-                        }
-
-
-                    }
-                }
+                generatedEdgeDataFromCorner((corners.size() / 4) * i, corners.size() / 4);
             }
         }
+        else if (isSidePiece){
+            generatedEdgeDataFromCorner(0,1);
+            for (int i = 0; i < 3; i++) {
+                generatedEdgeDataFromCorner(((corners.size() - 1) / 3) * i + 1, (corners.size() - 1) / 3);
+            }
+        }
+        else{
+            generatedEdgeDataFromCorner(0,1);
+            generatedEdgeDataFromCorner(1,1);
+            generatedEdgeDataFromCorner(2, (corners.size() - 2) / 2);
+            generatedEdgeDataFromCorner(((corners.size() - 2) / 2) + 2, (corners.size() - 2) / 2);
+        }
+    }
+
+    public void generatedEdgeDataFromCorner(int startCorner, int cornersPerSide){
+        edgeData.add(new EdgeData());
+        int edgeIndex = edgeData.size() - 1;
+        for (int i = 0; i < cornersPerSide; i++) {
+            edgeData.get(edgeIndex).lengths.add((float)Math.sqrt(Math.pow(corners.get(startCorner + i).x - corners.get((startCorner + i + 1) % corners.size()).x, 2) + Math.pow(corners.get(startCorner + i).y - corners.get((startCorner + i + 1) % corners.size()).y, 2)));
+
+            if (i > 0){
+                float x1 = corners.get(startCorner + i - 1).x;
+                float x2 = corners.get(startCorner + i).x;
+                float x3 = corners.get((startCorner + i + 1) % corners.size()).x;
+                float y1 = corners.get(startCorner + i - 1).y;
+                float y2 = corners.get(startCorner + i).y;
+                float y3 = corners.get((startCorner + i + 1) % corners.size()).y;
+
+                float a = edgeData.get(edgeIndex).lengths.get(edgeData.get(edgeIndex).lengths.size()-1);
+                float b = edgeData.get(edgeIndex).lengths.get(edgeData.get(edgeIndex).lengths.size()-2);
+                float c_sq = (float)(Math.pow(x1-x3,2)+Math.pow(y1-y3,2));
+
+                float angle = (float) (Math.pow(a,2)+(Math.pow(b,2)-c_sq)/(2*a*b));
+
+                float dx1 = x2 - x1;
+                float dy1 = y2 - y1;
+                float dx2 = x3 - x2;
+                float dy2 = y3 - y2;
+
+                if(y1 != y2 && y2 != y3) {
+                    if (dx1 / dy1 > dx2 / dy2){
+                        angle = 360 - angle;
+                    }
+                }
+                else if(!((x1 < x2 && ((y1 == y2 && y1 > y3) || (y2 == y3 && y1 < y3))) || x1 > x2 && ((y1 == y2 && y1 < y3) || (y2 == y3 && y1 > y3)))){
+                    angle = 360 - angle;
+                }
+
+                edgeData.get(edgeIndex).angles.add(angle);
+            }
+        }
+    }
+
+    public int[] getCornerIndexes(){
+        if (!isSidePiece && !isCornerPiece)
+            return new int[]{0, corners.size() / 4, (corners.size() / 4) * 2, (corners.size() / 4) * 3};
+        else if (isSidePiece)
+            return new int[]{0, 1, (corners.size() - 1) / 3, ((corners.size() - 1) / 3) * 2};
+        else
+            return new int[]{0, 1, 2, (corners.size() - 2) / 2};
     }
 }
