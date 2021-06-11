@@ -30,7 +30,7 @@ public class Puzzle {
 
     public static void main(String [] args) throws IOException, ParseException {
         Puzzle puzzle = new Puzzle();
-        puzzle.loadPuzzle("C:/Users/gusta/Desktop/Puzzles_set_1/Puzzle-15r-20c-8696-sol.json");
+        puzzle.loadPuzzle("C:/Users/gusta/Desktop/Puzzles_set_1/Puzzle-3r-3c-3756-sol.json");
     }
 
 

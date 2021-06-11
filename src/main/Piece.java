@@ -138,8 +138,8 @@ public class Piece {
         if (!isSidePiece && !isCornerPiece)
             return new int[]{0, corners.size() / 4, (corners.size() / 4) * 2, (corners.size() / 4) * 3};
         else if (isSidePiece)
-            return new int[]{0, 1, (corners.size() - 1) / 3, ((corners.size() - 1) / 3) * 2};
+            return new int[]{0, 1, (corners.size() - 1) / 3 + 1, ((corners.size() - 1) / 3) * 2 + 1};
         else
-            return new int[]{0, 1, 2, (corners.size() - 2) / 2};
+            return new int[]{0, 1, 2, (corners.size() - 2) / 2 + 2};
     }
 }
