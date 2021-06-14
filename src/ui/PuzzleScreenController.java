@@ -3,19 +3,16 @@ package ui;
 import com.sun.javafx.css.Stylesheet;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.scene.transform.Affine;
 import main.Piece;
 
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -116,9 +113,11 @@ public class PuzzleScreenController {
                         int[] cornersCheck = MainMenuController.mainMenuController.getPuzzle().getPieces().get(numCheckPiece).getCornerIndexes();
                         Piece pieceSelected = MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber);
                         Piece pieceChecked = MainMenuController.mainMenuController.getPuzzle().getPieces().get(numCheckPiece);
+                        System.out.println("\n");
                         for (int i = 0; i < cornersSelected.length; i++) {
                             for (int j = 0; j < cornersCheck.length; j++) {
                                 if (checkCorners(pieceSelected, pieceChecked, newPuzzlePiece, puzzlePiece, cornersSelected, cornersCheck, puzzleShape, i, j)) {
+                                    System.out.println("Courner match - moved: "+i+"   other: "+j);
                                     int nextSelCorner = checkArray(cornersSelected, i+1);
                                     int prevSelCorner = checkArray(cornersSelected, i-1);
                                     int nextCheckCorner = checkArray(cornersCheck, j+1);
@@ -127,17 +126,17 @@ public class PuzzleScreenController {
 //                                        System.out.println("Selected piece: " + newPuzzlePiece.getX());
 //                                        System.out.println("Checked piece: " + puzzlePiece.getX());
 //                                        System.out.println("Scale: " + puzzleShape.getScaleX());
-                                        System.out.println("First check");
-                                        System.out.println(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(nextSelCorner).getX());
-                                        System.out.println(MainMenuController.mainMenuController.getPuzzle().getPieces().get(numCheckPiece).getCorners().get(prevCheckCorner).getX());
-                                        System.out.println(nextSelCorner);
-                                        System.out.println(prevCheckCorner);
+                                        //System.out.println("First check");
+                                        //System.out.println(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(nextSelCorner).getX());
+                                        //System.out.println(MainMenuController.mainMenuController.getPuzzle().getPieces().get(numCheckPiece).getCorners().get(prevCheckCorner).getX());
+                                        //System.out.println(nextSelCorner);
+                                        //System.out.println(prevCheckCorner);
                                         isComp = true;
 
                                     } else if (checkCorners(pieceSelected, pieceChecked, newPuzzlePiece, puzzlePiece, cornersSelected, cornersCheck, puzzleShape, prevSelCorner, nextCheckCorner)) {
-                                        System.out.println("Second check");
-                                        System.out.println(prevSelCorner);
-                                        System.out.println(nextCheckCorner);
+                                        //System.out.println("Second check");
+                                        //System.out.println(prevSelCorner);
+                                        //System.out.println(nextCheckCorner);
                                         isComp = true;
                                     } else {
                                         isComp = false;
@@ -154,10 +153,10 @@ public class PuzzleScreenController {
 
     private boolean checkCorners(Piece pieceSelected, Piece pieceChecked, Rectangle newPuzzlePiece, Rectangle puzzlePiece, int[] cornersSelected, int[] cornersCheck, Path puzzleShape, int i, int j) {
         int tol = 20;
-        return  newPuzzlePiece.getX() + pieceSelected.getCorners().get(cornersSelected[i]).getX() * puzzleShape.getScaleX() * 60 > puzzlePiece.getX() + pieceChecked.getCorners().get(cornersCheck[j]).getX() * puzzleShape.getScaleX() * 60 - tol * puzzleShape.getScaleX() * 60 &&
-                newPuzzlePiece.getX() + pieceSelected.getCorners().get(cornersSelected[i]).getX() * puzzleShape.getScaleX() * 60 < puzzlePiece.getX() + pieceChecked.getCorners().get(cornersCheck[j]).getX() * puzzleShape.getScaleX() * 60 + tol * puzzleShape.getScaleX() * 60 &&
-                newPuzzlePiece.getY() + pieceSelected.getCorners().get(cornersSelected[i]).getY() * puzzleShape.getScaleX() * 60 > puzzlePiece.getY() + pieceChecked.getCorners().get(cornersCheck[j]).getY() * puzzleShape.getScaleX() * 60 - tol * puzzleShape.getScaleY() * 60 &&
-                newPuzzlePiece.getY() + pieceSelected.getCorners().get(cornersSelected[i]).getY() * puzzleShape.getScaleX() * 60 < puzzlePiece.getY() + pieceChecked.getCorners().get(cornersCheck[j]).getY() * puzzleShape.getScaleX() * 60 + tol * puzzleShape.getScaleY() * 60;
+        return  newPuzzlePiece.getX() + pieceSelected.getCorners().get(cornersSelected[i]).getX() * puzzleShape.getScaleX() * 100 > puzzlePiece.getX() + pieceChecked.getCorners().get(cornersCheck[j]).getX() * puzzleShape.getScaleX() * 100 - tol &&
+                newPuzzlePiece.getX() + pieceSelected.getCorners().get(cornersSelected[i]).getX() * puzzleShape.getScaleX() * 100 < puzzlePiece.getX() + pieceChecked.getCorners().get(cornersCheck[j]).getX() * puzzleShape.getScaleX() * 100 + tol &&
+                newPuzzlePiece.getY() + pieceSelected.getCorners().get(cornersSelected[i]).getY() * puzzleShape.getScaleX() * 100 > puzzlePiece.getY() + pieceChecked.getCorners().get(cornersCheck[j]).getY() * puzzleShape.getScaleX() * 100 - tol &&
+                newPuzzlePiece.getY() + pieceSelected.getCorners().get(cornersSelected[i]).getY() * puzzleShape.getScaleX() * 100 < puzzlePiece.getY() + pieceChecked.getCorners().get(cornersCheck[j]).getY() * puzzleShape.getScaleX() * 100 + tol;
     }
 
 
