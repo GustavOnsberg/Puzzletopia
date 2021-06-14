@@ -158,7 +158,7 @@ public class Puzzle {
     }
 
     public boolean matchEdge(int piece1, int piece2, int edge1, int edge2){
-        if (pieces.get(piece1).edgeData.get(edge1).lengths != pieces.get(piece2).edgeData.get(edge2).lengths) {
+        if ((pieces.get(piece1).isSidePiece && edge1 == 0) || (pieces.get(piece2).isSidePiece && edge2 == 0) || (pieces.get(piece1).isCornerPiece && edge1 <= 1) || (pieces.get(piece2).isCornerPiece && edge2 <= 1)) {
             return false;
         }
         for (int i = 0; i < pieces.get(piece1).edgeData.get(edge1).lengths.size(); i++) {
