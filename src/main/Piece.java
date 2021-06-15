@@ -113,7 +113,7 @@ public class Piece {
                 float b = edgeData.get(edgeIndex).lengths.get(edgeData.get(edgeIndex).lengths.size()-2);
                 float c_sq = (float)(Math.pow(x1-x3,2)+Math.pow(y1-y3,2));
 
-                float angle = (float) (Math.pow(a,2)+(Math.pow(b,2)-c_sq)/(2*a*b));
+                float angle = (float) Math.acos(Math.pow(a,2)+(Math.pow(b,2)-c_sq)/(2*a*b));
 
                 float dx1 = x2 - x1;
                 float dy1 = y2 - y1;
