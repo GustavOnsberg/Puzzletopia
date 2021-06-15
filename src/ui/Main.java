@@ -24,6 +24,7 @@ public class Main extends Application {
         pStage.setMinWidth(1000);
         pStage.maxHeightProperty().bind(pStage.maxWidthProperty());
         primaryStage.show();
+        
     }
 
     public void setStage(String fxmlName, Stage primaryStage) throws IOException {
