@@ -9,11 +9,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import main.Puzzle;
 import org.json.simple.parser.ParseException;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class MainMenuController {
     public static MainMenuController mainMenuController;
     public AnchorPane mainMenuCanvas;
     private ArrayList<Color> blockColors = new ArrayList<>();
+    double originalPieceX, originalPieceY;
 
     @FXML
     public void initialize() {
@@ -59,31 +62,31 @@ public class MainMenuController {
         Random random = new Random();
         for (int i = 0; i < 100; i++) {
             blockColors.add(new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1));
-
         }
         int color = 0;
-        int[] durations = {1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000};
+        int[] durations = {1000, 1200, 1300, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000};
         int durationNum;
         ArrayList<Rectangle> blocks = new ArrayList();
         for (int i = 0; i < 50; i++) {
             Rectangle newBlock = new Rectangle();
-            newBlock.setWidth(random.nextInt(100 - 20) + 20);
-            newBlock.setHeight(random.nextInt(100 - 20) + 20);
+            newBlock.setWidth(random.nextInt(150 - 20) + 20);
+            newBlock.setHeight(random.nextInt(150 - 20) + 20);
             newBlock.setFill(blockColors.get(color));
             blocks.add(newBlock);
             mainMenuCanvas.getChildren().add(blocks.get(i));
             color++;
         }
-        for (int i = 0; i < blocks.size(); i++) {
+        for (Rectangle block : blocks) {
             Path path = new Path();
             durationNum = random.nextInt(durations.length);
-            int xVal = random.nextInt(2500-500) + 500;
-            path.getElements().add(new MoveTo(xVal, random.nextInt((100) + (1000) - 1000)*-1));
-            path.getElements().add(new LineTo(xVal,1500));
+            int xVal = random.nextInt(2500 - 500) + 500;
+            path.getElements().add(new MoveTo(xVal, random.nextInt((100) + (1000) - 1000) * -1));
+            path.getElements().add(new LineTo(xVal, 1500));
             PathTransition pathTransition = new PathTransition();
             pathTransition.setDuration(Duration.millis(durations[durationNum]));
+            pathTransition.setCycleCount(Timeline.INDEFINITE);
             pathTransition.setPath(path);
-            pathTransition.setNode(blocks.get(i));
+            pathTransition.setNode(block);
             pathTransition.play();
         }
     }

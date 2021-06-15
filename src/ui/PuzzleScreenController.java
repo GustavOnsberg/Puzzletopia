@@ -148,6 +148,8 @@ public class PuzzleScreenController {
         newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 600)));
         puzzleShape.setTranslateX(newPuzzlePiece.getX());
         puzzleShape.setTranslateY(newPuzzlePiece.getY());
+        puzzleShape.getTransforms().add(Affine.rotate(random.nextInt((180 - (-180) + (-180))),puzzleScale,puzzleScale));
+        puzzleShape.setRotate(random.nextInt((360 - (-360) + (-360))));
 
 //        debugCorners(pieceNumber, newPuzzlePiece);
 
@@ -165,7 +167,6 @@ public class PuzzleScreenController {
 
     private void snapTo(int pieceNumber, Rectangle newPuzzlePiece, Path puzzleShape) {
         newPuzzlePiece.setOnMouseReleased(event -> {
-//            System.out.println(Math.toDegrees(Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy())));
             int numCheckPiece = 0;
             for (Rectangle puzzlePiece : puzzlePieces) {
                 if (newPuzzlePiece.getX() > puzzlePiece.getX() - 125 * puzzleShape.getScaleX() && newPuzzlePiece.getX() < puzzlePiece.getX() + 125 * puzzleShape.getScaleX() &&
