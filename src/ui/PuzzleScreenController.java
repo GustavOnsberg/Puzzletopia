@@ -82,8 +82,8 @@ public class PuzzleScreenController {
         }
         puzzleShape.setScaleX((Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().getPieces().size()) / 100);
         puzzleShape.setScaleY(puzzleShape.getScaleX());
-        newPuzzlePiece.setX(random.nextInt((int) (Main.pStage.getWidth() - 600)));
-        newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 600)));
+        newPuzzlePiece.setX(pieceNumber*50);
+        newPuzzlePiece.setY(pieceNumber*50);
 
         puzzleShape.setTranslateX(newPuzzlePiece.getX());
         puzzleShape.setTranslateY(newPuzzlePiece.getY());
