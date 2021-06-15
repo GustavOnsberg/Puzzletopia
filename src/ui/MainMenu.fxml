@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainMenuController">
+<AnchorPane fx:id="mainMenuCanvas" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainMenuController" >
    <children>
-      <Button id="startGame" layoutX="37.0" layoutY="24.0" mnemonicParsing="false" text="Start" fx:id="btnStartGame" onAction="#handleStartGameBtn"/>
-      <Button layoutX="19.0" layoutY="64.0" mnemonicParsing="false" text="Upload File" fx:id="btnUploadGameFile" onAction="#handleUploadGameFileBtn"/>
+      <Button id="startGame" fx:id="btnStartGame" layoutX="37.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleStartGameBtn" text="Start" AnchorPane.topAnchor="24.0" />
+      <Button fx:id="btnUploadGameFile" layoutX="19.0" layoutY="64.0" mnemonicParsing="false" onAction="#handleUploadGameFileBtn" text="Upload File" />
    </children>
 </AnchorPane>

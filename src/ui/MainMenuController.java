@@ -1,19 +1,17 @@
 package ui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import main.Puzzle;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import sun.plugin.javascript.navig.Anchor;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Iterator;
 
 public class MainMenuController {
 
@@ -21,6 +19,30 @@ public class MainMenuController {
     public Button btnUploadGameFile;
     public Puzzle puzzle;
     public static MainMenuController mainMenuController;
+    public AnchorPane mainMenuCanvas;
+
+    @FXML
+    public void initialize() {
+        //Setup buttons
+        btnStartGame.getStylesheets().add("ui/main_stylesheet.css");
+        btnUploadGameFile.getStylesheets().add("ui/main_stylesheet.css");
+        btnStartGame.setId("main_menu_button");
+        btnUploadGameFile.setId("main_menu_button");
+        btnStartGame.setText("START NEW PUZZLE");
+        btnUploadGameFile.setText("UPLOAD GAME FILE");
+        btnStartGame.setPrefWidth(300);
+        btnUploadGameFile.setPrefWidth(300);
+        AnchorPane.setTopAnchor(btnStartGame, 50.0);
+        AnchorPane.setLeftAnchor(btnStartGame,50.0);
+        AnchorPane.setTopAnchor(btnUploadGameFile, 200.0);
+        AnchorPane.setLeftAnchor(btnUploadGameFile,50.0);
+        btnStartGame.setSkin(new MainMenuButtonSkin(btnStartGame));
+
+
+        // Setup canvas
+        mainMenuCanvas.getStylesheets().add("ui/main_stylesheet.css");
+        mainMenuCanvas.setId("main_menu_canvas");
+    }
 
 
     public void handleStartGameBtn(ActionEvent actionEvent) throws IOException {
@@ -47,8 +69,6 @@ public class MainMenuController {
            fileErorr.setHeaderText("Please choose a JSON file");
            fileErorr.showAndWait();
         }
-
-
     }
 
     public Puzzle getPuzzle() {

@@ -1,0 +1,22 @@
+package ui;
+
+import com.sun.javafx.scene.control.skin.ButtonSkin;
+import javafx.animation.FadeTransition;
+import javafx.scene.control.Button;
+import javafx.util.Duration;
+
+public class MainMenuButtonSkin extends ButtonSkin {
+    public MainMenuButtonSkin(Button button) {
+        super(button);
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(100));
+        fadeIn.setNode(button);
+        fadeIn.setToValue(1);
+        button.setOnMouseEntered(event -> fadeIn.playFromStart());
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(100));
+        fadeOut.setNode(button);
+        fadeOut.setToValue(0.5);
+        button.setOnMouseExited(event -> fadeOut.playFromStart());
+        button.setOpacity(0.5);
+        
+    }
+}
