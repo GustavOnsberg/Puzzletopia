@@ -14,9 +14,9 @@ public class MainMenuButtonSkin extends ButtonSkin {
         button.setOnMouseEntered(event -> fadeIn.playFromStart());
         FadeTransition fadeOut = new FadeTransition(Duration.millis(100));
         fadeOut.setNode(button);
-        fadeOut.setToValue(0.5);
+        fadeOut.setToValue(0.8);
         button.setOnMouseExited(event -> fadeOut.playFromStart());
-        button.setOpacity(0.5);
+        button.setOpacity(0.8);
         
     }
 }

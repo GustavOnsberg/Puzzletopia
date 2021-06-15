@@ -3,7 +3,7 @@
 }
 
 #main_menu_canvas {
-    -fx-background-color: black;
+    -fx-background-color: black
 }
 
 .button {
@@ -21,15 +21,10 @@
 }
 
 #main_menu_button {
-    -fx-text-fill: black;
-    -fx-border-color: white;
-    /*-fx-background-color: linear-gradient(from 0% 2% to 20% 20%, black, white);*/
-    -fx-background-color: radial-gradient(focus-distance -100%, center 50% 50%, radius 55%, yellow, white);
+    -fx-border-width: 0px;
+    -fx-text-fill: white;
+    -fx-background-color: radial-gradient(focus-distance -100%, center 20% 50%, radius 55%, #ffff00, black);
     -fx-background-size: 150%;
-}
-
-#main_menu_button:hover {
-    -fx-border-width: 1px;
-    -fx-border-style: solid;
-    -fx-background-position: right;
-}
+} #main_menu_button:hover {
+      -fx-background-color: radial-gradient(focus-distance -100%, center 50% 50%, radius 80%, #ffff00, black);
+  }
