@@ -199,21 +199,23 @@ public class PuzzleScreenController {
                                     if (isComp) {
                                         if (MainMenuController.mainMenuController.getPuzzle().matchEdge(pieceSelected, pieceChecked, edgeOne, edgeTwo)) {
                                             System.out.println("------------------------------------- Made it");
+                                            double angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy());
+                                            double angleChecked = Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy());
                                             float p1c1x = pieceSelected.getCorners().get(pieceSelected.getCornerIndexes()[edgeOne]).x;
                                             float p1c1y = pieceSelected.getCorners().get(pieceSelected.getCornerIndexes()[edgeOne]).y;
                                             float p1c2x = pieceSelected.getCorners().get(pieceSelected.getCornerIndexes()[(edgeOne + 1) % 4]).x;
                                             float p1c2y = pieceSelected.getCorners().get(pieceSelected.getCornerIndexes()[(edgeOne + 1) % 4]).y;
                                             float p1eLength = (float) Math.sqrt(Math.pow(p1c1x - p1c2x,2) + Math.pow(p1c1y - p1c2y,2));
-                                            float p1eAngle = (float) Math.acos((p1c2x - p1c1x) / p1eLength) * Math.copySign(1,p1c2y - p1c1y);
+                                            float p1eAngle = (float) (Math.acos((p1c2x - p1c1x) / p1eLength) * Math.copySign(1,p1c2y - p1c1y) + angleSelected);
 
                                             float p2c1x = pieceChecked.getCorners().get(pieceChecked.getCornerIndexes()[edgeTwo]).x;
                                             float p2c1y = pieceChecked.getCorners().get(pieceChecked.getCornerIndexes()[edgeTwo]).y;
                                             float p2c2x = pieceChecked.getCorners().get(pieceChecked.getCornerIndexes()[(edgeTwo + 1) % 4]).x;
                                             float p2c2y = pieceChecked.getCorners().get(pieceChecked.getCornerIndexes()[(edgeTwo + 1) % 4]).y;
                                             float p2eLength = (float) Math.sqrt(Math.pow(p2c1x - p2c2x,2) + Math.pow(p2c1y - p2c2y,2));
-                                            float p2eAngle = (float) Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(1,p2c1y - p2c2y);
-                                            puzzleShape.getTransforms().add(Affine.rotate(((p2eAngle - p1eAngle) * 180) / 3.14,puzzleScale,puzzleScale));
-                                            puzzleShape.setRotate(((p2eAngle - p1eAngle) * 180) / 3.14);
+                                            float p2eAngle = (float) (Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(1,p2c1y - p2c2y) + angleChecked);
+                                            puzzleShape.getTransforms().add(Affine.rotate(((p1eAngle - p2eAngle) * 180) / 3.14,puzzleScale,puzzleScale));
+                                            puzzleShape.setRotate(((p1eAngle - p2eAngle) * 180) / 3.14);
                                             System.out.println(Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy()));
                                             System.out.println(Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy()));
 
