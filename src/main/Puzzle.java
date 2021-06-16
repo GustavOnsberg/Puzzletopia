@@ -30,7 +30,7 @@ public class Puzzle {
 
     public static void main(String [] args) throws IOException, ParseException {
         Puzzle puzzle = new Puzzle();
-        puzzle.loadPuzzle("C:/Users/vikto/Downloads/Puzzles_set_1 (1)/Puzzle-4r-6c-8642-sol.json");
+        puzzle.loadPuzzle("C:/Users/vikto/Downloads/Puzzles_set_1 (1)/Puzzle-15r-20c-8696-sol.json");
         System.out.println("has solution: "+puzzle.findSolution());
     }
 
@@ -263,14 +263,14 @@ public class Puzzle {
         float p1c2x = piece1.getCorners().get(piece1.getCornerIndexes()[(edge1 + 1) % 4]).x;
         float p1c2y = piece1.getCorners().get(piece1.getCornerIndexes()[(edge1 + 1) % 4]).y;
         float p1eLength = (float) Math.sqrt(Math.pow(p1c1x - p1c2x,2) + Math.pow(p1c1y - p1c2y,2));
-        float p1eAngle = (float) Math.acos((p1c2x - p1c1x) / p1eLength) * Math.copySign(p1c2y - p1c1y,p1c2y - p1c1y);
+        float p1eAngle = (float) Math.acos((p1c2x - p1c1x) / p1eLength) * Math.copySign(1,p1c2y - p1c1y);
 
         float p2c1x = piece2.getCorners().get(piece2.getCornerIndexes()[edge2]).x;
         float p2c1y = piece2.getCorners().get(piece2.getCornerIndexes()[edge2]).y;
         float p2c2x = piece2.getCorners().get(piece2.getCornerIndexes()[(edge2 + 1) % 4]).x;
         float p2c2y = piece2.getCorners().get(piece2.getCornerIndexes()[(edge2 + 1) % 4]).y;
         float p2eLength = (float) Math.sqrt(Math.pow(p2c1x - p2c2x,2) + Math.pow(p2c1y - p2c2y,2));
-        float p2eAngle = (float) Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(p2c1y - p2c2y,p2c1y - p2c2y);
+        float p2eAngle = (float) Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(1,p2c1y - p2c2y);
 
 
         float xDiff = 0;
