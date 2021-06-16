@@ -123,9 +123,6 @@ public class PuzzleScreenController {
                 e.printStackTrace();
             }
         });
-
-
-
         windowPane.getChildren().add(bottomBtns);
         bottomBtns.getChildren().addAll(mainMenuBtn, spacer1, shuffleBtn, spacer2, restartBtn);
     }
@@ -201,6 +198,9 @@ public class PuzzleScreenController {
                                     }
                                     if (isComp) {
                                         if (MainMenuController.mainMenuController.getPuzzle().matchEdge(pieceSelected, pieceChecked, edgeOne, edgeTwo)) {
+                                            System.out.println("Made it");
+                                            double angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy());
+                                            puzzlePiece.setX(newPuzzlePiece.getX() + (pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.cos(angleSelected) - pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.sin(angleSelected) * puzzleShape.getScaleX() * 100));
 
                                         }
                                     }
