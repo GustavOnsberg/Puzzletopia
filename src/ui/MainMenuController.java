@@ -1,5 +1,7 @@
 package ui;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -28,8 +30,7 @@ public class MainMenuController {
     public Puzzle puzzle;
     public static MainMenuController mainMenuController;
     public AnchorPane mainMenuCanvas;
-    private ArrayList<Color> blockColors = new ArrayList<>();
-    double originalPieceX, originalPieceY;
+    private final ArrayList<Color> blockColors = new ArrayList<>();
 
     @FXML
     public void initialize() {
@@ -60,13 +61,13 @@ public class MainMenuController {
 
     private void createBackground() {
         Random random = new Random();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             blockColors.add(new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1));
         }
         int color = 0;
         int[] durations = {1000, 1200, 1300, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000};
         int durationNum;
-        ArrayList<Rectangle> blocks = new ArrayList();
+        ArrayList<Rectangle> blocks = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             Rectangle newBlock = new Rectangle();
             newBlock.setWidth(random.nextInt(150 - 20) + 20);
@@ -84,7 +85,7 @@ public class MainMenuController {
             path.getElements().add(new LineTo(xVal, 1500));
             PathTransition pathTransition = new PathTransition();
             pathTransition.setDuration(Duration.millis(durations[durationNum]));
-            pathTransition.setCycleCount(Timeline.INDEFINITE);
+            pathTransition.setCycleCount(Animation.INDEFINITE);
             pathTransition.setPath(path);
             pathTransition.setNode(block);
             pathTransition.play();

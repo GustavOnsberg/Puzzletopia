@@ -198,10 +198,16 @@ public class PuzzleScreenController {
                                     }
                                     if (isComp) {
                                         if (MainMenuController.mainMenuController.getPuzzle().matchEdge(pieceSelected, pieceChecked, edgeOne, edgeTwo)) {
-                                            System.out.println("Made it");
-                                            double angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy());
-                                            puzzlePiece.setX(newPuzzlePiece.getX() + (pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.cos(angleSelected) - pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.sin(angleSelected) * puzzleShape.getScaleX() * 100));
-
+                                            System.out.println("------------------------------------- Made it");
+                                            double angleChecked = Math.atan2(puzzlePiece.getParent().getLocalToSceneTransform().getMyx(),puzzlePiece.getParent().getLocalToSceneTransform().getMyy());
+                                            puzzleShape.setTranslateX(newPuzzlePiece.getX() + (pieceChecked.getCorners().get(cornersCheck[i]).getX() * Math.cos(angleChecked) - pieceChecked.getCorners().get(cornersCheck[i]).getY() * Math.sin(angleChecked) * puzzleShape.getScaleX() * 100));
+                                            puzzleShape.setTranslateY(newPuzzlePiece.getY() + (pieceChecked.getCorners().get(cornersCheck[i]).getX() * Math.sin(angleChecked) + pieceChecked.getCorners().get(cornersCheck[i]).getY() * Math.cos(angleChecked) * puzzleShape.getScaleX() * 100));
+                                            puzzlePiece.setX(puzzleShape.getTranslateX());
+                                            puzzlePiece.setY(puzzleShape.getTranslateY());
+                                            System.out.println(newPuzzlePiece.getX() + (pieceChecked.getCorners().get(cornersCheck[i]).getX() * Math.cos(angleChecked) - pieceChecked.getCorners().get(cornersCheck[i]).getY() * Math.sin(angleChecked) * puzzleShape.getScaleX() * 100));
+                                            System.out.println(newPuzzlePiece.getY() + (pieceChecked.getCorners().get(cornersCheck[i]).getX() * Math.sin(angleChecked) + pieceChecked.getCorners().get(cornersCheck[i]).getY() * Math.cos(angleChecked) * puzzleShape.getScaleX() * 100));
+                                            System.out.println("Selected X: " + newPuzzlePiece.getX() + ", Selected Y: " + newPuzzlePiece.getY());
+                                            System.out.println("Checked X: " + puzzlePiece.getX() + ", Checked Y: " + puzzlePiece.getY());
                                         }
                                     }
                                 }
@@ -226,8 +232,8 @@ public class PuzzleScreenController {
         double pieceCheckedCornerY = pieceCheckedCorner.getCorners().get(cornersCheck[j]).getX() * Math.sin(angleChecked) + pieceCheckedCorner.getCorners().get(cornersCheck[j]).getY() * Math.cos(angleChecked);
         double pieceCheckedCornerX = pieceCheckedCorner.getCorners().get(cornersCheck[j]).getX() * Math.cos(angleChecked) - pieceCheckedCorner.getCorners().get(cornersCheck[j]).getY() * Math.sin(angleChecked);
 
-        boolean enableDeug = false;
-        if (enableDeug) {
+        boolean enableDebug = false;
+        if (enableDebug) {
             System.out.println("\nTotal Moved x: "+(newPuzzlePiece.getX() + pieceSelectedCornerX * scale) + ", Other x: " + (puzzlePiece.getX() + pieceCheckedCornerX * scale));
             System.out.println("Total Moved y: "+(newPuzzlePiece.getY() + pieceSelectedCornerY * scale) + ", Other y: " + (puzzlePiece.getY() + pieceCheckedCornerY * scale));
             System.out.println("Relative Moved x: "+(pieceSelectedCornerX * scale) + ", Other x: " + (pieceCheckedCornerX * scale));
