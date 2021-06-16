@@ -265,8 +265,8 @@ public class Puzzle {
 
             float p1x = piece1.corners.get((piece1.getCornerIndexes()[edge1] + i) % piece1.corners.size()).x;
             float p1y = piece1.corners.get((piece1.getCornerIndexes()[edge1] + i) % piece1.corners.size()).y;
-            float p2x = piece2.corners.get((piece2.getCornerIndexes()[(edge2 + 1) % 4] - i) % piece2.corners.size()).x;
-            float p2y = piece2.corners.get((piece2.getCornerIndexes()[(edge2 + 1) % 4] - i) % piece2.corners.size()).y;
+            float p2x = piece2.corners.get((piece2.getCornerIndexes()[(edge2 + 1) % 4] - i + piece2.corners.size()) % piece2.corners.size()).x;
+            float p2y = piece2.corners.get((piece2.getCornerIndexes()[(edge2 + 1) % 4] - i + piece2.corners.size()) % piece2.corners.size()).y;
 
             float p1xR = (float) (p1x * Math.cos(-p1eAngle) - p1y * Math.sin(-p1eAngle));
             float p1yR = (float) (p1x * Math.sin(-p1eAngle) + p1y * Math.cos(-p1eAngle));
