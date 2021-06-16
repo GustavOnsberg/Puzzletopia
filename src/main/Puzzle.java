@@ -30,7 +30,7 @@ public class Puzzle {
 
     public static void main(String [] args) throws IOException, ParseException {
         Puzzle puzzle = new Puzzle();
-        puzzle.loadPuzzle("C:/Users/vikto/Downloads/Puzzle-3r-3c-3756-sol.json");
+        puzzle.loadPuzzle("C:/Users/vikto/Downloads/Puzzles_set_1 (1)/Puzzle-4r-6c-8642-sol.json");
         System.out.println("has solution: "+puzzle.findSolution());
     }
 
@@ -214,23 +214,37 @@ public class Puzzle {
         if (p2XDiff<0){
             p2Angle+=180;
         }
-        float xDiff = piece2.corners.get(p2Corners[(edge2+1)%4]).x-piece1.corners.get(p1Corners[edge1]).x;
-        float yDiff = piece2.corners.get(p2Corners[(edge2+1)%4]).y-piece1.corners.get(p1Corners[edge1]).y;
-        for (int i = 0; i < highCornerCount/4; i++) {
-            float p1XNew = piece1.corners.get(p1Corners[edge1]+i).x*p1YDiff-piece1.corners.get(p1Corners[edge1]+i).y*p1XDiff;
-            float p1YNew = piece1.corners.get(p1Corners[edge1]+i).x*p1XDiff+piece1.corners.get(p1Corners[edge1]+i).y*p1YDiff;
+        float xDiff=0;
+        float yDiff=0;
+        for (int i = 0; i < (highCornerCount/4)+1; i++) {
+
+            int p1Edge = ((p1Corners[(edge1+1)%4]-i+piece1.corners.size())%piece1.corners.size());
+            float p1XNew = piece1.corners.get(edge1).x*p1YDiff-piece1.corners.get(edge1).y*p1XDiff;
+            float p1YNew = piece1.corners.get(edge1).x*p1XDiff+piece1.corners.get(edge1).y*p1YDiff;
+
             int p2Edge = ((p2Corners[(edge2+1)%4]-i+piece2.corners.size())%piece2.corners.size());
-            float p2XNew = (piece2.corners.get(p2Edge).x*p2YDiff-piece2.corners.get(p2Edge).y*p2XDiff)-xDiff;
-            float p2YNew = (piece2.corners.get(p2Edge).x*p2XDiff+piece2.corners.get(p2Edge).y*p2YDiff)-yDiff;
+            float p2XNew = (piece2.corners.get(p2Corners[(edge2+i)%4]).x*p2YDiff-piece2.corners.get(p2Corners[(edge2+i)%4]).y*p2XDiff);
+            float p2YNew = (piece2.corners.get(p2Corners[(edge2+i)%4]).x*p2XDiff+piece2.corners.get(p2Corners[(edge2+i)%4]).y*p2YDiff);
+
             System.out.println("p1XNew: "+ p1XNew);
             System.out.println("p2XNew: "+ p2XNew);
             System.out.println("p1YNew: "+ p1YNew);
             System.out.println("p2YNew: "+ p2YNew);
-            if (p1XNew-p2XNew>0.001){
+            System.out.println("veclength: "+ p1VecLength+" "+p2VecLength);
+            if(i==0){
+                System.out.println("dif set");
+                xDiff=p1XNew-p2XNew;
+                yDiff=p1YNew-p2XNew;
+            }else if(Math.abs(p1XNew-p2XNew-xDiff)<0.001){
+                    if(Math.abs(p1YNew-p2YNew-yDiff)<0.001){
+                        System.out.println("match true");
+
+                    }else {
+                        System.out.println("match failed y");
+                        return false;
+                    }
+            }else{
                 System.out.println("match failed x");
-                return false;
-            }else if(p1YNew-p2YNew>0.001){
-                System.out.println("match failed y");
                 return false;
             }
         }
@@ -283,7 +297,7 @@ public class Puzzle {
                 }
             }
         }
-
+        System.out.println("match true:"+pieces.indexOf(piece1)+" p2: "+pieces.indexOf(piece2));
         return true;
     }
 
@@ -331,7 +345,6 @@ public class Puzzle {
             for (int i = 0; i < sidePiece.size(); i++) {
                 System.out.println("zone 2 in");
                 if(matchEdge(placedPieces.get(piecePosition-1).piece,sidePiece.get(i),placedPieces.get(piecePosition-1).edgeUp+1,3) ){
-                    System.out.println("match true");
                     ArrayList<Piece> sideP = (ArrayList<Piece>) sidePiece.clone();
                     sideP.remove(i);
                     ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
@@ -359,7 +372,7 @@ public class Puzzle {
             }
         }
         //zone 7
-        else if(piecePosition == m*(n-1)){
+        else if(piecePosition == n*(m-1)){
             System.out.println("zone 7");
             for (int i = 0; i < cornerPiece.size(); i++) {
                 if(matchEdge(placedPieces.get(piecePosition-n).piece,cornerPiece.get(i),3,2) ){
@@ -381,7 +394,7 @@ public class Puzzle {
             }
         }
         //zone 8
-        else if(piecePosition > m*(n-1)){
+        else if(piecePosition > n*(m-1)){
             System.out.println("zone 8");
             for (int i = 0; i < sidePiece.size(); i++) {
                 if(matchEdge(placedPieces.get(piecePosition-n).piece,sidePiece.get(i),(placedPieces.get(piecePosition-n).edgeUp+2)%4,2) && matchEdge(placedPieces.get(piecePosition-1).piece,sidePiece.get(i),3,1)){
