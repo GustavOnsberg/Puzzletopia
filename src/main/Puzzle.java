@@ -32,6 +32,7 @@ public class Puzzle {
         Puzzle puzzle = new Puzzle();
         puzzle.loadPuzzle("C:/Users/vikto/Downloads/Puzzles_set_1 (1)/Puzzle-15r-20c-8696-sol.json");
         System.out.println("has solution: "+puzzle.findSolution());
+
     }
 
 
@@ -320,8 +321,6 @@ public class Puzzle {
         }
         System.out.println("corner size:"+cornerPiece.size());
         return findSolutionRec(cornerPiece,sidePiece,centerPiece,placedPieces,0);
-
-
     }
     public boolean findSolutionRec(ArrayList<Piece> cornerPiece,ArrayList<Piece> sidePiece,ArrayList<Piece> centerPiece,ArrayList<PlacedPiece> placedPieces,int piecePosition){
         System.out.println("pp: "+piecePosition);
@@ -390,6 +389,26 @@ public class Puzzle {
         else if(piecePosition==n*m-1){
             System.out.println("zone 9");
             if(matchEdge(placedPieces.get(piecePosition-n).piece,cornerPiece.get(0),1,3) && matchEdge(placedPieces.get(piecePosition-1).piece,cornerPiece.get(0),3,2)){
+                ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
+                placedP.add(new PlacedPiece(cornerPiece.get(0),3));
+                placedPieces=placedP;
+                for (int i = 0; i < m; i++) {
+                    for (int j = 0; j < n; j++) {
+                        if (String.valueOf(pieces.indexOf(placedPieces.get(j*m+i).piece)).length()==1) {
+                            System.out.print("|  "+pieces.indexOf(placedPieces.get(j*m+i).piece)+":");
+                        }else if (String.valueOf(pieces.indexOf(placedPieces.get(j*m+i).piece)).length()==2) {
+                            System.out.print("| "+pieces.indexOf(placedPieces.get(j*m+i).piece)+":");
+                        }else{
+                            System.out.print("|"+pieces.indexOf(placedPieces.get(j*m+i).piece)+":");
+                        }
+                        if (placedPieces.get(i*m+j).edgeUp!=0){
+                            System.out.print(placedPieces.get(j*m+i).edgeUp);
+                        }else{
+                            System.out.print(" ");
+                        }
+                    }
+                    System.out.println("");
+                }
                 return true;
             }
         }
@@ -457,4 +476,5 @@ public class Puzzle {
         }
         return false;
     }
+
 }
