@@ -184,6 +184,7 @@ public class Puzzle {
         System.out.println("match true");
         return true;
     }*/
+    /*
     public boolean matchEdge(Piece piece1, Piece piece2, int edge1, int edge2) {
         System.out.println("match start: p1: "+pieces.indexOf(piece1)+" p2: "+pieces.indexOf(piece2)+" e1: "+edge1+" e2: "+edge2);
         if ((piece1.isSidePiece && edge1 == 0) || (piece2.isSidePiece && edge2 == 0) || (piece1.isCornerPiece && edge1 <= 1) || (piece2.isCornerPiece && edge2 <= 1)) {
@@ -235,7 +236,59 @@ public class Puzzle {
         }
         System.out.println("match true");
         return true;
+    }*/
+    public boolean matchEdge(Piece piece1, Piece piece2, int edge1, int edge2) {
+        System.out.println("match start: p1: "+pieces.indexOf(piece1)+" p2: "+pieces.indexOf(piece2)+" e1: "+edge1+" e2: "+edge2);
+        if ((piece1.isSidePiece && edge1 == 0) || (piece2.isSidePiece && edge2 == 0) || (piece1.isCornerPiece && edge1 <= 1) || (piece2.isCornerPiece && edge2 <= 1)) {
+            System.out.println("match error");
+            return false;
+        }
+
+        float p1c1x = piece1.getCorners().get(piece1.getCornerIndexes()[edge1]).x;
+        float p1c1y = piece1.getCorners().get(piece1.getCornerIndexes()[edge1]).y;
+        float p1c2x = piece1.getCorners().get(piece1.getCornerIndexes()[(edge1 + 1) % 4]).x;
+        float p1c2y = piece1.getCorners().get(piece1.getCornerIndexes()[(edge1 + 1) % 4]).y;
+        float p1eLength = (float) Math.sqrt(Math.pow(p1c1x - p1c2x,2) + Math.pow(p1c1y - p1c2y,2));
+        float p1eAngle = (float) Math.acos((p1c2x - p1c1x) / p1eLength) * Math.copySign(p1c2y - p1c1y,p1c2y - p1c1y);
+
+        float p2c1x = piece2.getCorners().get(piece2.getCornerIndexes()[edge2]).x;
+        float p2c1y = piece2.getCorners().get(piece2.getCornerIndexes()[edge2]).y;
+        float p2c2x = piece2.getCorners().get(piece2.getCornerIndexes()[(edge2 + 1) % 4]).x;
+        float p2c2y = piece2.getCorners().get(piece2.getCornerIndexes()[(edge2 + 1) % 4]).y;
+        float p2eLength = (float) Math.sqrt(Math.pow(p2c1x - p2c2x,2) + Math.pow(p2c1y - p2c2y,2));
+        float p2eAngle = (float) Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(p2c1y - p2c2y,p2c1y - p2c2y);
+
+
+        float xDiff = 0;
+        float yDiff = 0;
+        for (int i = 0; i <= highCornerCount / 4; i++) {
+
+            float p1x = piece1.corners.get((piece1.getCornerIndexes()[edge1] + i) % piece1.corners.size()).x;
+            float p1y = piece1.corners.get((piece1.getCornerIndexes()[edge1] + i) % piece1.corners.size()).y;
+            float p2x = piece2.corners.get((piece2.getCornerIndexes()[(edge2 + 1) % 4] - i) % piece2.corners.size()).x;
+            float p2y = piece2.corners.get((piece2.getCornerIndexes()[(edge2 + 1) % 4] - i) % piece2.corners.size()).y;
+
+            float p1xR = (float) (p1x * Math.cos(-p1eAngle) - p1y * Math.sin(-p1eAngle));
+            float p1yR = (float) (p1x * Math.sin(-p1eAngle) + p1y * Math.cos(-p1eAngle));
+            float p2xR = (float) (p2x * Math.cos(-p2eAngle) - p2y * Math.sin(-p2eAngle));
+            float p2yR = (float) (p2x * Math.sin(-p2eAngle) + p2y * Math.cos(-p2eAngle));
+
+            if (i == 0){
+                xDiff = p1xR - p2xR;
+                yDiff = p1yR - p2yR;
+            }
+            else {
+                if (Math.abs((p1xR - p2xR) - xDiff) > 0.01 || Math.abs((p1yR - p2yR) - yDiff) > 0.01 ) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
+
+
+
 
     public boolean findSolution(){
         ArrayList<Piece> cornerPiece = new ArrayList<>();
