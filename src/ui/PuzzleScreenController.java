@@ -214,16 +214,16 @@ public class PuzzleScreenController {
                                             float p2c2y = pieceChecked.getCorners().get(pieceChecked.getCornerIndexes()[(edgeTwo + 1) % 4]).y;
                                             float p2eLength = (float) Math.sqrt(Math.pow(p2c1x - p2c2x,2) + Math.pow(p2c1y - p2c2y,2));
                                             float p2eAngle = (float) (Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(1,p2c1y - p2c2y) + angleChecked);
-                                            puzzleShape.getTransforms().add(Affine.rotate(((p1eAngle - p2eAngle) * 180) / 3.14,puzzleScale,puzzleScale));
-                                            puzzleShape.setRotate(((p1eAngle - p2eAngle) * 180) / 3.14);
-                                            System.out.println(Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy()));
-                                            System.out.println(Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy()));
+                                            puzzleShape.getTransforms().add(Affine.rotate(((p2eAngle - p1eAngle) * 180) / 3.14,puzzleScale,puzzleScale));
 
-
-//                                            newPuzzlePiece.setX(newPuzzlePiece.getX() + (pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.cos(angleChecked) - pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.sin(angleChecked)));
-//                                            newPuzzlePiece.setY(newPuzzlePiece.getY() + (pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.sin(angleChecked) + pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.cos(angleChecked)));
-                                            System.out.println("Selected X: " + newPuzzlePiece.getX() + ", Selected Y: " + newPuzzlePiece.getY());
-                                            System.out.println("Checked X: " + puzzlePiece.getX() + ", Checked Y: " + puzzlePiece.getY());
+                                            double offsetX = pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.cos(angleSelected) - pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.sin(angleSelected) -
+                                                    pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.cos(angleChecked) - pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.sin(angleChecked) * puzzleShape.getScaleX() * 100;
+                                            double offsetY = pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.sin(angleSelected) + pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.cos(angleSelected) -
+                                                    pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.sin(angleChecked) + pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.cos(angleChecked) * puzzleShape.getScaleX() * 100;
+                                            newPuzzlePiece.setX(newPuzzlePiece.getX() - offsetX);
+                                            newPuzzlePiece.setY(newPuzzlePiece.getY() - offsetY);
+                                            System.out.println(offsetX);
+                                            System.out.println(offsetY);
                                         }
                                     }
                                 }
