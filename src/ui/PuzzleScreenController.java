@@ -15,9 +15,7 @@ import javafx.scene.shape.*;
 import javafx.scene.transform.Affine;
 import main.Piece;
 
-
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -213,16 +211,18 @@ public class PuzzleScreenController {
                                             float p2eAngle = (float) (Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(1,p2c1y - p2c2y) + angleChecked);
                                             puzzleShape.getTransforms().add(Affine.rotate(((p2eAngle - p1eAngle) * 180) / 3.14,puzzleScale,puzzleScale));
 
-                                            double offsetX = (pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.cos(angleSelected) - pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.sin(angleSelected) -
-                                                    pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.cos(angleChecked) - pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.sin(angleChecked)) * puzzleShape.getScaleX() * 100;
-                                            double offsetY = (pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.sin(angleSelected) + pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.cos(angleSelected) -
-                                                    pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.sin(angleChecked) + pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.cos(angleChecked)) * puzzleShape.getScaleX() * 100;
-                                            double translateX = pieceChecked.getCorners().get(cornersCheck[j]).getX() - pieceSelected.getCorners().get(cornersSelected[i]).getX() - offsetX;
-                                            double translateY = pieceSelected.getCorners().get(cornersSelected[i]).getY() - pieceChecked.getCorners().get(cornersCheck[j]).getY() - offsetY;
-                                            newPuzzlePiece.setTranslateX(translateX);
-                                            newPuzzlePiece.setTranslateY(translateY);
-                                            System.out.println(newPuzzlePiece.getTranslateX());
-                                            System.out.println(newPuzzlePiece.getTranslateY());
+
+                                            double x1 = (pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.cos(angleSelected) - pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.sin(angleSelected)) * puzzleShape.getScaleX() * 100;
+                                            double x2 = (pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.cos(angleChecked) - pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.sin(angleChecked)) * puzzleShape.getScaleX() * 100;
+                                            double offsetX = x1 - x2;
+                                            //double offsetY = (pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.sin(angleSelected) + pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.cos(angleSelected) -
+                                            //        pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.sin(angleChecked) + pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.cos(angleChecked)) * puzzleShape.getScaleX() * 100;
+                                            //double translateY = pieceSelected.getCorners().get(cornersSelected[i]).getY() - pieceChecked.getCorners().get(cornersCheck[j]).getY() - offsetY;
+                                            //newPuzzlePiece.setTranslateX(translateX);
+                                            newPuzzlePiece.setX(puzzlePiece.getX() - offsetX);
+                                            //newPuzzlePiece.setTranslateY(translateY);
+                                            //System.out.println(newPuzzlePiece.getTranslateX());
+                                            //System.out.println(newPuzzlePiece.getTranslateY());
                                         }
                                     }
                                 }
