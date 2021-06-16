@@ -394,20 +394,16 @@ public class Puzzle {
                 placedPieces=placedP;
                 for (int i = 0; i < m; i++) {
                     for (int j = 0; j < n; j++) {
-                        if (String.valueOf(pieces.indexOf(placedPieces.get(j*m+i).piece)).length()==1) {
-                            System.out.print("|  "+pieces.indexOf(placedPieces.get(j*m+i).piece)+":");
-                        }else if (String.valueOf(pieces.indexOf(placedPieces.get(j*m+i).piece)).length()==2) {
-                            System.out.print("| "+pieces.indexOf(placedPieces.get(j*m+i).piece)+":");
+                        if (String.valueOf(pieces.indexOf(placedPieces.get(i*n+j).piece)).length()==1) {
+                            System.out.print("|  ");
+                        }else if (String.valueOf(pieces.indexOf(placedPieces.get(i*n+j).piece)).length()==2) {
+                            System.out.print("| ");
                         }else{
-                            System.out.print("|"+pieces.indexOf(placedPieces.get(j*m+i).piece)+":");
+                            System.out.print("|");
                         }
-                        if (placedPieces.get(i*m+j).edgeUp!=0){
-                            System.out.print(placedPieces.get(j*m+i).edgeUp);
-                        }else{
-                            System.out.print(" ");
-                        }
+                        System.out.print(pieces.indexOf(placedPieces.get(i*n+j).piece)+":"+placedPieces.get(i*n+j).edgeUp);
                     }
-                    System.out.println("");
+                    System.out.println("|");
                 }
                 return true;
             }
