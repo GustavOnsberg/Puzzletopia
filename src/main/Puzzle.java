@@ -142,7 +142,7 @@ public class Puzzle {
         while(iterator.hasNext()){
             JSONObject coord = (JSONObject) iterator.next().get("coord");
             float x = Float.parseFloat(coord.get("x").toString());
-            float y = Float.parseFloat(coord.get("x").toString());
+            float y = Float.parseFloat(coord.get("y").toString());
             if (x >= 0.01){
                 puzzleWidth = x;
             }
