@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Puzzle {
+    ArrayList<PlacedPiece> placedPieces = new ArrayList<>();
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
@@ -307,7 +308,7 @@ public class Puzzle {
         ArrayList<Piece> cornerPiece = new ArrayList<>();
         ArrayList<Piece> sidePiece = new ArrayList<>();
         ArrayList<Piece> centerPiece = new ArrayList<>();
-        ArrayList<PlacedPiece> placedPieces = new ArrayList<>();
+
         for (int i = 0; i < pieces.size(); i++) {
             if(pieces.get(i).isCornerPiece){
                 cornerPiece.add(pieces.get(i));
