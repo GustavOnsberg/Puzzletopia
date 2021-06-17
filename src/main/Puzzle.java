@@ -27,6 +27,9 @@ public class Puzzle {
     public int n = 0;
     public int m = 0;
 
+    public float puzzleWidth = 0;
+    public float puzzleHeight = 0;
+
     ArrayList<Piece> pieces = new ArrayList<>();
 
     public static void main(String [] args) throws IOException, ParseException {
@@ -134,6 +137,21 @@ public class Puzzle {
             }
         }
 
+        JSONArray formJsonArray = (JSONArray) ((JSONObject) jsonObject.get("puzzle")).get("form");
+        iterator = formJsonArray.iterator();
+        while(iterator.hasNext()){
+            JSONObject coord = (JSONObject) iterator.next().get("coord");
+            float x = Float.parseFloat(coord.get("x").toString());
+            float y = Float.parseFloat(coord.get("x").toString());
+            if (x >= 0.01){
+                puzzleWidth = x;
+            }
+            if (y >= 0.01){
+                puzzleHeight = x;
+            }
+        }
+
+        System.out.println("Puzzle size: " + puzzleWidth + " x " + puzzleHeight);
 
         System.out.println("Number of corners - center: "+highCornerCount+"   side: "+midCornerCount+"   corner: "+lowCornerCount);
         System.out.println("Number of pieces  - center: "+highCornerCountCount+"   side: "+midCornerCountCount+"   corner: "+lowCornerCountCount);
