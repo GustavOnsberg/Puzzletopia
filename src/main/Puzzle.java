@@ -147,11 +147,11 @@ public class Puzzle {
                 puzzleWidth = x;
             }
             if (y >= 0.01){
-                puzzleHeight = x;
+                puzzleHeight = y;
             }
         }
 
-        System.out.println("Puzzle size: " + puzzleWidth + " x " + puzzleHeight);
+        System.out.println("Puzzle dimensions: " + puzzleWidth + " x " + puzzleHeight);
 
         System.out.println("Number of corners - center: "+highCornerCount+"   side: "+midCornerCount+"   corner: "+lowCornerCount);
         System.out.println("Number of pieces  - center: "+highCornerCountCount+"   side: "+midCornerCountCount+"   corner: "+lowCornerCountCount);
