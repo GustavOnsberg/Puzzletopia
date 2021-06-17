@@ -33,6 +33,7 @@ public class Puzzle {
         puzzle.loadPuzzle("C:/Users/vikto/Downloads/Puzzles_set_1 (1)/Puzzle-15r-20c-8696-sol.json");
         System.out.println("has solution: "+puzzle.findSolution());
 
+
     }
 
 
@@ -302,9 +303,6 @@ public class Puzzle {
         return true;
     }
 
-
-
-
     public boolean findSolution(){
         ArrayList<Piece> cornerPiece = new ArrayList<>();
         ArrayList<Piece> sidePiece = new ArrayList<>();
@@ -320,6 +318,8 @@ public class Puzzle {
             }
         }
         System.out.println("corner size:"+cornerPiece.size());
+
+
         return findSolutionRec(cornerPiece,sidePiece,centerPiece,placedPieces,0);
     }
     public boolean findSolutionRec(ArrayList<Piece> cornerPiece,ArrayList<Piece> sidePiece,ArrayList<Piece> centerPiece,ArrayList<PlacedPiece> placedPieces,int piecePosition){
@@ -332,7 +332,7 @@ public class Puzzle {
                 System.out.println("cornerP size"+cornerP.size());
                 cornerP.remove(i);
                 ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
-                placedP.add(new PlacedPiece(cornerPiece.get(i),1));
+                placedP.add(new PlacedPiece(cornerPiece.get(i),1,pieces.indexOf(cornerPiece.get(i))));
                 if(findSolutionRec(cornerP,(ArrayList<Piece>)sidePiece.clone(), (ArrayList<Piece>)centerPiece.clone(),placedP,piecePosition+1)){
                     return true;
                 }
@@ -347,7 +347,7 @@ public class Puzzle {
                     ArrayList<Piece> sideP = (ArrayList<Piece>) sidePiece.clone();
                     sideP.remove(i);
                     ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
-                    placedP.add(new PlacedPiece(sidePiece.get(i),0));
+                    placedP.add(new PlacedPiece(sidePiece.get(i),0,pieces.indexOf(sidePiece.get(i))));
 
                     if(findSolutionRec((ArrayList<Piece>) cornerPiece.clone(),sideP, (ArrayList<Piece>)centerPiece.clone(),placedP,piecePosition+1)){
                         return true;
@@ -363,7 +363,7 @@ public class Puzzle {
                     ArrayList<Piece>cornerP = (ArrayList<Piece>) cornerPiece.clone();
                     cornerP.remove(i);
                     ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
-                    placedP.add(new PlacedPiece(cornerPiece.get(i),0));
+                    placedP.add(new PlacedPiece(cornerPiece.get(i),0,pieces.indexOf(cornerPiece.get(i))));
                     if(findSolutionRec(cornerP,(ArrayList<Piece>)sidePiece.clone(), (ArrayList<Piece>)centerPiece.clone(),placedP,piecePosition+1)){
                         return true;
                     }
@@ -378,7 +378,7 @@ public class Puzzle {
                     ArrayList<Piece>cornerP = (ArrayList<Piece>) cornerPiece.clone();
                     cornerP.remove(i);
                     ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
-                    placedP.add(new PlacedPiece(cornerPiece.get(i),2));
+                    placedP.add(new PlacedPiece(cornerPiece.get(i),2,pieces.indexOf(cornerPiece.get(i))));
                     if(findSolutionRec(cornerP,(ArrayList<Piece>)sidePiece.clone(), (ArrayList<Piece>)centerPiece.clone(),placedP,piecePosition+1)){
                         return true;
                     }
@@ -390,7 +390,7 @@ public class Puzzle {
             System.out.println("zone 9");
             if(matchEdge(placedPieces.get(piecePosition-n).piece,cornerPiece.get(0),1,3) && matchEdge(placedPieces.get(piecePosition-1).piece,cornerPiece.get(0),3,2)){
                 ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
-                placedP.add(new PlacedPiece(cornerPiece.get(0),3));
+                placedP.add(new PlacedPiece(cornerPiece.get(0),3,pieces.indexOf(cornerPiece.get(0))));
                 placedPieces=placedP;
                 for (int i = 0; i < m; i++) {
                     for (int j = 0; j < n; j++) {
@@ -405,6 +405,7 @@ public class Puzzle {
                     }
                     System.out.println("|");
                 }
+
                 return true;
             }
         }
@@ -416,7 +417,7 @@ public class Puzzle {
                     ArrayList<Piece> sideP = (ArrayList<Piece>) sidePiece.clone();
                     sideP.remove(i);
                     ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
-                    placedP.add(new PlacedPiece(sidePiece.get(i),2));
+                    placedP.add(new PlacedPiece(sidePiece.get(i),2,pieces.indexOf(sidePiece.get(i))));
                     if(findSolutionRec((ArrayList<Piece>) cornerPiece.clone(),sideP, (ArrayList<Piece>)centerPiece.clone(),placedP,piecePosition+1)){
                         return true;
                     }
@@ -431,7 +432,7 @@ public class Puzzle {
                     ArrayList<Piece> sideP = (ArrayList<Piece>) sidePiece.clone();
                     sideP.remove(i);
                     ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
-                    placedP.add(new PlacedPiece(sidePiece.get(i),1));
+                    placedP.add(new PlacedPiece(sidePiece.get(i),1,pieces.indexOf(sidePiece.get(i))));
                     if(findSolutionRec((ArrayList<Piece>) cornerPiece.clone(),sideP, (ArrayList<Piece>)centerPiece.clone(),placedP,piecePosition+1)){
                         return true;
                     }
@@ -446,7 +447,7 @@ public class Puzzle {
                     ArrayList<Piece> sideP = (ArrayList<Piece>) sidePiece.clone();
                     sideP.remove(i);
                     ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
-                    placedP.add(new PlacedPiece(sidePiece.get(i),3));
+                    placedP.add(new PlacedPiece(sidePiece.get(i),3,pieces.indexOf(sidePiece.get(i))));
                     if(findSolutionRec((ArrayList<Piece>) cornerPiece.clone(),sideP, (ArrayList<Piece>)centerPiece.clone(),placedP,piecePosition+1)){
                         return true;
                     }
@@ -462,7 +463,7 @@ public class Puzzle {
                         ArrayList<Piece> centerP = (ArrayList<Piece>) centerPiece.clone();
                         centerP.remove(i);
                         ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
-                        placedP.add(new PlacedPiece(centerPiece.get(i),j));
+                        placedP.add(new PlacedPiece(centerPiece.get(i),j,pieces.indexOf(centerPiece.get(i))));
                         if(findSolutionRec((ArrayList<Piece>) cornerPiece.clone(),(ArrayList<Piece>)sidePiece.clone(),centerP,placedP,piecePosition+1)){
                             return true;
                         }
