@@ -6,7 +6,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -31,7 +30,7 @@ public class PuzzleScreenController {
     Random random = new Random();
     ArrayList<Rectangle> puzzlePieces = new ArrayList<>();
     ArrayList<Path> puzzleShapesList = new ArrayList<>();
-    ArrayList<Color> testColors = new ArrayList<>();
+    ArrayList<Color> pieceColors = new ArrayList<>();
     HBox bottomBtns = new HBox();
     Button shuffleBtn = new Button("SHUFFLE");
     Button solveBtn = new Button("SOLVE");
@@ -53,9 +52,8 @@ public class PuzzleScreenController {
     @FXML
     public void initialize() {
         setupPuzzleCanvas();
-        for (int i = 0; i < 100; i++) {
-            testColors.add(new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1));
-
+        for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().n * MainMenuController.mainMenuController.getPuzzle().m; i++) {
+            pieceColors.add(new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1));
         }
         int color = 0;
         for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().getPieces().size(); i++) {
@@ -73,6 +71,8 @@ public class PuzzleScreenController {
                 puzzlePieces.get(i).setY(random.nextInt((int) (Main.pStage.getHeight() - 600)));
                 puzzleShapesList.get(i).setTranslateX(puzzlePieces.get(i).getX());
                 puzzleShapesList.get(i).setTranslateY(puzzlePieces.get(i).getY());
+                puzzleShapesList.get(i).getTransforms().add(Affine.rotate(random.nextInt((180 - (-180) + (-180))),puzzleScale,puzzleScale));
+                puzzleShapesList.get(i).setRotate(random.nextInt((360 - (-360) + (-360))));
             }
         });
     }
@@ -138,7 +138,19 @@ public class PuzzleScreenController {
                         int indexPieceOther = MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnapOther).index;
                         Rectangle pieceRect = puzzlePieces.get(indexPiece);
                         int edgeOne = MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnap).edgeUp;
-                        int edgeTwo = (MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnap).edgeUp + 2) % 4;
+                        int edgeTwo = (MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnapOther).edgeUp + 2) % 4;
+                        Piece piece = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPiece);
+                        Piece otherPiece = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPieceOther);
+                        int cornerOneIndex = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPiece).getCornerIndexes()[edgeOne];
+                        int cornerTwoIndex = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPieceOther).getCornerIndexes()[(edgeTwo + 1) % 4];
+                        snapTo(puzzleShapesList.get(indexPiece), pieceRect, indexPieceOther, puzzlePieces.get(indexPieceOther), cornerOneIndex, cornerTwoIndex, piece, otherPiece, edgeOne, edgeTwo);
+                    } else {
+                        int indexPiece = MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnap).index;
+                        int indexSnapSnapOther = indexSnapSnap - 1;
+                        int indexPieceOther = MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnapOther).index;
+                        Rectangle pieceRect = puzzlePieces.get(indexPiece);
+                        int edgeOne = (MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnap).edgeUp + 3) % 4;
+                        int edgeTwo = (MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnapOther).edgeUp + 1) % 4;
                         Piece piece = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPiece);
                         Piece otherPiece = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPieceOther);
                         int cornerOneIndex = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPiece).getCornerIndexes()[edgeOne];
@@ -154,7 +166,7 @@ public class PuzzleScreenController {
         Rectangle newPuzzlePiece = new Rectangle(10000, 10000);
 //        ImagePattern picturePattern = new ImagePattern(puzzlePicture);
 //        newPuzzlePiece.setFill(picturePattern);
-        newPuzzlePiece.setFill(testColors.get(color));
+        newPuzzlePiece.setFill(pieceColors.get(color));
         Path puzzleShape = new Path();
         puzzleShape.getElements().add(new MoveTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + puzzleScale,
                 MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + puzzleScale));
@@ -162,7 +174,7 @@ public class PuzzleScreenController {
             puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getX() * 100 + puzzleScale,
                     MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getY() * 100 + puzzleScale));
         }
-        puzzleShape.setScaleX((Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().getPieces().size()) / 100);
+        puzzleShape.setScaleX((Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().n) / 100);
         puzzleShape.setScaleY(puzzleShape.getScaleX());
         newPuzzlePiece.setX(random.nextInt((int) (Main.pStage.getWidth() - 600)));
         newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 600)));
@@ -253,6 +265,8 @@ public class PuzzleScreenController {
         float p2eLength = (float) Math.sqrt(Math.pow(p2c1x - p2c2x,2) + Math.pow(p2c1y - p2c2y,2));
         float p2eAngle = (float) (Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(1,p2c1y - p2c2y) + angleChecked);
         puzzleShape.getTransforms().add(Affine.rotate(((p2eAngle - p1eAngle) * 180) / 3.14,puzzleScale,puzzleScale));
+        angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy());
+        angleChecked = Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy());
 
         double x1 = (pieceSelected.getCorners().get(index).getX() * Math.cos(angleSelected) - pieceSelected.getCorners().get(index).getY() * Math.sin(angleSelected)) * puzzleShape.getScaleX() * 100;
         double x2 = (pieceChecked.getCorners().get(index1).getX() * Math.cos(angleChecked) - pieceChecked.getCorners().get(index1).getY() * Math.sin(angleChecked)) * puzzleShape.getScaleX() * 100;
