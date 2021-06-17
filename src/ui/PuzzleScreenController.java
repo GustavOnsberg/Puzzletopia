@@ -16,6 +16,7 @@ import javafx.scene.transform.Affine;
 import main.Piece;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -146,7 +147,6 @@ public class PuzzleScreenController {
 
         puzzleShape.setFill(Color.BLACK);
         newPuzzlePiece.setClip(puzzleShape);
-
         movementOfPieces(newPuzzlePiece, puzzleShape);
         rescaleCanvas(puzzleShape, newPuzzlePiece);
         snapTo(pieceNumber, newPuzzlePiece, puzzleShape);
@@ -215,14 +215,17 @@ public class PuzzleScreenController {
                                             double x1 = (pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.cos(angleSelected) - pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.sin(angleSelected)) * puzzleShape.getScaleX() * 100;
                                             double x2 = (pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.cos(angleChecked) - pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.sin(angleChecked)) * puzzleShape.getScaleX() * 100;
                                             double offsetX = x1 - x2;
-                                            //double offsetY = (pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.sin(angleSelected) + pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.cos(angleSelected) -
-                                            //        pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.sin(angleChecked) + pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.cos(angleChecked)) * puzzleShape.getScaleX() * 100;
-                                            //double translateY = pieceSelected.getCorners().get(cornersSelected[i]).getY() - pieceChecked.getCorners().get(cornersCheck[j]).getY() - offsetY;
-                                            //newPuzzlePiece.setTranslateX(translateX);
-                                            newPuzzlePiece.setX(puzzlePiece.getX() - offsetX);
-                                            //newPuzzlePiece.setTranslateY(translateY);
-                                            //System.out.println(newPuzzlePiece.getTranslateX());
-                                            //System.out.println(newPuzzlePiece.getTranslateY());
+
+                                            double y1 = (pieceSelected.getCorners().get(cornersSelected[i]).getY() * Math.cos(angleSelected) + pieceSelected.getCorners().get(cornersSelected[i]).getX() * Math.sin(angleSelected)) * puzzleShape.getScaleX() * 100;
+                                            double y2 = (pieceChecked.getCorners().get(cornersCheck[j]).getY() * Math.cos(angleChecked) + pieceChecked.getCorners().get(cornersCheck[j]).getX() * Math.sin(angleChecked)) * puzzleShape.getScaleX() * 100;
+                                            double offsetY = y1 - y2;
+                                            Rectangle piece = (Rectangle) (event.getSource());
+//                                            piece.setTranslateX(puzzlePiece.getX() - offsetX - newPuzzlePiece.getX());
+//                                            piece.setTranslateY(puzzlePiece.getY() - offsetY - newPuzzlePiece.getY());
+                                            piece.setX(newPuzzlePiece.getX() - offsetX);
+                                            piece.setY(newPuzzlePiece.getY() - offsetY);
+                                            puzzleShape.setTranslateX(piece.getX());
+                                            puzzleShape.setTranslateY(piece.getY());
                                         }
                                     }
                                 }
