@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Puzzle {
-    ArrayList<PlacedPiece> placedPieces = new ArrayList<>();
+    ArrayList<PlacedPiece> placedPiecesFinal = new ArrayList<>();
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
@@ -308,7 +308,7 @@ public class Puzzle {
         ArrayList<Piece> cornerPiece = new ArrayList<>();
         ArrayList<Piece> sidePiece = new ArrayList<>();
         ArrayList<Piece> centerPiece = new ArrayList<>();
-
+        ArrayList<PlacedPiece> placedPieces = new ArrayList<>();
         for (int i = 0; i < pieces.size(); i++) {
             if(pieces.get(i).isCornerPiece){
                 cornerPiece.add(pieces.get(i));
@@ -392,17 +392,17 @@ public class Puzzle {
             if(matchEdge(placedPieces.get(piecePosition-n).piece,cornerPiece.get(0),1,3) && matchEdge(placedPieces.get(piecePosition-1).piece,cornerPiece.get(0),3,2)){
                 ArrayList<PlacedPiece> placedP = (ArrayList<PlacedPiece>) placedPieces.clone();
                 placedP.add(new PlacedPiece(cornerPiece.get(0),3,pieces.indexOf(cornerPiece.get(0))));
-                placedPieces=placedP;
+                this.placedPiecesFinal=placedP;
                 for (int i = 0; i < m; i++) {
                     for (int j = 0; j < n; j++) {
-                        if (String.valueOf(pieces.indexOf(placedPieces.get(i*n+j).piece)).length()==1) {
+                        if (String.valueOf(pieces.indexOf(placedP.get(i*n+j).piece)).length()==1) {
                             System.out.print("|  ");
-                        }else if (String.valueOf(pieces.indexOf(placedPieces.get(i*n+j).piece)).length()==2) {
+                        }else if (String.valueOf(pieces.indexOf(placedP.get(i*n+j).piece)).length()==2) {
                             System.out.print("| ");
                         }else{
                             System.out.print("|");
                         }
-                        System.out.print(pieces.indexOf(placedPieces.get(i*n+j).piece)+":"+placedPieces.get(i*n+j).edgeUp);
+                        System.out.print(pieces.indexOf(placedP.get(i*n+j).piece)+":"+placedP.get(i*n+j).edgeUp);
                     }
                     System.out.println("|");
                 }
