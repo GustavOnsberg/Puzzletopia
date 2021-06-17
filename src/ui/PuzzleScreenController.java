@@ -136,14 +136,14 @@ public class PuzzleScreenController {
                         int indexPiece = MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnap).index;
                         int indexSnapSnapOther = indexSnapSnap - n;
                         int indexPieceOther = MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnapOther).index;
-                        Rectangle newRect = new Rectangle();
+                        Rectangle pieceRect = puzzlePieces.get(indexPiece);
                         int edgeOne = MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnap).edgeUp;
                         int edgeTwo = (MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(indexSnapSnap).edgeUp + 2) % 4;
                         Piece piece = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPiece);
                         Piece otherPiece = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPieceOther);
                         int cornerOneIndex = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPiece).getCornerIndexes()[edgeOne];
                         int cornerTwoIndex = MainMenuController.mainMenuController.getPuzzle().getPieces().get(indexPieceOther).getCornerIndexes()[(edgeTwo + 1) % 4];
-                        snapTo(puzzleShapesList.get(indexPiece), newRect, indexPieceOther, puzzlePieces.get(indexPieceOther), cornerOneIndex, cornerTwoIndex, piece, otherPiece, edgeOne, edgeTwo);
+                        snapTo(puzzleShapesList.get(indexPiece), pieceRect, indexPieceOther, puzzlePieces.get(indexPieceOther), cornerOneIndex, cornerTwoIndex, piece, otherPiece, edgeOne, edgeTwo);
                     }
                 }
             }
@@ -261,7 +261,6 @@ public class PuzzleScreenController {
         double y2 = (pieceChecked.getCorners().get(index1).getY() * Math.cos(angleChecked) + pieceChecked.getCorners().get(index1).getX() * Math.sin(angleChecked)) * puzzleShape.getScaleX() * 100;
         double offsetY = y1 - y2;
 
-//        Rectangle piece = (Rectangle) (event.getSource());
         piece.setX(puzzlePiece.getX() - offsetX);
         piece.setY(puzzlePiece.getY() - offsetY);
         puzzleShape.setTranslateX(piece.getX());
