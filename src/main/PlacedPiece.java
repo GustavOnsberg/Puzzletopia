@@ -2,8 +2,8 @@ package main;
 
 public class PlacedPiece {
     Piece piece;
-    int edgeUp;
-    int index;
+    public int edgeUp;
+    public int index;
     public PlacedPiece(Piece piece,int edgeUp,int index){
         this.piece = piece;
         this.edgeUp = edgeUp;

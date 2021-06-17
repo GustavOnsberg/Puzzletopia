@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Puzzle {
-    ArrayList<PlacedPiece> placedPiecesFinal = new ArrayList<>();
+    public ArrayList<PlacedPiece> placedPiecesFinal = new ArrayList<>();
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
@@ -24,8 +24,8 @@ public class Puzzle {
     int midCornerCount = -1;
     int lowCornerCount = -1;
 
-    int n = 0;
-    int m = 0;
+    public int n = 0;
+    public int m = 0;
 
     ArrayList<Piece> pieces = new ArrayList<>();
 
@@ -161,6 +161,7 @@ public class Puzzle {
         }
 
         System.out.println("Puzzle size: "+n+" x "+m);
+        findSolution();
     }
 
     /*public boolean matchEdge(Piece piece1, Piece piece2, int edge1, int edge2){
