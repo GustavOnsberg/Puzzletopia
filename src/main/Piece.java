@@ -15,6 +15,7 @@ public class Piece {
 
 
     public void updateCornerArrayRotation(){
+        System.out.println("test 1");
         int newIndexZero = 0;
         if(isSidePiece) {
             int jumps = (corners.size() - 1) / 3;
@@ -31,7 +32,9 @@ public class Piece {
                 }
             }
         }
+
         else if(isCornerPiece){
+            System.out.println("test 2");
             int jumps = (corners.size() - 2) / 2;
             ArrayList<Float> sideScore = new ArrayList<>();
             for (int i = 0; i < corners.size(); i++) {
@@ -42,7 +45,7 @@ public class Piece {
                                 Math.sqrt(Math.pow(corners.get((i + 1 + jumps) % corners.size()).x - corners.get(i).x, 2) + Math.pow(corners.get((i + 1 + jumps) % corners.size()).y - corners.get(i).y, 2))
                 ));
             }
-
+            System.out.println("test 3");
             boolean cornerNotFound = true;
             float invalidHighScore = 999999;
             while (cornerNotFound){
@@ -55,7 +58,7 @@ public class Piece {
                         newIndexZero = i;
                     }
                 }
-
+                System.out.println("test 4");
                 float a = (float) (Math.pow(corners.get(newIndexZero).x - corners.get((newIndexZero + 1) % corners.size()).x, 2) + Math.pow(corners.get(newIndexZero).y - corners.get((newIndexZero + 1) % corners.size()).y, 2));
                 float b = (float) (Math.pow(corners.get((newIndexZero + 1) % corners.size()).x - corners.get((newIndexZero + 2) % corners.size()).x, 2) + Math.pow(corners.get((newIndexZero + 1) % corners.size()).y - corners.get((newIndexZero + 2) % corners.size()).y, 2));
                 float c = (float) (Math.pow(corners.get(newIndexZero).x - corners.get((newIndexZero + 2) % corners.size()).x, 2) + Math.pow(corners.get(newIndexZero).y - corners.get((newIndexZero + 2) % corners.size()).y, 2));

@@ -2,36 +2,138 @@ package main;
 
 public class Generator {
 
-    int nums[][] = {
-            {5, 1, 3, 4, 1, 2, 6, 5, 5, 2, 3, 2, 7}, //13
-            {5, 0, 7, 6, 6, 5, 1, 7, 7, 1, 8, 1, 7, 0, 1, 3, 4}, //17
-            {0, 4, 2, 7, 7, 2, 3, 6, 1, 4, 1, 8, 6, 3, 7, 4, 4, 6, 1}, // 19
-            {2, 3, 6, 4, 7, 4, 1, 2, 3, 3, 7, 1, 3, 5, 5, 6, 6, 3, 6, 3, 8, 3, 5}, //23
-            {0, 4, 3, 5, 8, 6, 1, 0, 1, 2, 1, 7, 5, 2, 7, 0, 4, 2, 3, 1, 2, 7, 2, 3, 3, 8, 3, 1, 0}, //29
-            {1, 3, 0, 5, 3, 6, 3, 7, 3, 7, 5, 1, 5, 5, 4, 7, 4, 2, 5, 3, 4, 5, 1, 1, 3, 0, 7, 6, 3, 8, 5}, //31
-            {7, 1, 2, 3, 3, 7, 1, 6, 6, 3, 2, 6, 7, 2, 1, 0, 6, 1, 7, 8, 4, 6, 7, 4, 3, 3, 3, 5, 6, 1, 1, 7, 4, 5, 2, 8, 3}, //37
-            {3, 4, 6, 6, 4, 1, 6, 0, 4, 7, 5, 4, 1, 0, 6, 7, 8, 6, 4, 6, 4, 8, 6, 5, 2, 7, 4, 2, 4, 7, 2, 6, 5, 4, 5, 5, 5, 3, 5, 2, 7}, //41
-            {7, 5, 5, 7, 3, 1, 5, 1, 2, 6, 4, 4, 1, 2, 5, 2, 1, 3, 0, 5, 6, 1, 0, 1, 2, 3, 8, 0, 8, 2, 4, 3, 2, 8, 5, 5, 7, 2, 6, 2, 7, 8, 3}, //43
-            {4, 5, 7, 4, 5, 5, 2, 6, 7, 3, 7, 0, 4, 3, 1, 4, 7, 5, 7, 3, 2, 6, 0, 5, 4, 0, 2, 5, 3, 7, 1, 4, 4, 7, 3, 4, 6, 8, 1, 2, 1, 7, 7, 2, 3, 5, 0}, //47
-    };
-    int numsIndex[] = {0,0,0,0,0,0,0,0,0,0};
+    public static void generate(int n, int m, int cuts, float var, Puzzle puzzle){
 
+        int N = n * (cuts + 1) + 1;
+        int M = m * (cuts + 1) + 1;
 
-    public void generate(PuzzleInfo target){
+        System.out.println("N: "+N+ ", M: "+M);
 
-    }
+        float[][][] dots = new float[N][M][2];
 
-    private int getRandomNum(){
-        int out = 0;
-
-        for (int i = 0; i < nums.length; i++){
-            out += nums[i][numsIndex[i]];
-            numsIndex[i]++;
-            if (numsIndex[i] >= nums[i].length) {
-                numsIndex[i] = 0;
+        for (int i = 0; i < M; i++) {
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < 2; k++) {
+                    if ((i == 0 || i == M - 1) && k == 1){
+                        dots[j][i][k] = 0;
+                    }
+                    else if ((j == 0 || j == N - 1) && k == 0){
+                        dots[j][i][k] = 0;
+                    }
+                    else{
+                        dots[j][i][k] = (float) Math.random() * var * 2 - var;
+                    }
+                }
             }
         }
 
-        return (out % 9) - 4;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                puzzle.pieces.add(new Piece());
+                int pIndex = puzzle.pieces.size() - 1;
+
+                int firstCornerIndexN = j * (cuts + 1);
+                int firstCornerIndexM = i * (cuts + 1);
+
+                System.out.println(firstCornerIndexN+", "+firstCornerIndexM);
+
+                float x = 0;
+                float y = 0;
+                int xIndex = 0;
+                int yIndex = 0;
+
+                if (i != 0){
+                    for (int k = 0; k <= cuts; k++) {
+                        xIndex = firstCornerIndexN + k;
+                        yIndex = firstCornerIndexM;
+                        x = -0.5f + k * (1 / ((float) cuts + 1.0f));
+                        y = -0.5f;
+
+                        x += dots[xIndex][yIndex][0];
+                        y += dots[xIndex][yIndex][1];
+                        puzzle.pieces.get(pIndex).corners.add(new FPoint(x, y));
+                    }
+                }
+                else {
+                    xIndex = firstCornerIndexN;
+                    yIndex = firstCornerIndexM;
+                    x = -0.5f;
+                    y = -0.5f;
+
+                    x += dots[xIndex][yIndex][0];
+                    y += dots[xIndex][yIndex][1];
+                    puzzle.pieces.get(pIndex).corners.add(new FPoint(x, y));
+                }
+
+                if (j != n - 1){
+                    for (int k = 0; k <= cuts; k++) {
+                        xIndex = firstCornerIndexN + cuts + 1;
+                        yIndex = firstCornerIndexM + k;
+                        x = 0.5f;
+                        y = -0.5f + k * (1 / ((float) cuts + 1.0f));
+
+                        x += dots[xIndex][yIndex][0];
+                        y += dots[xIndex][yIndex][1];
+                        puzzle.pieces.get(pIndex).corners.add(new FPoint(x, y));
+                    }
+                }
+                else {
+                    xIndex = firstCornerIndexN + cuts + 1;
+                    yIndex = firstCornerIndexM;
+                    x = 0.5f;
+                    y = -0.5f;
+
+                    x += dots[xIndex][yIndex][0];
+                    y += dots[xIndex][yIndex][1];
+                    puzzle.pieces.get(pIndex).corners.add(new FPoint(x, y));
+                }
+
+                if (i != m - 1){
+                    for (int k = 0; k <= cuts; k++) {
+                        xIndex = firstCornerIndexN + cuts + 1 - k;
+                        yIndex = firstCornerIndexM + cuts + 1;
+                        x = 0.5f - k * (1 / ((float) cuts + 1.0f));
+                        y = 0.5f;
+
+                        x += dots[xIndex][yIndex][0];
+                        y += dots[xIndex][yIndex][1];
+                        puzzle.pieces.get(pIndex).corners.add(new FPoint(x, y));
+                    }
+                }
+                else{
+                    xIndex = firstCornerIndexN + cuts + 1;
+                    yIndex = firstCornerIndexM + cuts + 1;
+                    x = 0.5f;
+                    y = 0.5f;
+
+                    x += dots[xIndex][yIndex][0];
+                    y += dots[xIndex][yIndex][1];
+                    puzzle.pieces.get(pIndex).corners.add(new FPoint(x, y));
+                }
+
+                if (j != 0){
+                    for (int k = 0; k <= cuts; k++) {
+                        xIndex = firstCornerIndexN;
+                        yIndex = firstCornerIndexM + cuts + 1 - k;
+                        x = -0.5f;
+                        y = 0.5f - k * (1 / ((float) cuts + 1.0f));
+
+                        x += dots[xIndex][yIndex][0];
+                        y += dots[xIndex][yIndex][1];
+                        puzzle.pieces.get(pIndex).corners.add(new FPoint(x, y));
+                    }
+                }
+                else{
+                    xIndex = firstCornerIndexN;
+                    yIndex = firstCornerIndexM + cuts + 1;
+                    x = -0.5f;
+                    y = 0.5f;
+
+                    x += dots[xIndex][yIndex][0];
+                    y += dots[xIndex][yIndex][1];
+                    puzzle.pieces.get(pIndex).corners.add(new FPoint(x, y));
+                }
+            }
+        }
     }
 }

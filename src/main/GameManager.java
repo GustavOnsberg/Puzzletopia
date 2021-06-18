@@ -18,7 +18,7 @@ public class GameManager {
         puzzleInfo = new PuzzleInfo(n, m);
         boolean puzzleIsValid = false;
         while(!puzzleIsValid){
-            generator.generate(puzzleInfo);
+            //generator.generate(puzzleInfo);
             puzzleIsValid = validator.validate(puzzleInfo);
         }
     }
