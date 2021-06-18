@@ -33,16 +33,24 @@ public class Puzzle {
 
     ArrayList<Piece> pieces = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String [] args) throws IOException, ParseException {
         Puzzle puzzle = new Puzzle();
-        puzzle.loadPuzzle("C:/Users/vikto/Downloads/Puzzles_set_1 (1)/Puzzle-4r-4c-3544-rot-sol.json");
-        System.out.println("has solution: " + puzzle.findSolution());
-        System.out.println("is unique: "+puzzle.CheckUnique(puzzle.pieces));
+        //puzzle.loadPuzzle("C:/Users/vikto/Downloads/Puzzles_set_1 (1)/Puzzle-15r-20c-8696-sol.json");
+        Generator.generate(20,10,2,0.1f,puzzle);
+        puzzle.preparePuzzle();
+        System.out.println("has solution: "+puzzle.findSolution());
+
 
     }
 
+    public void generatePuzzle(int n, int m, int cuts, float var){
+        Generator.generate(n,m,cuts,var,this);
+        this.preparePuzzle();
+    }
 
     public void loadPuzzle(String filePath) throws IOException, ParseException {
+
+
         pieces.clear();
         highCornerCountCount = 0;
         midCornerCountCount = 0;
@@ -56,7 +64,7 @@ public class Puzzle {
         JSONArray piecesJsonArray = (JSONArray) jsonObject.get("pieces");
 
         Iterator<JSONObject> iterator = piecesJsonArray.iterator();
-        while (iterator.hasNext()) {
+        while (iterator.hasNext()){
             JSONArray cornersJsonArray = (JSONArray) iterator.next().get("corners");
             Iterator<JSONObject> iterator1 = cornersJsonArray.iterator();
             pieces.add(new Piece());
@@ -65,112 +73,134 @@ public class Puzzle {
             float lowX = 999999;
             float highY = -999999;
             float lowY = 999999;
-            while (iterator1.hasNext()) {
+            while (iterator1.hasNext()){
                 JSONObject coord = (JSONObject) iterator1.next().get("coord");
                 float x = Float.parseFloat(coord.get("x").toString());
                 float y = Float.parseFloat(coord.get("y").toString());
 
-                if (x > highX)
+                if(x > highX)
                     highX = x;
-                if (x < lowX)
+                if(x < lowX)
                     lowX = x;
-                if (y > highY)
+                if(y > highY)
                     highY = y;
-                if (y < lowY)
+                if(y < lowY)
                     lowY = y;
 
-                pieces.get(pieces.size() - 1).corners.add(new FPoint(x, y));
+                pieces.get(pieces.size()-1).corners.add(new FPoint(x,y));
 
             }
             float toCenterX = -(highX + lowX) / 2;
             float toCenterY = -(highY + lowY) / 2;
 
-            for (int i = 0; i < pieces.get(pieces.size() - 1).corners.size(); i++) {
-                pieces.get(pieces.size() - 1).corners.get(i).x += toCenterX;
-                pieces.get(pieces.size() - 1).corners.get(i).y += toCenterY;
+            for (int i = 0; i < pieces.get(pieces.size()-1).corners.size(); i++) {
+                pieces.get(pieces.size()-1).corners.get(i).x += toCenterX;
+                pieces.get(pieces.size()-1).corners.get(i).y += toCenterY;
             }
 
-            int cornerCount = pieces.get(pieces.size() - 1).corners.size();
 
-            if (highCornerCount == -1) {
+        }
+
+        JSONArray formJsonArray = (JSONArray) ((JSONObject) jsonObject.get("puzzle")).get("form");
+        iterator = formJsonArray.iterator();
+        while(iterator.hasNext()){
+            JSONObject coord = (JSONObject) iterator.next().get("coord");
+            float x = Float.parseFloat(coord.get("x").toString());
+            float y = Float.parseFloat(coord.get("y").toString());
+            if (x >= 0.01){
+                puzzleWidth = x;
+            }
+            if (y >= 0.01){
+                puzzleHeight = y;
+            }
+        }
+
+
+        preparePuzzle();
+
+        findSolution();
+    }
+
+
+    private void preparePuzzle(){
+        for (int i = 0; i < pieces.size(); i++) {
+            int cornerCount = pieces.get(i).corners.size();
+
+            if (highCornerCount == -1){
                 highCornerCount = cornerCount;
                 highCornerCountCount++;
-            } else if (highCornerCount == cornerCount) {
+            }
+            else if(highCornerCount == cornerCount){
                 highCornerCountCount++;
-            } else if (lowCornerCount == -1) {
-                if (cornerCount < highCornerCount) {
+            }
+            else if(lowCornerCount == -1){
+                if (cornerCount < highCornerCount){
                     lowCornerCount = cornerCount;
                     lowCornerCountCount++;
-                } else {
+                }
+                else{
                     lowCornerCount = highCornerCount;
                     lowCornerCountCount = highCornerCountCount;
                     highCornerCount = cornerCount;
                     highCornerCountCount = 1;
                 }
-            } else if (lowCornerCount == cornerCount) {
+            }
+            else if (lowCornerCount == cornerCount){
                 lowCornerCountCount++;
-            } else if (midCornerCount == -1) {
-                if (cornerCount < highCornerCount && cornerCount > lowCornerCount) {
+            }
+            else if (midCornerCount == -1){
+                if (cornerCount < highCornerCount && cornerCount > lowCornerCount){
                     midCornerCount = cornerCount;
                     midCornerCountCount++;
-                } else if (cornerCount > highCornerCount) {
+                }
+                else if(cornerCount > highCornerCount){
                     midCornerCount = highCornerCount;
                     midCornerCountCount = highCornerCountCount;
                     highCornerCount = cornerCount;
                     highCornerCountCount = 1;
-                } else {
+                }
+                else{
                     midCornerCount = lowCornerCount;
                     midCornerCountCount = lowCornerCountCount;
                     lowCornerCount = cornerCount;
                     lowCornerCountCount = 1;
                 }
-            } else {
+            }
+            else {
                 midCornerCountCount++;
             }
         }
 
-        JSONArray formJsonArray = (JSONArray) ((JSONObject) jsonObject.get("puzzle")).get("form");
-        iterator = formJsonArray.iterator();
-        while (iterator.hasNext()) {
-            JSONObject coord = (JSONObject) iterator.next().get("coord");
-            float x = Float.parseFloat(coord.get("x").toString());
-            float y = Float.parseFloat(coord.get("y").toString());
-            if (x >= 0.01) {
-                puzzleWidth = x;
-            }
-            if (y >= 0.01) {
-                puzzleHeight = y;
-            }
-        }
-
-        System.out.println("Puzzle dimensions: " + puzzleWidth + " x " + puzzleHeight);
-
-        System.out.println("Number of corners - center: " + highCornerCount + "   side: " + midCornerCount + "   corner: " + lowCornerCount);
-        System.out.println("Number of pieces  - center: " + highCornerCountCount + "   side: " + midCornerCountCount + "   corner: " + lowCornerCountCount);
-
         for (int i = 0; i < pieces.size(); i++) {
             int cornerCount = pieces.get(i).corners.size();
-            if ((lowCornerCountCount == 4 && lowCornerCount == cornerCount) || lowCornerCount == -1) {
+            if ((lowCornerCountCount == 4 && lowCornerCount == cornerCount) || lowCornerCount == -1){
                 pieces.get(i).isCornerPiece = true;
                 pieces.get(i).updateCornerArrayRotation();
-            } else if (cornerCount == midCornerCount || midCornerCount == -1) {
+            }
+            else if(cornerCount == midCornerCount || midCornerCount == -1){
                 pieces.get(i).isSidePiece = true;
                 pieces.get(i).updateCornerArrayRotation();
             }
-            System.out.println("piece" + i);
-            pieces.get(i).generateEdgeData();
+            System.out.println("piece"+i);
+            //pieces.get(i).generateEdgeData();
         }
 
 
         for (int i = 3; i <= midCornerCountCount / 4 + 2; i++) {
-            if ((highCornerCountCount / (i - 2) + i == midCornerCountCount / 2 + 2)) {
+            if ((highCornerCountCount/(i-2)+i==midCornerCountCount/2+2)){
                 m = i;
-                n = highCornerCountCount / (i - 2) + 2;
+                n = highCornerCountCount/(i-2)+2;
             }
         }
 
-        System.out.println("Puzzle size: " + n + " x " + m);
-        findSolution();
+        puzzleWidth = n;
+        puzzleWidth = m;
+
+        System.out.println("Puzzle size: "+n+" x "+m);
+        System.out.println("Puzzle dimensions: " + puzzleWidth + " x " + puzzleHeight);
+
+        System.out.println("Number of corners - center: "+highCornerCount+"   side: "+midCornerCount+"   corner: "+lowCornerCount);
+        System.out.println("Number of pieces  - center: "+highCornerCountCount+"   side: "+midCornerCountCount+"   corner: "+lowCornerCountCount);
     }
 
     /*public boolean matchEdge(Piece piece1, Piece piece2, int edge1, int edge2){
