@@ -118,6 +118,7 @@ public class PuzzleScreenController {
         solveBtn.getStylesheets().add(main_stylesheet.getUrl());
         solveBtn.setOnAction(event -> {
             solvePuzzle();
+            solvePuzzle();
         });
         windowPane.getChildren().add(bottomBtns);
         bottomBtns.getChildren().addAll(mainMenuBtn, spacer1, shuffleBtn, spacer2, solveBtn);
@@ -129,7 +130,27 @@ public class PuzzleScreenController {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n ; j++) {
                 if (i == 0 && j == 0) {
-
+                    double angle = Math.atan2(puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyy());
+                    Rectangle selRect = puzzlePieces.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index);
+                    Piece selPiece = MainMenuController.mainMenuController.getPuzzle().getPieces().get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index);
+                    double pointCornerOneX = selPiece.getCorners().get(selPiece.getCornerIndexes()[1]).x;
+                    double pointCornerOneY = selPiece.getCorners().get(selPiece.getCornerIndexes()[1]).y;
+                    double pointCornerTwoX = selPiece.getCorners().get(selPiece.getCornerIndexes()[2]).x;
+                    double pointCornerTwoY = selPiece.getCorners().get(selPiece.getCornerIndexes()[2]).y;
+                    double pointLength = Math.sqrt(Math.pow(pointCornerOneX - pointCornerTwoX,2) + Math.pow(pointCornerOneY - pointCornerTwoY,2));
+                    double pointAngle = (Math.acos((pointCornerTwoX - pointCornerOneX) / pointLength) * Math.copySign(1, pointCornerTwoY - pointCornerOneY) - angle);
+                    puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getTransforms().add(Affine.rotate((pointAngle * 180) / 3.14,puzzleScale,puzzleScale));
+                    angle = Math.atan2(puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyy());
+                    double xOne = (selPiece.getCorners().get(1).getX() * Math.cos(angle) - selPiece.getCorners().get(1).getY() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
+                    double xTwo = (selPiece.getCorners().get(2).getX() * Math.cos(angle) - selPiece.getCorners().get(2).getY() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
+                    double yOne = (selPiece.getCorners().get(1).getY() * Math.cos(angle) - selPiece.getCorners().get(1).getX() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
+                    double yTwo = (selPiece.getCorners().get(2).getY() * Math.cos(angle) - selPiece.getCorners().get(2).getX() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
+                    double offsetX = xOne - xTwo - 300 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
+                    double offsetY = yOne - yTwo - 300 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
+                    selRect.setX(offsetX);
+                    selRect.setY(offsetY);
+                    puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).setTranslateX(selRect.getX());
+                    puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).setTranslateY(selRect.getY());
                 } else {
                     int indexSnapSnap = j + i * n;
                     if (j == 0) {
@@ -174,7 +195,7 @@ public class PuzzleScreenController {
             puzzleShape.getElements().add(new LineTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getX() * 100 + puzzleScale,
                     MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(i).getY() * 100 + puzzleScale));
         }
-        puzzleShape.setScaleX((Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().n) / 100);
+        puzzleShape.setScaleX(Math.min(Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().puzzleWidth, Main.pStage.getHeight() / MainMenuController.mainMenuController.getPuzzle().puzzleHeight) / 120);
         puzzleShape.setScaleY(puzzleShape.getScaleX());
         newPuzzlePiece.setX(random.nextInt((int) (Main.pStage.getWidth() - 600)));
         newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 600)));
@@ -406,7 +427,7 @@ public class PuzzleScreenController {
         // NEEDS Y FIXING //
 
         Main.pStage.widthProperty().addListener(((observable, oldValue, newValue) -> {
-            puzzleShape.setScaleX((Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().getPieces().size()) / 100);
+            puzzleShape.setScaleX(Math.min(Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().puzzleWidth, Main.pStage.getHeight() / MainMenuController.mainMenuController.getPuzzle().puzzleHeight) / 120);
             puzzleShape.setScaleY(puzzleShape.getScaleX());
             bottomBtns.setPrefWidth(Main.pStage.getWidth());
             if (puzzleShape.getTranslateX() > newValue.intValue() - puzzleShape.getScaleX() * 60 - 300) {
