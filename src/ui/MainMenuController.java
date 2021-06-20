@@ -5,12 +5,14 @@ import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.Puzzle;
 import org.json.simple.parser.ParseException;
@@ -57,6 +59,7 @@ public class MainMenuController {
     }
 
     private void createBackground() {
+        // Setup block colors
         Random random = new Random();
         for (int i = 0; i < 50; i++) {
             blockColors.add(new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1));
@@ -65,6 +68,8 @@ public class MainMenuController {
         int[] durations = {1000, 1200, 1300, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000};
         int durationNum;
         ArrayList<Rectangle> blocks = new ArrayList<>();
+
+        // Create the blocks
         for (int i = 0; i < 50; i++) {
             Rectangle newBlock = new Rectangle();
             newBlock.setWidth(random.nextInt(150 - 20) + 20);
@@ -74,6 +79,8 @@ public class MainMenuController {
             mainMenuCanvas.getChildren().add(blocks.get(i));
             color++;
         }
+
+        // Make the blocks fall
         for (Rectangle block : blocks) {
             Path path = new Path();
             durationNum = random.nextInt(durations.length);
@@ -93,22 +100,34 @@ public class MainMenuController {
     public void handleGenerateGameBtn(ActionEvent actionEvent) throws IOException {
         mainMenuController = this;
         puzzle = new Puzzle();
+
+        // Create the dialog to input the numbers for generation
         Dialog generationSettings = new Dialog();
         generationSettings.setTitle("Input settings for generation of the puzzle");
         generationSettings.setHeaderText("Input Settings");
         DialogPane dialogPane = generationSettings.getDialogPane();
-        dialogPane.setPrefWidth(400);
+        dialogPane.setPrefWidth(700);
         dialogPane.setPrefHeight(200);
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        Stage dialog = (Stage) dialogPane.getScene().getWindow();
+        dialog.getIcons().add(new Image(String.valueOf(this.getClass().getResource("cog.png"))));
+
+        // Create the textfields
         TextField nText = new TextField("20");
         TextField mText = new TextField("10");
         TextField cutsText = new TextField("1");
         TextField varText = new TextField("0.1");
+        nText.getStylesheets().add("ui/main_stylesheet.css");
+        mText.getStylesheets().add("ui/main_stylesheet.css");
+        cutsText.getStylesheets().add("ui/main_stylesheet.css");
+        varText.getStylesheets().add("ui/main_stylesheet.css");
         nText.setPromptText("Input n (must be 3 or above)");
         mText.setPromptText("Input m (must be 3 or above)");
         cutsText.setPromptText("Input number of cuts (must be 1 or above)");
         varText.setPromptText("Input distance between cuts (must be above 0, but less than 1/cuts)");
         dialogPane.setContent(new VBox(10, nText, mText, cutsText, varText));
+
+        // Create logic and alerts for the inputs
         Alert error = new Alert(Alert.AlertType.ERROR);
         error.setTitle("INPUT ERROR");
         dialogPane.lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
@@ -140,8 +159,8 @@ public class MainMenuController {
                 error.setHeaderText("The input, distance, must be a float");
                 error.showAndWait();
                 event.consume();
-            } else if (varText.getText().matches("[+-]?([0-9]*[.])?[0-9]+") && Float.parseFloat(varText.getText()) > 0 && (Float.parseFloat(varText.getText())) > 1/Float.parseFloat(cutsText.getText())) {
-                error.setHeaderText("The input, distance, must be above 0, but less than 1/cuts");
+            } else if (varText.getText().matches("[+-]?([0-9]*[.])?[0-9]+") && Float.parseFloat(varText.getText()) > 0 && (Float.parseFloat(varText.getText())) > 1/(Float.parseFloat(cutsText.getText()) + 2)) {
+                error.setHeaderText("The input, distance, must be above 0, but less than 1/(cuts + 2)");
                 error.showAndWait();
                 event.consume();
             } else {
@@ -159,6 +178,7 @@ public class MainMenuController {
     }
 
     public void handleUploadGameFileBtn(ActionEvent actionEvent) throws IOException, ParseException {
+        // Setup the button for uploading a JSON file
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose a JSON File");
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");

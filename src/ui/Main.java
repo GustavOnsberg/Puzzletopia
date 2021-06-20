@@ -4,7 +4,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 
 import java.io.IOException;
 
@@ -23,6 +25,8 @@ public class Main extends Application {
         pStage.setMinHeight(1000);
         pStage.setMinWidth(1000);
         pStage.maxHeightProperty().bind(pStage.maxWidthProperty());
+        Image icon = new Image("ui/icon.png");
+        pStage.getIcons().add(icon);
         primaryStage.show();
         
     }
