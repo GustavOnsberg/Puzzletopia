@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -101,7 +100,11 @@ public class PuzzleScreenController {
         mainMenuBtn.setPrefWidth(bottomBtns.getPrefWidth() / 3 - 150);
         mainMenuBtn.getStylesheets().add(main_stylesheet.getUrl());
         mainMenuBtn.setOnAction(event -> {
-            mainMenuBtn.setText("he");
+            try {
+                Main.main.setStage("MainMenu.fxml", Main.pStage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         // Setup shuffle button
