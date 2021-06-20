@@ -44,8 +44,10 @@ public class Puzzle {
     }
 
     public void generatePuzzle(int n, int m, int cuts, float var){
+        pieces.clear();
         Generator.generate(n,m,cuts,var,this);
-        this.preparePuzzle();
+        preparePuzzle();
+        findSolution();
     }
 
     public void loadPuzzle(String filePath) throws IOException, ParseException {
@@ -193,8 +195,7 @@ public class Puzzle {
             }
         }
 
-        puzzleWidth = n;
-        puzzleWidth = m;
+
 
         System.out.println("Puzzle size: "+n+" x "+m);
         System.out.println("Puzzle dimensions: " + puzzleWidth + " x " + puzzleHeight);
@@ -528,7 +529,7 @@ public class Puzzle {
     }
 
     public boolean findSolutionRec(ArrayList<Piece> cornerPiece, ArrayList<Piece> sidePiece, ArrayList<Piece> centerPiece, ArrayList<PlacedPiece> placedPieces, int piecePosition) {
-        System.out.println("pp: " + piecePosition);
+        //System.out.println("pp: " + piecePosition);
         //zone 1
         if (piecePosition == 0) {
             System.out.println("zone 1");

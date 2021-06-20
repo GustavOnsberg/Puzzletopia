@@ -4,6 +4,9 @@ public class Generator {
 
     public static void generate(int n, int m, int cuts, float var, Puzzle puzzle){
 
+        puzzle.puzzleWidth = n;
+        puzzle.puzzleHeight = m;
+
         int N = n * (cuts + 1) + 1;
         int M = m * (cuts + 1) + 1;
 
