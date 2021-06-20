@@ -38,7 +38,6 @@ public class Generator {
                 int firstCornerIndexN = j * (cuts + 1);
                 int firstCornerIndexM = i * (cuts + 1);
 
-                System.out.println(firstCornerIndexN+", "+firstCornerIndexM);
 
                 float x = 0;
                 float y = 0;
