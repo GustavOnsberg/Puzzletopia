@@ -33,6 +33,8 @@ public class MainMenuController {
 
     @FXML
     public void initialize() {
+        // First method to run when the controller loads - Frederik
+
         // Setup background
         createBackground();
 
@@ -59,6 +61,8 @@ public class MainMenuController {
     }
 
     private void createBackground() {
+        // Creates the moving background - Frederik
+
         // Setup block colors
         Random random = new Random();
         for (int i = 0; i < 50; i++) {
@@ -98,6 +102,8 @@ public class MainMenuController {
 
 
     public void handleGenerateGameBtn(ActionEvent actionEvent) throws IOException {
+        // Setup the inputs for the generation of a puzzle - Frederik
+
         mainMenuController = this;
         puzzle = new Puzzle();
 
@@ -106,17 +112,17 @@ public class MainMenuController {
         generationSettings.setTitle("Input settings for generation of the puzzle");
         generationSettings.setHeaderText("Input Settings");
         DialogPane dialogPane = generationSettings.getDialogPane();
-        dialogPane.setPrefWidth(700);
+        dialogPane.setPrefWidth(780);
         dialogPane.setPrefHeight(200);
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         Stage dialog = (Stage) dialogPane.getScene().getWindow();
         dialog.getIcons().add(new Image(String.valueOf(this.getClass().getResource("cog.png"))));
 
         // Create the textfields
-        TextField nText = new TextField("20");
-        TextField mText = new TextField("10");
-        TextField cutsText = new TextField("1");
-        TextField varText = new TextField("0.1");
+        TextField nText = new TextField();
+        TextField mText = new TextField();
+        TextField cutsText = new TextField();
+        TextField varText = new TextField();
         nText.getStylesheets().add("ui/main_stylesheet.css");
         mText.getStylesheets().add("ui/main_stylesheet.css");
         cutsText.getStylesheets().add("ui/main_stylesheet.css");
@@ -124,7 +130,7 @@ public class MainMenuController {
         nText.setPromptText("Input n (must be 3 or above)");
         mText.setPromptText("Input m (must be 3 or above)");
         cutsText.setPromptText("Input number of cuts (must be 1 or above)");
-        varText.setPromptText("Input distance between cuts (must be above 0, but less than 1/cuts)");
+        varText.setPromptText("Input distance between cuts (must be above 0, but less than 1/(cuts + 2))");
         dialogPane.setContent(new VBox(10, nText, mText, cutsText, varText));
 
         // Create logic and alerts for the inputs
@@ -178,7 +184,7 @@ public class MainMenuController {
     }
 
     public void handleUploadGameFileBtn(ActionEvent actionEvent) throws IOException, ParseException {
-        // Setup the button for uploading a JSON file
+        // Setup the button for uploading a JSON file - Frederik
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose a JSON File");
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");

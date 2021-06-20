@@ -16,6 +16,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        // Setup the starting stage and scene - Frederik
         Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
         primaryStage.setTitle("Puzzle Topia");
         primaryStage.setScene(new Scene(root));
@@ -32,6 +33,7 @@ public class Main extends Application {
     }
 
     public void setStage(String fxmlName, Stage primaryStage) throws IOException {
+        // Setup scene on the existing stage - Frederik
         Parent root = FXMLLoader.load(getClass().getResource(fxmlName));
         Scene oldScene = primaryStage.getScene();
         primaryStage.setScene(new Scene(root,oldScene.getWidth(),oldScene.getHeight()));
