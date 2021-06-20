@@ -24,8 +24,6 @@ public class PuzzleScreenController {
     public AnchorPane puzzleCanvas;
     public double originalPieceX, originalPieceY, originalMouseX, originalMouseY, mouseX, mouseY;
     public AnchorPane windowPane;
-    float angleChange = 0;
-    public Image puzzlePicture = new Image("ui/test.png");
     private final float puzzleScale = 300;
     Random random = new Random();
     ArrayList<Rectangle> puzzlePieces = new ArrayList<>();
@@ -145,8 +143,8 @@ public class PuzzleScreenController {
                     double xTwo = (selPiece.getCorners().get(2).getX() * Math.cos(angle) - selPiece.getCorners().get(2).getY() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
                     double yOne = (selPiece.getCorners().get(1).getY() * Math.cos(angle) - selPiece.getCorners().get(1).getX() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
                     double yTwo = (selPiece.getCorners().get(2).getY() * Math.cos(angle) - selPiece.getCorners().get(2).getX() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
-                    double offsetX = xOne - xTwo - 0 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
-                    double offsetY = yOne - yTwo - 0 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
+                    double offsetX = xOne - xTwo - 300 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
+                    double offsetY = yOne - yTwo - 300 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
                     selRect.setX(offsetX);
                     selRect.setY(offsetY);
                     puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).setTranslateX(selRect.getX());
@@ -185,8 +183,6 @@ public class PuzzleScreenController {
 
     private void makePuzzlePiece(int pieceNumber, int color) {
         Rectangle newPuzzlePiece = new Rectangle(10000, 10000);
-//        ImagePattern picturePattern = new ImagePattern(puzzlePicture);
-//        newPuzzlePiece.setFill(picturePattern);
         newPuzzlePiece.setFill(pieceColors.get(color));
         Path puzzleShape = new Path();
         puzzleShape.getElements().add(new MoveTo(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + puzzleScale,
@@ -422,8 +418,6 @@ public class PuzzleScreenController {
     }
 
     private void rescaleCanvas(Path puzzleShape, Rectangle newPuzzlePiece) {
-        // NEEDS Y FIXING //
-
         Main.pStage.widthProperty().addListener(((observable, oldValue, newValue) -> {
             puzzleShape.setScaleX(Math.min(Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().puzzleWidth, Main.pStage.getHeight() / MainMenuController.mainMenuController.getPuzzle().puzzleHeight) / 120);
             puzzleShape.setScaleY(puzzleShape.getScaleX());
