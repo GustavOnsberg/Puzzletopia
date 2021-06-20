@@ -136,13 +136,8 @@ public class PuzzleScreenController {
                     double pointCornerTwoX = selPiece.getCorners().get(selPiece.getCornerIndexes()[2]).x;
                     double pointCornerTwoY = selPiece.getCorners().get(selPiece.getCornerIndexes()[2]).y;
                     double pointLength = Math.sqrt(Math.pow(pointCornerOneX - pointCornerTwoX, 2) + Math.pow(pointCornerOneY - pointCornerTwoY, 2));
-                    double pointAngle = (Math.acos((pointCornerTwoX - pointCornerOneX) / pointLength) * Math.copySign(1, pointCornerTwoY - pointCornerOneY) - angle);
+                    double pointAngle = (-Math.acos((pointCornerTwoX - pointCornerOneX) / pointLength) * Math.copySign(1, pointCornerTwoY - pointCornerOneY) - angle);
                     puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getTransforms().add(Affine.rotate((pointAngle * 180) / 3.14, puzzleScale, puzzleScale));
-                    angle = Math.atan2(puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyx(), puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyy());
-                    double xOne = (selPiece.getCorners().get(1).getX() * Math.cos(angle) - selPiece.getCorners().get(1).getY() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
-                    double xTwo = (selPiece.getCorners().get(2).getX() * Math.cos(angle) - selPiece.getCorners().get(2).getY() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
-                    double yOne = (selPiece.getCorners().get(1).getY() * Math.cos(angle) - selPiece.getCorners().get(1).getX() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
-                    double yTwo = (selPiece.getCorners().get(2).getY() * Math.cos(angle) - selPiece.getCorners().get(2).getX() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
                     double offsetX = -300 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60 ;
                     double offsetY = -300 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
                     selRect.setX(offsetX);
