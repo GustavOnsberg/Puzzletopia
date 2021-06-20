@@ -1,14 +1,12 @@
 package ui;
 
 import javafx.animation.Animation;
-import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
@@ -17,7 +15,6 @@ import javafx.util.Duration;
 import main.Puzzle;
 import org.json.simple.parser.ParseException;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +22,7 @@ import java.util.Random;
 
 public class MainMenuController {
 
-    public Button btnStartGame;
+    public Button btnGenerateGame;
     public Button btnUploadGameFile;
     public Puzzle puzzle;
     public static MainMenuController mainMenuController;
@@ -38,19 +35,19 @@ public class MainMenuController {
         createBackground();
 
         //Setup buttons
-        btnStartGame.getStylesheets().add("ui/main_stylesheet.css");
+        btnGenerateGame.getStylesheets().add("ui/main_stylesheet.css");
         btnUploadGameFile.getStylesheets().add("ui/main_stylesheet.css");
-        btnStartGame.setId("main_menu_button");
+        btnGenerateGame.setId("main_menu_button");
         btnUploadGameFile.setId("main_menu_button");
-        btnStartGame.setText("START NEW PUZZLE");
+        btnGenerateGame.setText("START NEW PUZZLE");
         btnUploadGameFile.setText("UPLOAD GAME FILE");
-        btnStartGame.setPrefWidth(300);
+        btnGenerateGame.setPrefWidth(300);
         btnUploadGameFile.setPrefWidth(300);
-        AnchorPane.setTopAnchor(btnStartGame, 50.0);
-        AnchorPane.setLeftAnchor(btnStartGame,50.0);
+        AnchorPane.setTopAnchor(btnGenerateGame, 50.0);
+        AnchorPane.setLeftAnchor(btnGenerateGame,50.0);
         AnchorPane.setTopAnchor(btnUploadGameFile, 200.0);
         AnchorPane.setLeftAnchor(btnUploadGameFile,50.0);
-        btnStartGame.setSkin(new MainMenuButtonSkin(btnStartGame));
+        btnGenerateGame.setSkin(new MainMenuButtonSkin(btnGenerateGame));
         btnUploadGameFile.setSkin(new MainMenuButtonSkin(btnUploadGameFile));
 
 
@@ -93,9 +90,72 @@ public class MainMenuController {
     }
 
 
-    public void handleStartGameBtn(ActionEvent actionEvent) throws IOException {
+    public void handleGenerateGameBtn(ActionEvent actionEvent) throws IOException {
         mainMenuController = this;
-        Main.main.setStage("/ui/PuzzleScreen.fxml", Main.pStage);
+        puzzle = new Puzzle();
+        Dialog generationSettings = new Dialog();
+        generationSettings.setTitle("Input settings for generation of the puzzle");
+        generationSettings.setHeaderText("Input Settings");
+        DialogPane dialogPane = generationSettings.getDialogPane();
+        dialogPane.setPrefWidth(400);
+        dialogPane.setPrefHeight(200);
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        TextField nText = new TextField("20");
+        TextField mText = new TextField("10");
+        TextField cutsText = new TextField("1");
+        TextField varText = new TextField("0.1");
+        nText.setPromptText("Input n (must be 3 or above)");
+        mText.setPromptText("Input m (must be 3 or above)");
+        cutsText.setPromptText("Input number of cuts (must be 1 or above)");
+        varText.setPromptText("Input distance between cuts (must be above 0, but less than 1/cuts)");
+        dialogPane.setContent(new VBox(10, nText, mText, cutsText, varText));
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setTitle("INPUT ERROR");
+        dialogPane.lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
+            if (!nText.getText().matches("\\d*") || nText.getText().equals("")) {
+                error.setHeaderText("The input, n, must be an integer");
+                error.showAndWait();
+                event.consume();
+            } else if (nText.getText().matches("\\d*") && !(Integer.parseInt(nText.getText()) >= 3)) {
+                error.setHeaderText("The input, n, must be 3 or above");
+                error.showAndWait();
+                event.consume();
+            } else if (!mText.getText().matches("\\d*") || mText.getText().equals("")) {
+                error.setHeaderText("The input, m, must be an integer");
+                error.showAndWait();
+                event.consume();
+            } else if (mText.getText().matches("\\d*") && !(Integer.parseInt(mText.getText()) >= 3)) {
+                error.setHeaderText("The input, m, must be 3 or above");
+                error.showAndWait();
+                event.consume();
+            } else if (!cutsText.getText().matches("\\d*") || cutsText.getText().equals("")) {
+                error.setHeaderText("The input, cuts, must be an integer");
+                error.showAndWait();
+                event.consume();
+            } else if (cutsText.getText().matches("\\d*") && !(Integer.parseInt(cutsText.getText()) >= 1)) {
+                error.setHeaderText("The input, cuts, must be 1 or above");
+                error.showAndWait();
+                event.consume();
+            } else if (!varText.getText().matches("[+-]?([0-9]*[.])?[0-9]+") || varText.getText().equals("")) {
+                error.setHeaderText("The input, distance, must be a float");
+                error.showAndWait();
+                event.consume();
+            } else if (varText.getText().matches("[+-]?([0-9]*[.])?[0-9]+") && Float.parseFloat(varText.getText()) > 0 && (Float.parseFloat(varText.getText())) > 1/Float.parseFloat(cutsText.getText())) {
+                error.setHeaderText("The input, distance, must be above 0, but less than 1/cuts");
+                error.showAndWait();
+                event.consume();
+            } else {
+                mainMenuController.getPuzzle().generatePuzzle(Integer.parseInt(nText.getText()), Integer.parseInt(mText.getText()), Integer.parseInt(cutsText.getText()), Float.parseFloat(varText.getText()));
+                try {
+                    Main.main.setStage("/ui/PuzzleScreen.fxml", Main.pStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            });
+
+        generationSettings.show();
+
     }
 
     public void handleUploadGameFileBtn(ActionEvent actionEvent) throws IOException, ParseException {

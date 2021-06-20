@@ -71,7 +71,7 @@ public class PuzzleScreenController {
                 puzzlePieces.get(i).setY(random.nextInt((int) (Main.pStage.getHeight() - 600)));
                 puzzleShapesList.get(i).setTranslateX(puzzlePieces.get(i).getX());
                 puzzleShapesList.get(i).setTranslateY(puzzlePieces.get(i).getY());
-                puzzleShapesList.get(i).getTransforms().add(Affine.rotate(random.nextInt((180 - (-180) + (-180))),puzzleScale,puzzleScale));
+                puzzleShapesList.get(i).getTransforms().add(Affine.rotate(random.nextInt((180 - (-180) + (-180))), puzzleScale, puzzleScale));
                 puzzleShapesList.get(i).setRotate(random.nextInt((360 - (-360) + (-360))));
             }
         });
@@ -89,7 +89,7 @@ public class PuzzleScreenController {
         bottomBtns.setStyle("-fx-background-color: #ff9900;");
         bottomBtns.toFront();
         AnchorPane.setBottomAnchor(bottomBtns, 0.0);
-        bottomBtns.setPadding(new Insets(22,30,22,10));
+        bottomBtns.setPadding(new Insets(22, 30, 22, 10));
         bottomBtns.setSpacing(20);
 
         // Setup spacers
@@ -128,25 +128,25 @@ public class PuzzleScreenController {
         int n = MainMenuController.mainMenuController.getPuzzle().n;
         int m = MainMenuController.mainMenuController.getPuzzle().m;
         for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n ; j++) {
+            for (int j = 0; j < n; j++) {
                 if (i == 0 && j == 0) {
-                    double angle = Math.atan2(puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyy());
+                    double angle = Math.atan2(puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyx(), puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyy());
                     Rectangle selRect = puzzlePieces.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index);
                     Piece selPiece = MainMenuController.mainMenuController.getPuzzle().getPieces().get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index);
                     double pointCornerOneX = selPiece.getCorners().get(selPiece.getCornerIndexes()[1]).x;
                     double pointCornerOneY = selPiece.getCorners().get(selPiece.getCornerIndexes()[1]).y;
                     double pointCornerTwoX = selPiece.getCorners().get(selPiece.getCornerIndexes()[2]).x;
                     double pointCornerTwoY = selPiece.getCorners().get(selPiece.getCornerIndexes()[2]).y;
-                    double pointLength = Math.sqrt(Math.pow(pointCornerOneX - pointCornerTwoX,2) + Math.pow(pointCornerOneY - pointCornerTwoY,2));
+                    double pointLength = Math.sqrt(Math.pow(pointCornerOneX - pointCornerTwoX, 2) + Math.pow(pointCornerOneY - pointCornerTwoY, 2));
                     double pointAngle = (Math.acos((pointCornerTwoX - pointCornerOneX) / pointLength) * Math.copySign(1, pointCornerTwoY - pointCornerOneY) - angle);
-                    puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getTransforms().add(Affine.rotate((pointAngle * 180) / 3.14,puzzleScale,puzzleScale));
-                    angle = Math.atan2(puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyy());
+                    puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getTransforms().add(Affine.rotate((pointAngle * 180) / 3.14, puzzleScale, puzzleScale));
+                    angle = Math.atan2(puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyx(), puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getLocalToSceneTransform().getMyy());
                     double xOne = (selPiece.getCorners().get(1).getX() * Math.cos(angle) - selPiece.getCorners().get(1).getY() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
                     double xTwo = (selPiece.getCorners().get(2).getX() * Math.cos(angle) - selPiece.getCorners().get(2).getY() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
                     double yOne = (selPiece.getCorners().get(1).getY() * Math.cos(angle) - selPiece.getCorners().get(1).getX() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
                     double yTwo = (selPiece.getCorners().get(2).getY() * Math.cos(angle) - selPiece.getCorners().get(2).getX() * Math.sin(angle) * puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 100 - 300);
-                    double offsetX = xOne - xTwo - 300 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
-                    double offsetY = yOne - yTwo - 300 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
+                    double offsetX = xOne - xTwo - 0 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
+                    double offsetY = yOne - yTwo - 0 + puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).getScaleX() * 60;
                     selRect.setX(offsetX);
                     selRect.setY(offsetY);
                     puzzleShapesList.get(MainMenuController.mainMenuController.getPuzzle().placedPiecesFinal.get(0).index).setTranslateX(selRect.getX());
@@ -201,7 +201,7 @@ public class PuzzleScreenController {
         newPuzzlePiece.setY(random.nextInt((int) (Main.pStage.getHeight() - 600)));
         puzzleShape.setTranslateX(newPuzzlePiece.getX());
         puzzleShape.setTranslateY(newPuzzlePiece.getY());
-        puzzleShape.getTransforms().add(Affine.rotate(random.nextInt((180 - (-180) + (-180))),puzzleScale,puzzleScale));
+        puzzleShape.getTransforms().add(Affine.rotate(random.nextInt((180 - (-180) + (-180))), puzzleScale, puzzleScale));
         puzzleShape.setRotate(random.nextInt((360 - (-360) + (-360))));
 
 //        debugCorners(pieceNumber, newPuzzlePiece);
@@ -235,17 +235,17 @@ public class PuzzleScreenController {
                                     // Debug matches
 //                                    System.out.println("Courner match - moved: "+i+"   other: "+j);
 
-                                    int nextSelCorner = checkArray(cornersSelected, i+1);
-                                    int prevSelCorner = checkArray(cornersSelected, i-1);
-                                    int nextCheckCorner = checkArray(cornersCheck, j+1);
-                                    int prevCheckCorner = checkArray(cornersCheck, j-1);
+                                    int nextSelCorner = checkArray(cornersSelected, i + 1);
+                                    int prevSelCorner = checkArray(cornersSelected, i - 1);
+                                    int nextCheckCorner = checkArray(cornersCheck, j + 1);
+                                    int prevCheckCorner = checkArray(cornersCheck, j - 1);
                                     int edgeOne = -1;
                                     int edgeTwo = -1;
                                     if (checkCorners(pieceSelected, pieceChecked, newPuzzlePiece, puzzlePiece, cornersSelected, cornersCheck, puzzleShape, nextSelCorner, prevCheckCorner, numCheckPiece)) {
                                         edgeOne = i;
                                         edgeTwo = prevCheckCorner;
                                         isComp = true;
-                                    } else if(checkCorners(pieceSelected, pieceChecked, newPuzzlePiece, puzzlePiece, cornersSelected, cornersCheck, puzzleShape, prevSelCorner, nextCheckCorner, numCheckPiece)) {
+                                    } else if (checkCorners(pieceSelected, pieceChecked, newPuzzlePiece, puzzlePiece, cornersSelected, cornersCheck, puzzleShape, prevSelCorner, nextCheckCorner, numCheckPiece)) {
                                         edgeOne = prevSelCorner;
                                         edgeTwo = j;
                                         isComp = true;
@@ -270,24 +270,24 @@ public class PuzzleScreenController {
     }
 
     private void snapTo(Path puzzleShape, Rectangle piece, int numCheckPiece, Rectangle puzzlePiece, int index, int index1, Piece pieceSelected, Piece pieceChecked, int edgeOne, int edgeTwo) {
-        double angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy());
-        double angleChecked = Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy());
+        double angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(), puzzleShape.getLocalToSceneTransform().getMyy());
+        double angleChecked = Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(), puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy());
         float p1c1x = pieceSelected.getCorners().get(pieceSelected.getCornerIndexes()[edgeOne]).x;
         float p1c1y = pieceSelected.getCorners().get(pieceSelected.getCornerIndexes()[edgeOne]).y;
         float p1c2x = pieceSelected.getCorners().get(pieceSelected.getCornerIndexes()[(edgeOne + 1) % 4]).x;
         float p1c2y = pieceSelected.getCorners().get(pieceSelected.getCornerIndexes()[(edgeOne + 1) % 4]).y;
-        float p1eLength = (float) Math.sqrt(Math.pow(p1c1x - p1c2x,2) + Math.pow(p1c1y - p1c2y,2));
-        float p1eAngle = (float) (Math.acos((p1c2x - p1c1x) / p1eLength) * Math.copySign(1,p1c2y - p1c1y) + angleSelected);
+        float p1eLength = (float) Math.sqrt(Math.pow(p1c1x - p1c2x, 2) + Math.pow(p1c1y - p1c2y, 2));
+        float p1eAngle = (float) (Math.acos((p1c2x - p1c1x) / p1eLength) * Math.copySign(1, p1c2y - p1c1y) + angleSelected);
 
         float p2c1x = pieceChecked.getCorners().get(pieceChecked.getCornerIndexes()[edgeTwo]).x;
         float p2c1y = pieceChecked.getCorners().get(pieceChecked.getCornerIndexes()[edgeTwo]).y;
         float p2c2x = pieceChecked.getCorners().get(pieceChecked.getCornerIndexes()[(edgeTwo + 1) % 4]).x;
         float p2c2y = pieceChecked.getCorners().get(pieceChecked.getCornerIndexes()[(edgeTwo + 1) % 4]).y;
-        float p2eLength = (float) Math.sqrt(Math.pow(p2c1x - p2c2x,2) + Math.pow(p2c1y - p2c2y,2));
-        float p2eAngle = (float) (Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(1,p2c1y - p2c2y) + angleChecked);
-        puzzleShape.getTransforms().add(Affine.rotate(((p2eAngle - p1eAngle) * 180) / 3.14,puzzleScale,puzzleScale));
-        angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy());
-        angleChecked = Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy());
+        float p2eLength = (float) Math.sqrt(Math.pow(p2c1x - p2c2x, 2) + Math.pow(p2c1y - p2c2y, 2));
+        float p2eAngle = (float) (Math.acos((p2c1x - p2c2x) / p2eLength) * Math.copySign(1, p2c1y - p2c2y) + angleChecked);
+        puzzleShape.getTransforms().add(Affine.rotate(((p2eAngle - p1eAngle) * 180) / 3.14, puzzleScale, puzzleScale));
+        angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(), puzzleShape.getLocalToSceneTransform().getMyy());
+        angleChecked = Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(), puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy());
 
         double x1 = (pieceSelected.getCorners().get(index).getX() * Math.cos(angleSelected) - pieceSelected.getCorners().get(index).getY() * Math.sin(angleSelected)) * puzzleShape.getScaleX() * 100;
         double x2 = (pieceChecked.getCorners().get(index1).getX() * Math.cos(angleChecked) - pieceChecked.getCorners().get(index1).getY() * Math.sin(angleChecked)) * puzzleShape.getScaleX() * 100;
@@ -305,8 +305,8 @@ public class PuzzleScreenController {
     private boolean checkCorners(Piece pieceSelectedCorner, Piece pieceCheckedCorner, Rectangle newPuzzlePiece, Rectangle puzzlePiece, int[] cornersSelected, int[] cornersCheck, Path puzzleShape, int i, int j, int numCheckPiece) {
         int tol = 20;
         double scale = puzzleShape.getScaleX() * 100;
-        double angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(),puzzleShape.getLocalToSceneTransform().getMyy());
-        double angleChecked = Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(),puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy());
+        double angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(), puzzleShape.getLocalToSceneTransform().getMyy());
+        double angleChecked = Math.atan2(puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyx(), puzzleShapesList.get(numCheckPiece).getLocalToSceneTransform().getMyy());
         double pieceSelectedCornerY = pieceSelectedCorner.getCorners().get(cornersSelected[i]).getX() * Math.sin(angleSelected) + pieceSelectedCorner.getCorners().get(cornersSelected[i]).getY() * Math.cos(angleSelected);
         double pieceSelectedCornerX = pieceSelectedCorner.getCorners().get(cornersSelected[i]).getX() * Math.cos(angleSelected) - pieceSelectedCorner.getCorners().get(cornersSelected[i]).getY() * Math.sin(angleSelected);
         double pieceCheckedCornerY = pieceCheckedCorner.getCorners().get(cornersCheck[j]).getX() * Math.sin(angleChecked) + pieceCheckedCorner.getCorners().get(cornersCheck[j]).getY() * Math.cos(angleChecked);
@@ -314,17 +314,17 @@ public class PuzzleScreenController {
 
         boolean enableDebug = false;
         if (enableDebug) {
-            System.out.println("\nTotal Moved x: "+(newPuzzlePiece.getX() + pieceSelectedCornerX * scale) + ", Other x: " + (puzzlePiece.getX() + pieceCheckedCornerX * scale));
-            System.out.println("Total Moved y: "+(newPuzzlePiece.getY() + pieceSelectedCornerY * scale) + ", Other y: " + (puzzlePiece.getY() + pieceCheckedCornerY * scale));
-            System.out.println("Relative Moved x: "+(pieceSelectedCornerX * scale) + ", Other x: " + (pieceCheckedCornerX * scale));
-            System.out.println("Relative Moved y: "+(pieceSelectedCornerY * scale) + ", Other y: " + (pieceCheckedCornerY * scale));
-            System.out.println("Piece Moved x: "+(newPuzzlePiece.getX()) + ", Other x: " + (puzzlePiece.getX()));
-            System.out.println("Piece Moved y: "+(newPuzzlePiece.getY()) + ", Other y: " + (puzzlePiece.getY()));
-            System.out.println("Angle moved: "+ angleSelected + ", other: "+angleChecked);
-            System.out.println("Corner checking function - moved: "+i+"   other: "+j);
+            System.out.println("\nTotal Moved x: " + (newPuzzlePiece.getX() + pieceSelectedCornerX * scale) + ", Other x: " + (puzzlePiece.getX() + pieceCheckedCornerX * scale));
+            System.out.println("Total Moved y: " + (newPuzzlePiece.getY() + pieceSelectedCornerY * scale) + ", Other y: " + (puzzlePiece.getY() + pieceCheckedCornerY * scale));
+            System.out.println("Relative Moved x: " + (pieceSelectedCornerX * scale) + ", Other x: " + (pieceCheckedCornerX * scale));
+            System.out.println("Relative Moved y: " + (pieceSelectedCornerY * scale) + ", Other y: " + (pieceCheckedCornerY * scale));
+            System.out.println("Piece Moved x: " + (newPuzzlePiece.getX()) + ", Other x: " + (puzzlePiece.getX()));
+            System.out.println("Piece Moved y: " + (newPuzzlePiece.getY()) + ", Other y: " + (puzzlePiece.getY()));
+            System.out.println("Angle moved: " + angleSelected + ", other: " + angleChecked);
+            System.out.println("Corner checking function - moved: " + i + "   other: " + j);
         }
 
-        return  newPuzzlePiece.getX() + pieceSelectedCornerX * scale > puzzlePiece.getX() + pieceCheckedCornerX * scale - tol &&
+        return newPuzzlePiece.getX() + pieceSelectedCornerX * scale > puzzlePiece.getX() + pieceCheckedCornerX * scale - tol &&
                 newPuzzlePiece.getX() + pieceSelectedCornerX * scale < puzzlePiece.getX() + pieceCheckedCornerX * scale + tol &&
                 newPuzzlePiece.getY() + pieceSelectedCornerY * scale > puzzlePiece.getY() + pieceCheckedCornerY * scale - tol &&
                 newPuzzlePiece.getY() + pieceSelectedCornerY * scale < puzzlePiece.getY() + pieceCheckedCornerY * scale + tol;
@@ -385,32 +385,30 @@ public class PuzzleScreenController {
                 // System.out.println("Piece Y: " + piece.getY());
 
             } else if (event.isSecondaryButtonDown()) {
-                if (((Math.pow(MouseInfo.getPointerInfo().getLocation().x - originalMouseX,2) + Math.pow((MouseInfo.getPointerInfo().getLocation().y - originalMouseY),2)) > 2500)) {
-                    double a = Math.sqrt(Math.pow(MouseInfo.getPointerInfo().getLocation().x - originalMouseX,2) + Math.pow(MouseInfo.getPointerInfo().getLocation().y - originalMouseY,2));
-                    double b = Math.sqrt(Math.pow(mouseX - originalMouseX,2) + Math.pow(mouseY - originalMouseY, 2));
-                    double c = Math.sqrt(Math.pow(MouseInfo.getPointerInfo().getLocation().x - mouseX,2) + Math.pow(MouseInfo.getPointerInfo().getLocation().y - mouseY, 2));
-                    ramma = Math.acos((Math.pow(a,2) + Math.pow(b,2) - Math.pow(c,2))/(2 * a * b));
-
+                if (((Math.pow(MouseInfo.getPointerInfo().getLocation().x - originalMouseX, 2) + Math.pow((MouseInfo.getPointerInfo().getLocation().y - originalMouseY), 2)) > 2500)) {
+                    double a = Math.sqrt(Math.pow(MouseInfo.getPointerInfo().getLocation().x - originalMouseX, 2) + Math.pow(MouseInfo.getPointerInfo().getLocation().y - originalMouseY, 2));
+                    double b = Math.sqrt(Math.pow(mouseX - originalMouseX, 2) + Math.pow(mouseY - originalMouseY, 2));
+                    double c = Math.sqrt(Math.pow(MouseInfo.getPointerInfo().getLocation().x - mouseX, 2) + Math.pow(MouseInfo.getPointerInfo().getLocation().y - mouseY, 2));
+                    ramma = Math.acos((Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / (2 * a * b));
 
 
                     double relativeX = MouseInfo.getPointerInfo().getLocation().x - originalMouseX;
                     double relativeY = MouseInfo.getPointerInfo().getLocation().y - originalMouseY;
                     double deltaLength = Math.sqrt(Math.pow(relativeX, 2) + Math.pow(relativeY, 2));
-                    relativeX/=deltaLength;
-                    relativeY/=deltaLength;
+                    relativeX /= deltaLength;
+                    relativeY /= deltaLength;
 
                     deltaX = MouseInfo.getPointerInfo().getLocation().x - originalMouseX;
                     deltaY = relativeY = MouseInfo.getPointerInfo().getLocation().y - originalMouseY;
                     deltaLength = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
-                    deltaX/=deltaLength;
-                    deltaY/=deltaLength;
+                    deltaX /= deltaLength;
+                    deltaY /= deltaLength;
 
-                    if ((deltaX > 0 && deltaY > prevDeltaY) || (deltaX < 0 && deltaY < prevDeltaY)){
-                        puzzleShape.getTransforms().add(Affine.rotate(ramma * 180 / 3.14,puzzleScale,puzzleScale));
+                    if ((deltaX > 0 && deltaY > prevDeltaY) || (deltaX < 0 && deltaY < prevDeltaY)) {
+                        puzzleShape.getTransforms().add(Affine.rotate(ramma * 180 / 3.14, puzzleScale, puzzleScale));
                         puzzleShape.setRotate(ramma * 180 / 3.14);
-                    }
-                    else{
-                        puzzleShape.getTransforms().add(Affine.rotate(-ramma * 180 / 3.14,puzzleScale,puzzleScale));
+                    } else {
+                        puzzleShape.getTransforms().add(Affine.rotate(-ramma * 180 / 3.14, puzzleScale, puzzleScale));
                         puzzleShape.setRotate(-ramma * 180 / 3.14);
                     }
                     prevDeltaX = deltaX;
@@ -446,7 +444,7 @@ public class PuzzleScreenController {
     private void debugCorners(int pieceNumber, Rectangle newPuzzlePiece) {
         // First corner
         Line debug1 = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
-                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100, MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
                 MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100);
         debug1.setStrokeWidth(10);
         debug1.setTranslateX(newPuzzlePiece.getX());
@@ -454,7 +452,7 @@ public class PuzzleScreenController {
         debug1.setStroke(Color.BLUE);
         // Second corner
         Line debug2 = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
-                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100,MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
+                MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100, MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getX() * 100 + 100,
                 MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(1).getY() * 100 + 100);
         debug2.setStrokeWidth(10);
         debug2.setTranslateX(newPuzzlePiece.getX());
