@@ -11,12 +11,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
+    // This file is the Main file, it puts new cenes on the stages. Made by Frederik
     public static Stage pStage;
     public static Main main;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        // Setup the starting stage and scene - Frederik
+        // Setup the starting stage and scene
         Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
         primaryStage.setTitle("Puzzle Topia");
         primaryStage.setScene(new Scene(root));
@@ -33,7 +34,7 @@ public class Main extends Application {
     }
 
     public void setStage(String fxmlName, Stage primaryStage) throws IOException {
-        // Setup scene on the existing stage - Frederik
+        // Setup scene on the existing stage
         Parent root = FXMLLoader.load(getClass().getResource(fxmlName));
         Scene oldScene = primaryStage.getScene();
         primaryStage.setScene(new Scene(root,oldScene.getWidth(),oldScene.getHeight()));
