@@ -196,6 +196,7 @@ public class Puzzle {
         }
 
 
+        CheckUnique(pieces);
 
         System.out.println("Puzzle size: "+n+" x "+m);
         System.out.println("Puzzle dimensions: " + puzzleWidth + " x " + puzzleHeight);
@@ -377,19 +378,16 @@ public class Puzzle {
 
 
             float rotation = (float) Math.acos((x2 - x0) / diagonal1) * Math.copySign(1, y2 - y0);
-            System.out.println("rotation: " + rotation);
 
             cornerChecked.add(new CheckedPiece(cornerPiece.get(i), diagonal1, diagonal2, rotation));
             for (int j = 0; j < cornerChecked.size() - 1; j++) {
                 if (Math.abs(cornerChecked.get(j).diagonal1 - cornerChecked.get(cornerChecked.size() - 1).diagonal1) < 0.001 && Math.abs(cornerChecked.get(j).diagonal2 - cornerChecked.get(cornerChecked.size() - 1).diagonal2) < 0.001) {
-                    System.out.println("diagonal match corner:" + pieces.indexOf(cornerChecked.get(j).piece) + " : " + pieces.indexOf(cornerChecked.get(cornerChecked.size() - 1).piece));
                     float newX1;
                     float newY1;
                     float newX2;
                     float newY2;
 
                     for (int k = 0; k < cornerChecked.get(cornerChecked.size() - 1).piece.corners.size(); k++) {
-                        System.out.println("checking "+k);
                         newX1 = (float) (cornerChecked.get(cornerChecked.size() - 1).piece.corners.get(k).x * Math.cos(cornerChecked.get(cornerChecked.size() - 1).rotation) - cornerChecked.get(cornerChecked.size() - 1).piece.corners.get(k).x * Math.sin(cornerChecked.get(cornerChecked.size() - 1).rotation));
                         newY1 = (float) (cornerChecked.get(cornerChecked.size() - 1).piece.corners.get(k).x * Math.sin(cornerChecked.get(cornerChecked.size() - 1).rotation) + cornerChecked.get(cornerChecked.size() - 1).piece.corners.get(k).x * Math.cos(cornerChecked.get(cornerChecked.size() - 1).rotation));
                         newX2 = (float) (cornerChecked.get(j).piece.corners.get(k).x * Math.cos(cornerChecked.get(j).rotation) - cornerChecked.get(j).piece.corners.get(k).x * Math.sin(cornerChecked.get(j).rotation));
@@ -397,7 +395,7 @@ public class Puzzle {
                         if (Math.abs(newX1-newX2)>0.001 || Math.abs(newY1-newY2)>0.001) {
                             break;
                         } else if (Math.abs(newX1-newX2)<0.001 && Math.abs(newY1 -newY1)<0.001&& k == cornerChecked.get(cornerChecked.size() - 1).piece.corners.size() - 1) {
-                            System.out.println("youre not special corner");
+                            System.out.println("All pieces unique: false");
                             return false;
                         }
                     }
@@ -427,23 +425,20 @@ public class Puzzle {
             sideChecked.add(new CheckedPiece(sidePiece.get(i), diagonal1, diagonal2, rotation));
             for (int j = 0; j < sideChecked.size() - 1; j++) {
                 if (Math.abs(sideChecked.get(j).diagonal1 - sideChecked.get(sideChecked.size() - 1).diagonal1) < 0.001 && Math.abs(sideChecked.get(j).diagonal2 - sideChecked.get(sideChecked.size() - 1).diagonal2) < 0.001) {
-                    System.out.println("diagonal match side:" + pieces.indexOf(sideChecked.get(j).piece) + " : " + pieces.indexOf(sideChecked.get(sideChecked.size() - 1).piece));
                     float newX1;
                     float newY1;
                     float newX2;
                     float newY2;
 
                     for (int k = 0; k < sideChecked.get(sideChecked.size() - 1).piece.corners.size(); k++) {
-                        System.out.println("checking "+k);
                         newX1 = (float) (sideChecked.get(sideChecked.size() - 1).piece.corners.get(k).x * Math.cos(sideChecked.get(sideChecked.size() - 1).rotation) - sideChecked.get(sideChecked.size() - 1).piece.corners.get(k).x * Math.sin(sideChecked.get(sideChecked.size() - 1).rotation));
                         newY1 = (float) (sideChecked.get(sideChecked.size() - 1).piece.corners.get(k).x * Math.sin(sideChecked.get(sideChecked.size() - 1).rotation) + sideChecked.get(sideChecked.size() - 1).piece.corners.get(k).x * Math.cos(sideChecked.get(sideChecked.size() - 1).rotation));
                         newX2 = (float) (sideChecked.get(j).piece.corners.get(k).x * Math.cos(sideChecked.get(j).rotation) - sideChecked.get(j).piece.corners.get(k).x * Math.sin(sideChecked.get(j).rotation));
                         newY2 = (float) (sideChecked.get(j).piece.corners.get(k).x * Math.sin(sideChecked.get(j).rotation) + sideChecked.get(j).piece.corners.get(k).x * Math.cos(sideChecked.get(j).rotation));
                         if (Math.abs(newX1-newX2)>0.001 || Math.abs(newY1-newY2)>0.001) {
-                            System.out.println("break");
                             break;
                         } else if (Math.abs(newX1-newX2)<0.001 && Math.abs(newY1 -newY1)<0.001&& k == sideChecked.get(sideChecked.size() - 1).piece.corners.size() - 1) {
-                            System.out.println("youre not special side");
+                            System.out.println("All pieces unique: false");
                             return false;
                         }
                     }
@@ -469,12 +464,10 @@ public class Puzzle {
 
 
             float rotation = (float) Math.acos((x2 - x0) / diagonal1) * Math.copySign(1, y2 - y0);
-            System.out.println("rotation: " + rotation);
 
             centerChecked.add(new CheckedPiece(centerPiece.get(i), diagonal1, diagonal2, rotation));
             for (int j = 0; j < centerChecked.size() - 1; j++) {
                 if (Math.abs(centerChecked.get(j).diagonal1 - centerChecked.get(centerChecked.size() - 1).diagonal1) < 0.001 && Math.abs(centerChecked.get(j).diagonal2 - centerChecked.get(centerChecked.size() - 1).diagonal2) < 0.001) {
-                    System.out.println("diagonal match center:" + pieces.indexOf(centerChecked.get(j).piece) + " : " + pieces.indexOf(centerChecked.get(centerChecked.size() - 1).piece));
                     float newX1;
                     float newY1;
                     float newX2;
@@ -494,7 +487,7 @@ public class Puzzle {
                             if (Math.abs(newX1-newX2)>0.001 || Math.abs(newY1-newY2)>0.001) {
                                 break;
                             } else if (Math.abs(newX1-newX2)<0.001 && Math.abs(newY1 -newY1)<0.001 && k == centerChecked.get(centerChecked.size() - 1).piece.corners.size() - 1) {
-                                System.out.println("youre not special center");
+                                System.out.println("All pieces unique: false");
                                 return false;
                             }
                         }
@@ -502,6 +495,7 @@ public class Puzzle {
                 }
             }
         }
+        System.out.println("All pieces unique: true");
         return true;
     }
 
