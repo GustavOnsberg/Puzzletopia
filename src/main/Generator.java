@@ -4,10 +4,11 @@ public class Generator {
 
     public static void generate(int n, int m, int cuts, float var, Puzzle puzzle){
 
+        puzzle.puzzleWidth = n;
+        puzzle.puzzleHeight = m;
+
         int N = n * (cuts + 1) + 1;
         int M = m * (cuts + 1) + 1;
-
-        System.out.println("N: "+N+ ", M: "+M);
 
         float[][][] dots = new float[N][M][2];
 
@@ -35,7 +36,6 @@ public class Generator {
                 int firstCornerIndexN = j * (cuts + 1);
                 int firstCornerIndexM = i * (cuts + 1);
 
-                System.out.println(firstCornerIndexN+", "+firstCornerIndexM);
 
                 float x = 0;
                 float y = 0;
