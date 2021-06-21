@@ -23,7 +23,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MainMenuController {
-
+    // The file MainMenuController is the file that starts the game. It is this file, that makes it possble to change
+    // scenes on the same stage (window). It also manages the menu buttons and background. This file is made by Frederik
     public Button btnGenerateGame;
     public Button btnUploadGameFile;
     public Puzzle puzzle;
@@ -33,7 +34,7 @@ public class MainMenuController {
 
     @FXML
     public void initialize() {
-        // First method to run when the controller loads - Frederik
+        // First method to run when the controller loads
 
         // Setup background
         createBackground();
@@ -61,7 +62,7 @@ public class MainMenuController {
     }
 
     private void createBackground() {
-        // Creates the moving background - Frederik
+        // Creates the moving background
 
         // Setup block colors
         Random random = new Random();
@@ -102,7 +103,7 @@ public class MainMenuController {
 
 
     public void handleGenerateGameBtn(ActionEvent actionEvent) throws IOException {
-        // Setup the inputs for the generation of a puzzle - Frederik
+        // Setup the inputs for the generation of a puzzle
 
         mainMenuController = this;
         puzzle = new Puzzle();
@@ -184,7 +185,7 @@ public class MainMenuController {
     }
 
     public void handleUploadGameFileBtn(ActionEvent actionEvent) throws IOException, ParseException {
-        // Setup the button for uploading a JSON file - Frederik
+        // Setup the button for uploading a JSON file
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose a JSON File");
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");

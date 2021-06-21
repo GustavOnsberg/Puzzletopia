@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class PuzzleScreenController {
+    // The file PuzzleScreenController creates everything visually. It creates the puzzle pieces, makes the logic to move them around and rotate them,
+    // solves and shuffles the puzzle. This file is made by Frederik & Gustav
     public AnchorPane puzzleCanvas;
     public double originalPieceX, originalPieceY, originalMouseX, originalMouseY, mouseX, mouseY;
     public AnchorPane windowPane;
@@ -34,12 +36,10 @@ public class PuzzleScreenController {
     Button mainMenuBtn = new Button("MAIN MENU");
     boolean isComp = false;
     double ramma;
-
     double deltaX = 0;
     double deltaY = 0;
     double prevDeltaX = 0;
     double prevDeltaY = 0;
-
     private final Stylesheet main_stylesheet = new Stylesheet("/ui/main_stylesheet.css");
 
 
@@ -48,7 +48,7 @@ public class PuzzleScreenController {
 
     @FXML
     public void initialize() {
-        // The first method to run when the controller loads up - Frederik
+        // The first method to run when the controller loads up
         setupPuzzleCanvas();
         for (int i = 0; i < MainMenuController.mainMenuController.getPuzzle().n * MainMenuController.mainMenuController.getPuzzle().m; i++) {
             pieceColors.add(new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1));
@@ -63,7 +63,7 @@ public class PuzzleScreenController {
     }
 
     private void setupShuffle() {
-        // Setup the shuffle button, that moves the pieces to a random x and y value, alongside a random rotation - Frederik
+        // Setup the shuffle button, that moves the pieces to a random x and y value, alongside a random rotation
         shuffleBtn.setOnAction(event -> {
             for (int i = 0; i < puzzlePieces.size(); i++) {
                 puzzlePieces.get(i).setX(random.nextInt((int) (Main.pStage.getWidth() - 600)));
@@ -77,7 +77,7 @@ public class PuzzleScreenController {
     }
 
     private void setupPuzzleCanvas() {
-        // Setup the canvas, that covers the whole scene - Frederik
+        // Setup the canvas, that covers the whole scene
         puzzleCanvas.setPrefWidth(Main.pStage.getWidth());
         puzzleCanvas.setPrefHeight(Main.pStage.getHeight() - 300);
         puzzleCanvas.getStylesheets().add(main_stylesheet.getUrl());
@@ -129,7 +129,7 @@ public class PuzzleScreenController {
     }
 
     private void solvePuzzle() {
-        // Solves the puzzle - Frederik & Gustav
+        // Solves the puzzle
         int width = MainMenuController.mainMenuController.getPuzzle().n;
         int height = MainMenuController.mainMenuController.getPuzzle().m;
         for (int i = 0; i < height; i++) {
@@ -187,7 +187,7 @@ public class PuzzleScreenController {
     }
 
     private void makePuzzlePiece(int pieceNumber, int color) {
-        // Creates the puzzle piece as a Rectangle object, with the clip as a Path - Frederik
+        // Creates the puzzle piece as a Rectangle object, with the clip as a Path
         Rectangle newPuzzlePiece = new Rectangle(10000, 10000);
         newPuzzlePiece.setFill(pieceColors.get(color));
         // Setup the Path, that draws a line between all the edges, giving us the outline of the piece
@@ -221,7 +221,7 @@ public class PuzzleScreenController {
     }
 
     private void checkSnapTo(int pieceNumber, Rectangle newPuzzlePiece, Path puzzleShape) {
-        // Checks if two pieces are compatible to snap to each other - Frederik & Gustav
+        // Checks if two pieces are compatible to snap to each other
         newPuzzlePiece.setOnMouseReleased(event -> {
             int numCheckPiece = 0;
             for (Rectangle puzzlePiece : puzzlePieces) {
@@ -272,7 +272,7 @@ public class PuzzleScreenController {
     }
 
     private void snapTo(Path puzzleShape, Rectangle piece, int numCheckPiece, Rectangle puzzlePiece, int index, int index1, Piece pieceSelected, Piece pieceChecked, int edgeOne, int edgeTwo) {
-        // Snaps the two given pieces together - Frederik & Gustav
+        // Snaps the two given pieces together
 
         // Sets up the first piece
         double angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(), puzzleShape.getLocalToSceneTransform().getMyy());
@@ -313,7 +313,7 @@ public class PuzzleScreenController {
     }
 
     private boolean checkCorners(Piece pieceSelectedCorner, Piece pieceCheckedCorner, Rectangle newPuzzlePiece, Rectangle puzzlePiece, int[] cornersSelected, int[] cornersCheck, Path puzzleShape, int i, int j, int numCheckPiece) {
-        // Checks if two corners are close enough to each other - Frederik & Gustav
+        // Checks if two corners are close enough to each other
         int tol = 20;
         double scale = puzzleShape.getScaleX() * 100;
         double angleSelected = Math.atan2(puzzleShape.getLocalToSceneTransform().getMyx(), puzzleShape.getLocalToSceneTransform().getMyy());
@@ -343,7 +343,7 @@ public class PuzzleScreenController {
 
 
     private int checkArray(int[] array, int i) {
-        // Checks if array is out of bounds, and moves it to the correct position - Frederik
+        // Checks if array is out of bounds, and moves it to the correct position
         if (i > array.length - 1) {
             return 0;
         } else if (i < 0) {
@@ -354,7 +354,7 @@ public class PuzzleScreenController {
     }
 
     private void movementOfPieces(Rectangle newPuzzlePiece, Path puzzleShape) {
-        // Moves the pieces with x and y, alongside rotation - Frederik & Gustav
+        // Moves the pieces with x and y, alongside rotation
 
         // Gets the piece x and y value and its rotation
         newPuzzlePiece.setCursor(Cursor.HAND);
@@ -438,7 +438,7 @@ public class PuzzleScreenController {
     }
 
     private void rescaleCanvas(Path puzzleShape, Rectangle newPuzzlePiece) {
-        // Rescales everything, when the window rescales - Frederik
+        // Rescales everything, when the window rescales
         Main.pStage.widthProperty().addListener(((observable, oldValue, newValue) -> {
             puzzleShape.setScaleX(Math.min(Main.pStage.getWidth() / MainMenuController.mainMenuController.getPuzzle().puzzleWidth, Main.pStage.getHeight() / MainMenuController.mainMenuController.getPuzzle().puzzleHeight) / 120);
             puzzleShape.setScaleY(puzzleShape.getScaleX());
@@ -457,7 +457,7 @@ public class PuzzleScreenController {
     }
 
     private void debugCorners(int pieceNumber, Rectangle newPuzzlePiece) {
-        // Debug visually where the first and second corner is - Frederik
+        // Debug visually where the first and second corner is
         // First corner
         Line debug1 = new Line(MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
                 MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getY() * 100 + 100, MainMenuController.mainMenuController.getPuzzle().getPieces().get(pieceNumber).getCorners().get(0).getX() * 100 + 100,
