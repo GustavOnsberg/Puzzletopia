@@ -27,9 +27,9 @@ public class PuzzleScreenController {
     public AnchorPane windowPane;
     private final float puzzleScale = 300;
     Random random = new Random();
-    ArrayList<Rectangle> puzzlePieces = new ArrayList<>();
-    ArrayList<Path> puzzleShapesList = new ArrayList<>();
-    ArrayList<Color> pieceColors = new ArrayList<>();
+    ArrayList<Rectangle> puzzlePieces = new ArrayList<>(); // This array saves the Rectangle of the pieces
+    ArrayList<Path> puzzleShapesList = new ArrayList<>(); // This array saves the Path of the pieces
+    ArrayList<Color> pieceColors = new ArrayList<>(); // This array saves the random given colors
     HBox bottomBtns = new HBox();
     Button shuffleBtn = new Button("SHUFFLE");
     Button solveBtn = new Button("SOLVE");
