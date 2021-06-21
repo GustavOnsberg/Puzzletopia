@@ -343,7 +343,7 @@ public class Puzzle {
         return true;
     }
 
-    public boolean CheckUnique(ArrayList<Piece> Pieces) {
+    public boolean CheckUnique(ArrayList<Piece> Pieces) {//Checks all the corners, side and center pieces are unique returns true if unique
         ArrayList<Piece> cornerPiece = new ArrayList<>();
         ArrayList<Piece> sidePiece = new ArrayList<>();
         ArrayList<Piece> centerPiece = new ArrayList<>();
@@ -360,7 +360,7 @@ public class Puzzle {
                 centerPiece.add(pieces.get(i));
             }
         }
-        for (int i = 0; i < cornerPiece.size(); i++) {
+        for (int i = 0; i < cornerPiece.size(); i++) {//for loop to check the corner pieces
             float x0 = cornerPiece.get(i).corners.get(0).x;
             float y0 = cornerPiece.get(i).corners.get(0).y;
 
@@ -406,7 +406,7 @@ public class Puzzle {
                 }
             }
         }
-        for (int i = 0; i < sidePiece.size(); i++) {
+        for (int i = 0; i < sidePiece.size(); i++) {//for loop to check the side pieces
             float x0 = sidePiece.get(i).corners.get(0).x;
             float y0 = sidePiece.get(i).corners.get(0).y;
 
@@ -452,7 +452,7 @@ public class Puzzle {
                 }
             }
         }
-        for (int i = 0; i < centerPiece.size(); i++) {
+        for (int i = 0; i < centerPiece.size(); i++) {//for loop to check the center pieces
             float x0 = centerPiece.get(i).corners.get(0).x;
             float y0 = centerPiece.get(i).corners.get(0).y;
 
@@ -507,7 +507,7 @@ public class Puzzle {
         return true;
     }
 
-    public boolean findSolution() {
+    public boolean findSolution() {//prepares the data and starts the recursive call that checks if the puzzle has a solution
         ArrayList<Piece> cornerPiece = new ArrayList<>();
         ArrayList<Piece> sidePiece = new ArrayList<>();
         ArrayList<Piece> centerPiece = new ArrayList<>();
@@ -527,8 +527,12 @@ public class Puzzle {
         return findSolutionRec(cornerPiece, sidePiece, centerPiece, placedPieces, 0);
     }
 
-    public boolean findSolutionRec(ArrayList<Piece> cornerPiece, ArrayList<Piece> sidePiece, ArrayList<Piece> centerPiece, ArrayList<PlacedPiece> placedPieces, int piecePosition) {
+    public boolean findSolutionRec(ArrayList<Piece> cornerPiece, ArrayList<Piece> sidePiece, ArrayList<Piece> centerPiece, ArrayList<PlacedPiece> placedPieces, int piecePosition) {//recursive functions that finds the solution for the puzzle
         System.out.println("pp: " + piecePosition);
+        //Zones of the puzzle to simplify solving the puzzle
+        //|1|2|3|
+        //|4|5|6|
+        //|7|8|9|
         //zone 1
         if (piecePosition == 0) {
             System.out.println("zone 1");
