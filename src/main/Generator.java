@@ -10,8 +10,6 @@ public class Generator {
         int N = n * (cuts + 1) + 1;
         int M = m * (cuts + 1) + 1;
 
-        System.out.println("N: "+N+ ", M: "+M);
-
         float[][][] dots = new float[N][M][2];
 
         for (int i = 0; i < M; i++) {
