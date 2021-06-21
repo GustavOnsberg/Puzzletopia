@@ -1,3 +1,4 @@
+//Made by Viktor: this is the constructor for handling the Checked pieces data
 package main;
 
 public class CheckedPiece {
