@@ -7,7 +7,7 @@ import javafx.util.Duration;
 
 public class MainMenuButtonSkin extends ButtonSkin {
     public MainMenuButtonSkin(Button button) {
-        // Makes the fade in and fade out animation for the menu buttons - Frederik
+        // The file MainMenuButtonSkin makes the fade in and fade out animation for the menu buttons - Made by Frederik
         super(button);
         FadeTransition fadeIn = new FadeTransition(Duration.millis(100));
         fadeIn.setNode(button);
