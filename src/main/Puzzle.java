@@ -55,7 +55,7 @@ public class Puzzle {
             lowCornerCount = -1;
             Generator.generate(n,m,cuts,var,this);
             preparePuzzle();
-            puzzleIsUnique = CheckUnique(pieces);
+            puzzleIsUnique = checkUnique(pieces);
             if (puzzleIsUnique){
                 findSolution();
             }
@@ -132,7 +132,7 @@ public class Puzzle {
 
         preparePuzzle();
 
-        CheckUnique(pieces);
+        checkUnique(pieces);
 
         findSolution();
     }
@@ -352,7 +352,7 @@ public class Puzzle {
         return true;
     }
 
-    public boolean CheckUnique(ArrayList<Piece> Pieces) {//Checks all the corners, side and center pieces are unique returns true if unique
+    public boolean checkUnique(ArrayList<Piece> Pieces) {//Checks all the corners, side and center pieces are unique returns true if unique
         ArrayList<Piece> cornerPiece = new ArrayList<>();
         ArrayList<Piece> sidePiece = new ArrayList<>();
         ArrayList<Piece> centerPiece = new ArrayList<>();
