@@ -44,10 +44,22 @@ public class Puzzle {
     }
 
     public void generatePuzzle(int n, int m, int cuts, float var){
-        pieces.clear();
-        Generator.generate(n,m,cuts,var,this);
-        preparePuzzle();
-        findSolution();
+        boolean puzzleIsUnique = false;
+        while(!puzzleIsUnique){
+            pieces.clear();
+            highCornerCountCount = 0;
+            midCornerCountCount = 0;
+            lowCornerCountCount = 0;
+            highCornerCount = -1;
+            midCornerCount = -1;
+            lowCornerCount = -1;
+            Generator.generate(n,m,cuts,var,this);
+            preparePuzzle();
+            puzzleIsUnique = CheckUnique(pieces);
+            if (puzzleIsUnique){
+                findSolution();
+            }
+        }
     }
 
     public void loadPuzzle(String filePath) throws IOException, ParseException {
@@ -120,6 +132,8 @@ public class Puzzle {
 
         preparePuzzle();
 
+        CheckUnique(pieces);
+
         findSolution();
     }
 
@@ -183,8 +197,6 @@ public class Puzzle {
                 pieces.get(i).isSidePiece = true;
                 pieces.get(i).updateCornerArrayRotation();
             }
-
-            //pieces.get(i).generateEdgeData();
         }
 
 
@@ -195,8 +207,6 @@ public class Puzzle {
             }
         }
 
-
-        CheckUnique(pieces);
 
         System.out.println("Puzzle size: "+n+" x "+m);
         System.out.println("Puzzle dimensions: " + puzzleWidth + " x " + puzzleHeight);
