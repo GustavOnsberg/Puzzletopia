@@ -407,7 +407,6 @@ public class PuzzleScreenController {
                     double c = Math.sqrt(Math.pow(MouseInfo.getPointerInfo().getLocation().x - mouseX, 2) + Math.pow(MouseInfo.getPointerInfo().getLocation().y - mouseY, 2));
                     ramma = Math.acos((Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / (2 * a * b));
 
-
                     double relativeX = MouseInfo.getPointerInfo().getLocation().x - originalMouseX;
                     double relativeY = MouseInfo.getPointerInfo().getLocation().y - originalMouseY;
                     double deltaLength = Math.sqrt(Math.pow(relativeX, 2) + Math.pow(relativeY, 2));
