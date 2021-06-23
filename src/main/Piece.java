@@ -9,7 +9,6 @@ public class Piece {
 
 
     ArrayList<FPoint> corners = new ArrayList<>();
-    ArrayList<EdgeData> edgeData = new ArrayList<>();
     boolean isSidePiece = false;
     boolean isCornerPiece = false;
 
@@ -73,71 +72,6 @@ public class Piece {
         for (int i = 0; i < newIndexZero; i++) {
             corners.add(corners.get(0));
             corners.remove(0);
-        }
-    }
-
-
-
-    public void generateEdgeData(){
-        if (!isSidePiece && !isCornerPiece){
-            for (int i = 0; i < 4; i++) {
-                generatedEdgeDataFromCorner((corners.size() / 4) * i, corners.size() / 4);
-            }
-        }
-        else if (isSidePiece){
-            generatedEdgeDataFromCorner(0,1);
-            for (int i = 0; i < 3; i++) {
-                generatedEdgeDataFromCorner(((corners.size() - 1) / 3) * i + 1, (corners.size() - 1) / 3);
-            }
-        }
-        else{
-            generatedEdgeDataFromCorner(0,1);
-            generatedEdgeDataFromCorner(1,1);
-            generatedEdgeDataFromCorner(2, (corners.size() - 2) / 2);
-            generatedEdgeDataFromCorner(((corners.size() - 2) / 2) + 2, (corners.size() - 2) / 2);
-        }
-    }
-
-    public void generatedEdgeDataFromCorner(int startCorner, int cornersPerSide){
-        edgeData.add(new EdgeData());
-        int edgeIndex = edgeData.size() - 1;
-        for (int i = 0; i < cornersPerSide; i++) {
-            edgeData.get(edgeIndex).lengths.add((float)Math.sqrt(Math.pow(corners.get(startCorner + i).x - corners.get((startCorner + i + 1) % corners.size()).x, 2) + Math.pow(corners.get(startCorner + i).y - corners.get((startCorner + i + 1) % corners.size()).y, 2)));
-
-            if (i > 0){
-                float x1 = corners.get(startCorner + i - 1).x;
-                float x2 = corners.get(startCorner + i).x;
-                float x3 = corners.get((startCorner + i + 1) % corners.size()).x;
-                float y1 = corners.get(startCorner + i - 1).y;
-                float y2 = corners.get(startCorner + i).y;
-                float y3 = corners.get((startCorner + i + 1) % corners.size()).y;
-
-                float a = edgeData.get(edgeIndex).lengths.get(edgeData.get(edgeIndex).lengths.size()-1);
-                float b = edgeData.get(edgeIndex).lengths.get(edgeData.get(edgeIndex).lengths.size()-2);
-                float c_sq = (float)(Math.pow(x1-x3,2)+Math.pow(y1-y3,2));
-
-                float angle = (float) Math.acos((Math.pow(a,2)+Math.pow(b,2)-c_sq)/(2*a*b));
-
-                //System.out.println("c:" + Math.sqrt(c_sq));
-                //System.out.println("a:" +a);
-                //System.out.println("b:"+b);
-
-                float dx1 = x2 - x1;
-                float dy1 = y2 - y1;
-                float dx2 = x3 - x2;
-                float dy2 = y3 - y2;
-
-                if(y1 != y2 && y2 != y3) {
-                    if (dx1 / dy1 > dx2 / dy2){
-                        angle = 360 - angle;
-                    }
-                }
-                else if(!((x1 < x2 && ((y1 == y2 && y1 > y3) || (y2 == y3 && y1 < y3))) || x1 > x2 && ((y1 == y2 && y1 < y3) || (y2 == y3 && y1 > y3)))){
-                    angle = 360 - angle;
-                }
-
-                edgeData.get(edgeIndex).angles.add(angle);
-            }
         }
     }
 
