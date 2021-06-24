@@ -166,7 +166,7 @@ public class MainMenuController {
                 error.setHeaderText("The input, distance, must be a float");
                 error.showAndWait();
                 event.consume();
-            } else if (varText.getText().matches("[+-]?([0-9]*[.])?[0-9]+") && Float.parseFloat(varText.getText()) > 0 && (Float.parseFloat(varText.getText())) > 1/(Float.parseFloat(cutsText.getText()) + 2)) {
+            } else if (varText.getText().matches("([0-9]*[.])?[0-9]+") && Float.parseFloat(varText.getText()) > 0 && (Float.parseFloat(varText.getText())) > 1/(Float.parseFloat(cutsText.getText()) + 2)) {
                 error.setHeaderText("The input, distance, must be above 0, but less than 1/(cuts + 2)");
                 error.showAndWait();
                 event.consume();
@@ -197,7 +197,7 @@ public class MainMenuController {
             mainMenuController = this;
             Main.main.setStage("/ui/PuzzleScreen.fxml", Main.pStage);
         } else if (gameFile == null) {
-            // Do nothing
+            // Do nothing, return the user to the main menu
         } else {
            Alert fileErorr = new Alert(Alert.AlertType.ERROR);
            fileErorr.setTitle("File Extension Error");
