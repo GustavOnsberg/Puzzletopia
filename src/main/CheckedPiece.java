@@ -1,6 +1,7 @@
 //Made by Viktor: this is the constructor for handling the Checked pieces data
 package main;
 
+//Viktor
 public class CheckedPiece {
     Piece piece;
     float diagonal1;

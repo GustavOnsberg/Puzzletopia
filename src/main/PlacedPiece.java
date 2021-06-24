@@ -1,6 +1,7 @@
 //Made by Viktor: this is the constructor for handling the placed pieces data
 package main;
 
+//Viktor
 public class PlacedPiece {
     Piece piece;
     public int edgeUp;

@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
+//Gustav and Viktor
 public class Puzzle {
     public ArrayList<PlacedPiece> placedPiecesFinal = new ArrayList<>();
 
@@ -33,6 +35,7 @@ public class Puzzle {
 
     ArrayList<Piece> pieces = new ArrayList<>();
 
+    //Only used for development of this class
     public static void main(String [] args) throws IOException, ParseException {
         Puzzle puzzle = new Puzzle();
         //puzzle.loadPuzzle("C:/Users/vikto/Downloads/Puzzles_set_1 (1)/Puzzle-15r-20c-8696-sol.json");
@@ -43,6 +46,7 @@ public class Puzzle {
 
     }
 
+    //Prepares variables and arrays for a new puzzle, then calls generate() from the Generator class
     public void generatePuzzle(int n, int m, int cuts, float var){
         boolean puzzleIsUnique = false;
         while(!puzzleIsUnique){
@@ -62,9 +66,8 @@ public class Puzzle {
         }
     }
 
+    //Loads a puzzle from a given JSON file
     public void loadPuzzle(String filePath) throws IOException, ParseException {
-
-
         pieces.clear();
         highCornerCountCount = 0;
         midCornerCountCount = 0;
@@ -137,7 +140,7 @@ public class Puzzle {
         findSolution();
     }
 
-
+    //When a puzzle is generated or loaded, this function categorizes each piece and determine the dimensions of the puzzle.
     private void preparePuzzle(){
         for (int i = 0; i < pieces.size(); i++) {
             int cornerCount = pieces.get(i).corners.size();
@@ -215,97 +218,7 @@ public class Puzzle {
         System.out.println("Number of pieces  - center: "+highCornerCountCount+"   side: "+midCornerCountCount+"   corner: "+lowCornerCountCount);
     }
 
-    /*public boolean matchEdge(Piece piece1, Piece piece2, int edge1, int edge2){
-        if ((piece1.isSidePiece && edge1 == 0) || (piece2.isSidePiece && edge2 == 0) || (piece1.isCornerPiece && edge1 <= 1) || (piece2.isCornerPiece && edge2 <= 1)) {
-            System.out.println("match error");
-            return false;
-        }
-        System.out.println("match start:"+pieces.indexOf(piece1)+" "+pieces.indexOf(piece2));
-        for (int i = 0; i < piece1.edgeData.get(edge1).lengths.size(); i++) {
-            int oppi = piece1.edgeData.get(edge1).lengths.size() - 1 - i;
-            if (Math.abs(piece1.edgeData.get(edge1).lengths.get(i) - piece2.edgeData.get(edge2).lengths.get(oppi)) > 0.01){
-                System.out.println("match failed 1");
-                return false;
-            }
-            else if (i > 0) {
-                int iA = i-1;
-                int oppiA = piece1.edgeData.get(edge1).angles.size()-1-iA;
-                if (Math.abs((piece1.edgeData.get(edge1).angles.get(iA) + piece2.edgeData.get(edge2).angles.get(oppiA)) - 360) > 0.01){
-                    System.out.println("match failed 2");
-                    return false;
-                }
-            }
-        }
-        System.out.println("match true");
-        return true;
-    }*/
-    /*
-    public boolean matchEdge(Piece piece1, Piece piece2, int edge1, int edge2) {
-        System.out.println("match start: p1: "+pieces.indexOf(piece1)+" p2: "+pieces.indexOf(piece2)+" e1: "+edge1+" e2: "+edge2);
-        if ((piece1.isSidePiece && edge1 == 0) || (piece2.isSidePiece && edge2 == 0) || (piece1.isCornerPiece && edge1 <= 1) || (piece2.isCornerPiece && edge2 <= 1)) {
-            System.out.println("match error");
-            return false;
-        }
-        int[] p1Corners = piece1.getCornerIndexes();
-        int[] p2Corners = piece2.getCornerIndexes();
-        float p1XDiff = piece1.corners.get(p1Corners[edge1]).x-piece1.corners.get(p1Corners[(edge1+1)%4]).x;
-        float p1YDiff = piece1.corners.get(p1Corners[edge1]).y-piece1.corners.get(p1Corners[(edge1+1)%4]).y;
-        float p2XDiff = piece2.corners.get(p2Corners[(edge2+1)%4]).x-piece2.corners.get(p2Corners[edge2]).x;
-        float p2YDiff = piece2.corners.get(p2Corners[(edge2+1)%4]).y-piece2.corners.get(p2Corners[edge2]).y;
-        float p1VecLength = (float) Math.sqrt(Math.pow(p1XDiff,2)+Math.pow(p1YDiff,2));
-        float p2VecLength = (float) Math.sqrt(Math.pow(p2XDiff,2)+Math.pow(p2YDiff,2));
-        if(Math.abs(p1VecLength-p2VecLength) > 0.001){
-            return false;
-        }
-        p1XDiff/=p1VecLength;
-        p1YDiff/=p1VecLength;
-        p2XDiff/=p2VecLength;
-        p2YDiff/=p2VecLength;
-        float p1Angle = (float) Math.acos(p1XDiff);
-        if (p1XDiff<0){
-            p1Angle+=180;
-        }
-        float p2Angle = (float) Math.acos(p2XDiff);
-        if (p2XDiff<0){
-            p2Angle+=180;
-        }
-        float xDiff=0;
-        float yDiff=0;
-        for (int i = 0; i < (highCornerCount/4)+1; i++) {
-
-            int p1Edge = ((p1Corners[(edge1+1)%4]-i+piece1.corners.size())%piece1.corners.size());
-            float p1XNew = piece1.corners.get(edge1).x*p1YDiff-piece1.corners.get(edge1).y*p1XDiff;
-            float p1YNew = piece1.corners.get(edge1).x*p1XDiff+piece1.corners.get(edge1).y*p1YDiff;
-
-            int p2Edge = ((p2Corners[(edge2+1)%4]-i+piece2.corners.size())%piece2.corners.size());
-            float p2XNew = (piece2.corners.get(p2Corners[(edge2+i)%4]).x*p2YDiff-piece2.corners.get(p2Corners[(edge2+i)%4]).y*p2XDiff);
-            float p2YNew = (piece2.corners.get(p2Corners[(edge2+i)%4]).x*p2XDiff+piece2.corners.get(p2Corners[(edge2+i)%4]).y*p2YDiff);
-
-            System.out.println("p1XNew: "+ p1XNew);
-            System.out.println("p2XNew: "+ p2XNew);
-            System.out.println("p1YNew: "+ p1YNew);
-            System.out.println("p2YNew: "+ p2YNew);
-            System.out.println("veclength: "+ p1VecLength+" "+p2VecLength);
-            if(i==0){
-                System.out.println("dif set");
-                xDiff=p1XNew-p2XNew;
-                yDiff=p1YNew-p2XNew;
-            }else if(Math.abs(p1XNew-p2XNew-xDiff)<0.001){
-                    if(Math.abs(p1YNew-p2YNew-yDiff)<0.001){
-                        System.out.println("match true");
-
-                    }else {
-                        System.out.println("match failed y");
-                        return false;
-                    }
-            }else{
-                System.out.println("match failed x");
-                return false;
-            }
-        }
-        System.out.println("match true");
-        return true;
-    }*/
+    //Takes one piece from two different pieces and checks if they match
     public boolean matchEdge(Piece piece1, Piece piece2, int edge1, int edge2) {
         if ((piece1.isSidePiece && edge1 == 0) || (piece2.isSidePiece && edge2 == 0) || (piece1.isCornerPiece && edge1 <= 1) || (piece2.isCornerPiece && edge2 <= 1)) {
             return false;
@@ -509,6 +422,7 @@ public class Puzzle {
         return true;
     }
 
+
     public boolean findSolution() {//prepares the data and starts the recursive call that checks if the puzzle has a solution
         ArrayList<Piece> cornerPiece = new ArrayList<>();
         ArrayList<Piece> sidePiece = new ArrayList<>();
@@ -528,6 +442,7 @@ public class Puzzle {
         return findSolutionRec(cornerPiece, sidePiece, centerPiece, placedPieces, 0);
     }
 
+    //The recursive function for findSolution()
     public boolean findSolutionRec(ArrayList<Piece> cornerPiece, ArrayList<Piece> sidePiece, ArrayList<Piece> centerPiece, ArrayList<PlacedPiece> placedPieces, int piecePosition) {
         //Zones of the puzzle to simplify solving the puzzle
         //|1|2|3|

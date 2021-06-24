@@ -1,7 +1,10 @@
 package main;
 
+//Gustav
 public class Generator {
 
+
+    //Generates a puzzle based in the parameters
     public static void generate(int n, int m, int cuts, float var, Puzzle puzzle){
 
         puzzle.puzzleWidth = n;

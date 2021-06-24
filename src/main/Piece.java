@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
+//Gustav
 public class Piece {
     public ArrayList<FPoint> getCorners() {
         return corners;
@@ -12,7 +13,7 @@ public class Piece {
     boolean isSidePiece = false;
     boolean isCornerPiece = false;
 
-
+    //This function figures out which corner should have index 0 and "rotates" the array to make that happen
     public void updateCornerArrayRotation(){
         int newIndexZero = 0;
         if(isSidePiece) {
@@ -75,6 +76,8 @@ public class Piece {
         }
     }
 
+
+    //Returns an array containing the indexes of the four corners of the piece
     public int[] getCornerIndexes(){
         if (!isSidePiece && !isCornerPiece)
             return new int[]{0, corners.size() / 4, (corners.size() / 4) * 2, (corners.size() / 4) * 3};
