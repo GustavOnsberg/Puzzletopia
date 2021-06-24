@@ -1,6 +1,7 @@
 package main;
 
-//Gustav
+// Gustav
+// Holds the information for point
 public class FPoint {
     public float getX() {
         return x;
